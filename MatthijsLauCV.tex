@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}     % We are using pdfLaTeX,
+\usepackage[utf8]{inputenc}  % hence this preparation
+
+\usepackage[margin = .5in]{geometry}
+\usepackage{ebgaramond}       % Use the EB Garamond font
+
+\usepackage{xcolor}          % To add colour to the document
+\definecolor{mydarkblue}{HTML}{1f2b41}
+\definecolor{myblue}{HTML}{304263}
+\definecolor{mylightblue}{HTML}{496497}
+
+%\usepackage[hidelinks]{hyperref} % For clickable links in the PDF
+\usepackage[colorlinks = true, urlcolor = myblue]{hyperref} % For clickable links in the PDF
+\usepackage{marvosym}        % Provides icons for the contact details
+
+\usepackage[backend = bibtex, style=numeric]{biblatex}
+\addbibresource{Publications.bib}
+
+\usepackage{ifthen}
+%Define global variables for boolean values
+\makeatletter
+\def\newglobalboolean#1{%
+	\expandafter\@ifdefinable\csname if#1\endcsname{%
+		\expandafter\let\csname if#1\endcsname\iffalse
+		\expandafter\def\csname #1true\endcsname{%
+			\global\expandafter\let\csname if#1\endcsname\iftrue
+		}%
+		\expandafter\def\csname #1false\endcsname{%
+			\global\expandafter\let\csname if#1\endcsname\iffalse
+		}%
+}}
+\makeatother
+
+\newglobalboolean{hlines}
+\setboolean{hlines}{true}
+\newglobalboolean{subsequentondsec}
+\setboolean{subsequentondsec}{false}
+
+\usepackage{graphicx}        % To insert picture
+\makeatletter
+\let\old@rule\@rule
+\def\@rule[#1]#2#3{\textcolor{mydarkblue}{\old@rule[#1]{#2}{#3}}}
+\makeatother
+
+\usepackage[most]{tcolorbox}
+
+\newenvironment{sectie}[1]{
+	\setboolean{subsequentondsec}{false}
+	\par\vspace{-3.5ex}
+	\begin{tcolorbox}[
+		colframe = white,
+		coltitle = mydarkblue,
+		colback = white,
+		boxrule = 0pt,
+		width = \textwidth,
+		title = {\Large{#1}},
+		after title = {\par\vspace*{-2.8ex}{\color{mydarkblue}\vspace{5pt}\rule{\textwidth}{2pt}}\vspace*{-1.4ex}}
+		]
+	\vspace{1ex}
+}{
+	\end{tcolorbox}
+}
+
+\newenvironment{listsectie}[1]{
+	\setboolean{subsequentondsec}{false}
+	\par\vspace{-3.5ex}
+	\begin{tcolorbox}[
+		colframe = white,
+		coltitle = mydarkblue,
+		colback = white,
+		boxrule = 0pt,
+		width = \textwidth,
+		title = {\Large{#1}},
+		after title = {\par\vspace*{-2.8ex}{\color{mydarkblue}\vspace{5pt}\rule{\textwidth}{2pt}}\vspace*{-1.4ex}}
+		]
+		\vspace{1ex}
+	\begin{flushright}
+	\begin{tcolorbox}[
+		width = .98\textwidth,
+		blanker
+		]
+}{
+	\null\vspace{-1ex}
+	\end{tcolorbox}
+	\end{flushright}
+	\end{tcolorbox}
+}
+
+
+\newenvironment{ondersectie}[4][]{
+	\ifthenelse{
+		\boolean{hlines}
+		}{
+		\ifthenelse{
+				\boolean{subsequentondsec}
+			}{
+				\par\vspace*{-4.2ex}{\color{mylightblue}\vspace{5pt}\rule{\textwidth}{.7pt}}\vspace{-2.8ex}
+			}{
+			}
+		}{
+		\ifthenelse{
+			\boolean{subsequentondsec}
+			}{
+				\par\vspace{-2ex}
+			}{
+			}
+		}
+	\setboolean{subsequentondsec}{true}
+	\spacing
+	\begin{minipage}[t]{.7985\textwidth}
+		\fontsize{11}{1}\selectfont
+		\ifthenelse{\equal{#1}{}}{\textbf{#2}}{\href{#1}{\textbf{#2}}}
+		\ifthenelse{\equal{#3}{}}{}{at \emph{#3}}
+	\end{minipage}
+	\begin{minipage}[t]{.1985\textwidth}
+		\begin{flushright}
+			#4
+		\end{flushright}
+	\end{minipage}
+	\vspace{-3ex}
+	\begin{flushright}
+		\begin{tcolorbox}[
+			width = .98\textwidth,
+			blanker
+			]
+}{
+	\end{tcolorbox}
+	\end{flushright}
+}
+
+\newcommand{\conferencelike}[4][]{
+	\begin{minipage}[t]{.84\textwidth}
+		\comp
+		{
+			\ifthenelse{\equal{#1}{}}{#2}{\href{#1}{#2}}
+			\ifthenelse{\equal{#3}{}}{}{at \emph{#3}}
+		}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{.157\textwidth}
+		\begin{flushright}
+			#4
+		\end{flushright}
+	\end{minipage}
+}
+
+\newcommand{\spacing}{\par\vskip.2ex plus .3ex}
+\newcommand{\smallspacing}{\par\vspace{-2.5ex}}
+\newcommand{\head}[1]{\vspace*{1.5ex}{\Large\color{myblue}#1}\par\vspace*{-2.8ex}{\color{myblue}\vspace{5pt}\rule{\textwidth}{2pt}}\par}
+\newcommand{\comp}{\par\hspace{-.015\textwidth}{\small$\diamond$}\ }
+
+% Name and contact information
+\newcommand{\name}{Matthijs Sebastiaan Lau}
+
+\newcommand{\addr}{Zichtstraat 1b, 6532VC, Nijmegen, The Netherlands}
+\newcommand{\natio}{Dutch}
+\newcommand{\phone}{+31 6 5520 8778}
+\newcommand{\email}{\href{matthijs.lau@gmail.com}{matthijs.lau@gmail.com}}
+\newcommand{\website}{\href{https://www.linkedin.com/in/matthijslau/}{linkedin.com/in/matthijslau}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Now for the actual document:
+
+\begin{document}
+\pagestyle{empty}
+\begin{minipage}{.55\textwidth}
+
+	\fontfamily{ppl} \selectfont
+
+	% Name with horizontal rule
+	\null\hfill{\Huge\color{myblue}\textbf{\name}\hfill\null
+
+		\vspace{-6pt} \rule{\linewidth}{1pt}}
+	{\small\itshape
+		\MVAt\ \email\\
+		\Mobilefone\ \phone\\
+		\Letter\ \addr\\
+		\Mundus\ \natio\\
+		\Mundus\ \website
+
+	}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+	\null\hfill\includegraphics[height=0.2\textheight]{pic5.jpg}\hfill\null
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{sectie}{Personal Statement}
+	I have always been passionate about learning and tackling complex problem solving, which I pursued in my Bachelors of Science in Mathematics and in Physics and Astronomy, and later by completing my Master of Science in Mathematics. My focus during my studies lies in differential geometry, functional analysis and topics in mathematical physics. Both my Bachelor's and Master's degrees had a particular focus on research. Additionally, by taking part in many workshops, conferences and seminars, I got to see a glimpse of the academic life. These experiences have inspired me to pursue a career as a PhD student. Beyond my studies, I love to travel, teach and participate in committees of the study association and mathematics department. My passion for mathematics motivates me not only to keep learning but also to share knowledge with others through teaching and other educational activities.
+\end{sectie}
+\begin{sectie}{Education}
+	\begin{ondersectie}{MSc Mathematics}{Radboud University, Nijmegen}{Sep 2023 - Aug 2025}
+		\comp \emph{Track:} Mathematical Physics, Gravity +
+		\comp Graduated August 31st 2025 \emph{cum laude}, final grade: 8.603/10, or 4.0 GPA
+		\comp Specialised in mathematical physics, with a strong background in both differential geometry and functional analysis.
+			% In the former, I followed courses like Lie theory, symplectic, Riemannian, and Poisson geometry, and mathematical and general relativity. As for the latter, I completed extensive courses on functional analysis, operator theory, and noncommutative geometry.
+		\comp \emph{Thesis/Research project:} Fibred Lie groupoids and multiplicative connections, supervised by Dr. Ioan Mărcuț.
+		%			 and co-supervised by Dr. Žan Grad. Researched the completeness of generalised multiplicative Ehresmann connections on surjective submersions by Lie groupoids morphisms. With some applications of these types of objects to multiplicative versions of symplectic fibrations.
+	\end{ondersectie}
+	\begin{ondersectie}{BSc Mathematics}{Radboud University, Nijmegen}{Sep 2019 - Jun 2023}
+		\comp Graduated June 30th 2023 \emph{cum laude}, final grade: 8.489/10, or 4.0 GPA
+		\comp Focused on differential geometry, functional analysis, and mathematical physics.
+		\comp \emph{Thesis:} Symplectic geometry: Darboux's theorem and Hamiltonian systems, supervisor: Dr. Ioan Mărcuț. Included a digression on physics and the role of symplectic geometry in this field.
+		\comp Completed 268 ECTS instead of the required 225 and followed a minor in Philosphy of 16 ECTS
+	\end{ondersectie}
+	\begin{ondersectie}{BSc Physics \& Astronomy}{Radboud University, Nijmegen}{Sep 2019 - Jun 2023}
+		\comp Graduated June 30th 2023 \emph{cum laude}, final grade: 8.473/10, or 4.0 GPA
+		\comp Focused on general relativity and quantum mechanics, related to high energy particle physics
+		% \comp \emph{Thesis:} Symplectic geometry: Darboux's theorem and Hamiltonian systems, supervisor: Dr. Ioan Mărcuț. Included a digression on classical mechanics and some applications of Hamiltonian systems to physical systems.
+		\comp Collaborated on research-oriented projects with practical applications.
+		\comp Completed 268 ECTS instead of the required 225 and followed a minor in Philosphy of 16 ECTS
+	\end{ondersectie}
+	\begin{ondersectie}{VWO (N\&T, N\&G)}{Het Rhedens Rozendaal}{Sep 2013 - Jun 2019}
+		\comp Graduated \emph{cum laude}, final grade: 4.0 GPA
+		\comp Majored in both Nature and Engineering, and Nature and Health.
+	\end{ondersectie}
+\end{sectie}
+\begin{sectie}{Experience}
+	\begin{ondersectie}{Teaching Assistent}{Radboud University, Nijmegen}{Jan 2021 - Aug 2025}
+		\comp Tutored for many courses in mathematics, physics and computing science, such as: introduction to mathematics, group theory, multivariable analysis, complex analysis, (vector) calculus, linear algebra, special relativity, and programming courses. I was often asked by professors in following years to teach their courses again.
+		\comp Lead tutorial sessions and small lectures with students returning in my tutorial sessions for later courses as well.
+		\comp Graded homework and exams, wrote homework solutions, and coordinated the tutorial side courses.
+	\end{ondersectie}
+	\begin{ondersectie}{Tutor}{}{Aug 2017 - Jun 2020}
+		\comp Taught high-school students in exact sciences \textemdash mathematics, physics, chemistry, biology \textemdash as a freelance tutor.
+		\comp Students were referred through teachers, and stayed on for multiple years.
+	\end{ondersectie}
+\end{sectie}
+\begin{sectie}{Publications}
+	\nocite{Lau2025, MasterThesis, BachelorThesis}
+	\printbibliography[heading = none]
+\end{sectie}
+\begin{listsectie}{Conferences, workshops and seminars}
+	\conferencelike[https://www.mi.uni-koeln.de/PoissonGeometry/conferences/higher-lower-rhine-xix/]{Higher Geometric Structures along the Lower Rhine XIX}{University of Cologne}{Sep 25-26 2025}
+	\conferencelike[https://www.birs.ca/events/2025/5-day-workshops/25w5442]{Around Singularities in Poisson Geometry}{IASM, Hangzhou (Online)}{Aug 3-8 2025}
+	\conferencelike[https://sites.google.com/view/ipgls2025/]{Interactions of Poisson Geometry, Lie Theory and Symmetry}{Instituto Superior Técnico, Lisbon}{Jun 30 - Jul 4 2025}
+	\conferencelike{Non-commutative geometry of foliations}{Radboud University, Nijmegen}{Feb - Jul 2025}
+	\conferencelike[https://www.math.ru.nl/~sagave/higher-structures-XVIII/index.html]{Higher Geometric Structures along the Lower Rhine XVIII}{Radboud University, Nijmegen}{Jan 23-24 2025}
+	\conferencelike[https://cers.univie.ac.at/cers15/index.html]{Central Europe Relativity Seminar 15}{Radboud University, Nijmegen}{Jan 22 - 23 2025}
+	\conferencelike[https://sites.google.com/view/poisson-aan-de-waal-4/home]{Poisson aan de Waal 4}{Radboud University, Nijmegen, Utrecht University}{Jun 27 - 28 2024}
+\end{listsectie}
+\begin{listsectie}{Talks and Posters}
+	\comp ``\href{https://drive.google.com/file/d/1ZwYj6T85aOcLNhYI9ckrHFH6b8O733Ik/view}{Completeness of multiplicative connections on fibred Lie groupoids}'' for Interactions of Poisson Geometry, Lie Theory and Symmetry, July 2 2025
+	\comp ``Lie groupoids; Holonomy and Monodromy groupoids of a foliation'' for local noncommutative geometry seminar on foliations, March 20 2025
+	\null
+\end{listsectie}
+\begin{sectie}{Extracurricular}
+	\begin{ondersectie}{Chair of the Education Committee}{Study association Marie Curie Nijmegen}{Sep 2022 - Jul 2025}
+		\comp Managed a committee of around 15 members to organize the educational oriented activities for physics students.
+		\comp Organized and implemented new educational activities, like colloquia, seminars, excursions, and study afternoons.
+	\end{ondersectie}
+	\begin{ondersectie}{Student Committee Member of BAC}{Radboud University, Nijmegen}{Sep 2023 - Jan 2024 and Nov 2024 - Apr 2025}
+		\comp Advised on the appointment advisory committee for promotions of academics within the mathematics department on two separate occasion pertaining to teaching capabilities and educational related activities.
+	\end{ondersectie}
+\end{sectie}
+\begin{listsectie}{Skills}
+	\comp Languages: Dutch (Native), English (C2)
+	\comp Leadership, project management, public speaking, problem-solving, creative thinking, independent research.
+\end{listsectie}
+
+\begin{listsectie}{References}
+	% \comp References available on \href{matthijs.lau@gmail.com}{request}.
+	\comp Prof. Dr. Ioan Mărcuț, Professor at the University of Cologne, imarcut@uni-koeln.de. Supervised my master's and bachelor's thesis and has been a lecturer for many courses I have assisted on.
+	\comp Dr. Annegret Burtscher, Assistent Professor at Radboud University, Nijmegen Nijmegen, burtscher@math.ru.nl. Has been my lecturer on courses during my bachelors and masters,
+	\comp Prof. Dr. Walter van Suijlekom, Professor at Radboud University, Nijmegen Nijmegen, waltervs@math.ru.nl. My lectures and also participates in the reading seminar on non-commutative geometry. Was a member of the appointment committees I have been on.
+\end{listsectie}
+\end{document}
