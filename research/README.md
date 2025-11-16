@@ -7,9 +7,10 @@ Mathematics PhD student at l'univesità degli studi di Salerno in Fisciano (SA) 
 ---
 
 **Talks and Posters**
+***Talks***
 - *Holonomy and Monodroids of foliations*; Seminar: Non-commutative geometry of foliations, RU Nijmegen (The Netherlands), 20 March, 2025
 
-*Posters*
+***Posters***
 - [*Completeness of multiplicative Ehresmann connections on fibred Lie groupoids*](https://drive.google.com/file/d/1ZwYj6T85aOcLNhYI9ckrHFH6b8O733Ik/view) at Interactions of Poisson Geometry, Lie Theory and Symmetry, Lisbon (Portugal), June 30 - July 4, 2025.
 
 **Conferences, Workshops and Schools**
