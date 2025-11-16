@@ -6,7 +6,7 @@ Mathematics PhD student at l'univesità degli studi di Salerno in Fisciano (SA) 
 
 ---
 ***Short CV***  
-*my full CV is available [here](https://github.com/MatthijsLau/matthijslau.github.io/files/CV.pdf)*
+*my full CV is available [here]([https://github.com/MatthijsLau/matthijslau.github.io/files/CV.pdf](https://github.com/MatthijsLau/matthijslau.github.io/blob/main/files/CV.pdf))*
 
 In November 2025, I began my PhD in Mathematics at the Department of Mathematics at the University of Salerno under the supervision of [Luca Vitagliano](http://www.dipmat2.unisa.it/people/vitagliano/www/).  
   &emsp; My research interests include, but are not limited to, \(G\)-structures, Lie groupoids, and differentiable stacks. In particular, I am interested in applications of geometry in mathematical physics.
