@@ -1,0 +1,36 @@
+\documentclass[class = article, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+	\begin{figure}
+		\centering
+		\includegraphics{img/Projectile_Sketch.pdf}
+		\caption{A sketch of a cannon atop a hill shooting a cannonball at some angle and speed. In the figure, we plotted a trajectory which we calculated by numerically solving Newton's equations of a projectile motion in a constant gravitational field with linear and quadratic air resistance using the SciPy package in Python. Our initial velocity for this trajectory was set to \(15\) ms\(^{-1}\) in the \(x\)-direction and \(3\) ms\(^{-s}\) in the \(y\)-direction and the height of the cliff was set at \(10\) m. We will see in our analysis that the mass of the cannonball is irrelevant to the problem. At the foot of the cliff, the reference frame for the analysis is drawn as well.}
+		\label{fig: sketch projectile}
+	\end{figure}
+	Suppose we have set up a cannon atop an \(h\) meter high cliff and we want to determine the distance it can shoot a cannonball which weighs \(m\) kilograms, see Figure~\ref{fig: sketch projectile}. We would then want to find a mathematical model to capture the motion of the cannonball. 
+	
+	First, we need to determine a reference frame which we have already chosen in Figure~\ref{fig: sketch projectile} to be at the foot of the cliff with the \(x\) corresponding to the horizontal direction and the \(y\) axis with the vertical one. Next up, we determine the initial values of the system. From Equation~\ref{eq: n equation of motion}, it is clear that we need both the initial position and velocity of a system to solve for the motion. In this case, the initial position of the cannonball can be considered to be the position of the cannon, i.e. \(r\h{0} = \h{0,h}^T\). The initial velocities are determined by some parameters, such that \(v\h{0} = \h{v_{x0},v_{y0}}\). Lastly, we need to determine the forces which we simply have to guess and tune until we are satisfied with the model. In this case, we introduce just the force of gravity.
+	\begin{equation*}
+		F_{\st[grav]}\h{t,r,\dot{r}} = F_{\st[grav]} = \mqty(0\\-mg).
+	\end{equation*}
+	Here, \(g\in\R\) is the acceleration due to gravity. As this is the only force we will be considering, we need to solve the following initial value problem:
+	\begin{equation*}
+		\dot{u} = \mqty(\dot{r}_x\\\dot{r}_y\\\dot{v}_x\\\dot{v}_y) = \mqty(v_x\\v_y\\0\\-g) = \mqty(0&0&1&0\\0&0&0&1\\0&0&0&0\\0&0&0&0)u + \mqty(0\\0\\0\\-g),\qquad u\h{0} = \mqty(0\\h\\v_{x0}\\v_{y0}).
+	\end{equation*}
+	Remark that this equation is of the form \(\dot{u} = Au + b\), thus we can find the solution by integrating, see Theorem 2.4.1 in \cite{MyintU1978}, such that
+	\begin{equation*}
+		u\h{t} = e^{tA}u\h{0} + \int_0^te^{\h{t - s}A}bds = \mqty(v_{x0}t\\h + v_{y0}t - \flatfrac{gt^2}{2}\\v_{x0}\\v_{y0} - gt).
+	\end{equation*}
+	Therefore, we get the motion for the cannonball with gravity
+	\begin{equation}\label{eq: projectile motion gravity}
+		r\h{t} = \mqty(v_{x0}t\\h + v_{y0}t - \flatfrac{gt^2}{2}).
+	\end{equation}
+	\begin{figure}
+		\centering
+		\includegraphics{img/Projectile_Gravity.pdf}
+		\caption{The trajectory of a cannonball as predicted by Equation~\ref{eq: projectile motion gravity} and the calculated trajectory of Figure~\ref{fig: sketch projectile}. The same initial conditions were used in this figure. Remark that the trajectories are rather close to each other, but we see that the model predicts the range of the cannon to be further than the calculated range. Yet, our model is quite close to the numerical analysis.}
+		\label{fig: projectile grav}
+	\end{figure}
+	We have plotted an example of such a motion in Figure~\ref{fig: projectile grav}. Here we see that our model is not quite perfect, but it does approximate the trajectory quite well.
+\end{document}

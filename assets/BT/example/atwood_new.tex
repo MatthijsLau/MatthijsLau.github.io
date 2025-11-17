@@ -1,0 +1,44 @@
+\documentclass[class = report, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+	\begin{figure}
+		\centering
+		\begin{subfigure}[t]{.49\textwidth}
+			\centering
+			\includegraphics{img/Atwood_Sketch.pdf}
+			\caption{The configuration of a pulley system with two masses of different sizes hanging from it.}
+			\label{fig: atwood sketch}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[t]{.49\textwidth}
+			\centering
+			\includegraphics{img/Atwood_ForceDiagram.pdf}
+			\caption{The Force diagram associated with Figure~\ref{fig: atwood sketch}. The reference frame is drawn at the centre of the pulley.}
+			\label{fig: atwood force diagram}
+		\end{subfigure}
+		\caption{Pulley system as described in Example~\ref{exp: atwood newton} with both a sketch and a force diagram.}
+		\label{fig: atwood}
+	\end{figure}
+	Let us consider an Atwood machine, which is a system of two stationary masses, \(m_1\) and \(m_2\), hanging on a rope over a pulley, see Figure~\ref{fig: atwood sketch}. Assume that the rope and pulley are massless, there is no friction in the pulley, the rope does not slip on the pulley and the length of the rope is constant. Set the origin at the centre of the pulley such that the initial positions of the masses are given by \(r_1 = \h{-R,-y_{10}}^T\) and \(r_2 = \h{R,-y_{20}}^T\), where \(R\) is the radius of the pulley.
+	
+	The forces in the system are then the force of gravity acting on both the objects, such that \(F_{\footm{grav},\footm{m}_i} = \h{0,-m_ig}^T\), and a tension force \(T = \h{0,T}^T\) which is the same on both objects by the constraint on the length of the rope. These forces are drawn in Figure~\ref{fig: atwood force diagram}. We can translate this to the following equation of motion.
+	\begin{equation*}
+		\mqty(m_1a_{x1}\\m_1a_{y1}\\m_2a_{x2}\\m_2a_{y2}) = \mqty(0\\T + F_{\footm{grav},\footm{m}_1}\\0\\T + F_{\footm{grav},\footm{m}_2}) = \mqty(0\\T - m_1g\\0\\T - m_2g).
+	\end{equation*}
+	We notice here that we can ignore the \(x\)-coordinates as there is no net force acting in this direction. However, when solving this equation, we run into the problem that \(T\) is an unknown. Luckily, we can recover it by remarking that \(a_1 = -a_2\), which is a result of the fact that the length of the rope is constant. We can solve this equation for \(T\).
+	\begin{align*}
+		\dfrac{T - m_1g}{m_1} = a_1 &= - a_2= -\dfrac{T - m_2g}{m_2}\\
+		 m_2T - m_1m_2g &= -m_1T + m_1m_2g\\
+		 T &= \dfrac{2m_1m_2}{m_1 + m_2}g.
+	\end{align*}
+	Substituting this into the equation of motion, we get
+	\begin{equation*}
+		\mqty(a_{y1}\\a_{y2}) = \mqty(\flatfrac{2m_2g}{\h{m_1 + m_2}} - g\\\flatfrac{2m_1g}{\h{m_1 + m_2}} - g) = \mqty(\flatfrac{g\h{m_2 - m_1}}{\h{m_1 + m_2}}\\\flatfrac{g\h{m_1 - m_2}}{\h{m_1 + m_2}}).
+	\end{equation*}
+	Solving this system is then rather simple and results in the motion of the masses.
+	\begin{equation}\label{eq: atwood result newton}
+		r\h{t} = \mqty(r_1\h{t}\\r_2\h{t}) = \mqty(y_{10} + \flatfrac{\mu gt^2}{2}\\y_{20} - \flatfrac{\mu gt^2}{2}),\qquad \mu = \dfrac{m_2 - m_1}{m_1 + m_2}.
+	\end{equation}
+	Here, we can see that the mass difference is the main factor in the dynamics. If the difference is zero, the masses will stay stationary. If one of them is heavier, the greater mass will move downwards.
+\end{document}

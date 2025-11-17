@@ -1,0 +1,32 @@
+\documentclass{standalone}
+\usepackage{standalone}
+
+\begin{document}
+\begin{figure}
+	\centering
+	\includegraphics{img/Atwood_Coordinates.pdf}
+	\caption{Generalised coordinates of an Atwood machine.}
+	\label{fig: atwood coordinates}
+\end{figure}
+Let us consider the Atwood machine of Example~\ref{exp: atwood newton} again, i.e. we consider two stationary masses hanging from a rope which is suspended over a pulley. We assume that the rope and pulley are massless, the rope does not slip on the pulley, the pulley can rotate freely and the length of the rope is constant. We will now solve this using Lagrangian formalism. Define the coordinates \(x\) and \(y\) as in Figure~\ref{fig: atwood coordinates}. As the rope has a constant length, say \(L\), we get the relation \(x + y + R\pi = L\), implying that \(y = -x + \tilde{C}\). Hence, the system can be described using a single general coordinate \(x\). The kinetic energy of this system is given by
+\begin{equation*}
+	T\h{x} = \dfrac{1}{2}m_1\dot{x}^2 + \dfrac{1}{2}m_2\dot{y}^2 = \dfrac{1}{2}\h{m_1 + m_2}\dot{x}^2.
+\end{equation*}
+The potential energy is the sum of the gravitational potentials of both masses.
+\begin{equation*}
+	U = -m_1gx - m_2gy = -\h{m_1 - m_2}gx + C.
+\end{equation*}
+Here, we can set the constant to zero as a potential is determined up to a constant. This leads to the following Lagrangian.
+\begin{equation}\label{eq: atwood lagrangian}
+	\lag\h{x,\dot{x}} = \dfrac{1}{2}\h{m_1 + m_2}\dot{x}^2 + \h{m_1 - m_2}gx.
+\end{equation}
+If we enter this into the Euler-Lagrange equations we get the following differential equation:
+\begin{equation*}
+	\h{m_1 - m_2}g = \h{m_1 + m_2}\ddot{x}.
+\end{equation*}
+This is solvable for \(x\), which results in
+\begin{equation}\label{eq: atwood result lagrangian}
+	x\h{t} = \frac{1}{2}\dfrac{m_1 - m_2}{m_1 + m_2}gt^2 + x_0.
+\end{equation}
+This solves our system and we can see this is equivalent to the Newtonian case by comparing Equation~\ref{eq: atwood result lagrangian} to Equation~\ref{eq: atwood result newton}.
+\end{document}

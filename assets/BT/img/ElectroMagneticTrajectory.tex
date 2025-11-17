@@ -1,0 +1,12 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{tikzlings-koalas}
+\newcommand{\footm}[1]{\mbox{\footnotesize{#1}}}
+\begin{document}
+\begin{tikzpicture}
+	\begin{axis}[xlabel = {\(x\)}, ylabel = {\(y\)}, axis lines=center, ymin = -6.5, ymax = 6.5, axis equal]
+		\addplot[smooth] file {electromagnetictrajectory.txt};
+	\end{axis}
+	\end{tikzpicture}
+\end{document}

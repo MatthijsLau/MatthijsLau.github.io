@@ -1,0 +1,1051 @@
+\documentclass{standalone}
+
+\begin{document}
+\chapter{Lie groupoids}
+	While Lie groups give a great description of classical symmetries of manifolds, there are more general symmetries we might want to capture. One way of doing this is by considering groupoids, which are like symmetry groups but possibly between manifolds. This flexible structure lets us capture a multitude of different concepts besides groups. For example, they can also encode the data of a group action, contain manifolds, and also different generalisations of groups, like pseudo-groups.
+
+	Groupoids were first studied, or at least their smooth version, by Charles Ehresmann \cite{Ehresmann1959}, who used them to describe the general symmetries of systems. Now they are indispensable tools in different aspects of mathematics, like Poisson geometry, where they are used to integrate the Lie algebroid associated to a Poisson manifold, and noncommutative geometry, where groupoid \(C^*\)-algebras generate a range of objects with interesting index and \(K\)-theory.
+
+	In this chapter, we will give a short introduction to groupoids and describe the smooth version of these objects, which can be viewed as a groupoid object inside \(\Diff\), the category of smooth manifolds. The main tools one can use to work with them are similar to the ones used in Lie group theory, like translations, but also ones which make use of the categorical nature of groupoids, such as bisections, isotropy groups, and properties on source fibres. We will then go over some examples and constructions of Lie groupoids, which will prove useful later. The chapter finishes with a discussion of Morita equivalences based on bibundles. The main references are \cite{delHoyo2013,Mackenzie2005,Mackenzie2007,Meinrenken2017}.
+
+\section{Categories of Lie groupoids}
+	As the name suggests, Lie groupoids are the smooth version of a groupoid, just like a Lie group is the smooth version of a group. Hence, to introduce Lie groupoids, we first need to define groupoids themselves. The study of groupoids is not limited to Lie groupoids, and has been studied for far longer, cf.\ \cite{Brown1968}. We will start with a short, yet effective definition of a groupoid.
+	\begin{definition}\label{dfn: groupoid}
+		A \df{groupoid}\index{Groupoid} is a small category whose morphisms are all invertible. Additionally, a \df{subgroupoid}\index{Subgroupoid} is a subcategory which contains all inverses.
+	\end{definition}
+	This definition of a groupoid is efficient, yet not very insightful into the internal structure. As we want to impose additional geometric requirements on groupoids later, we will unravel the intrinsic structure of such objects. Hence, we will give a second equivalent definition where we view a groupoid as an algebraic object similar to a group, where we only have a partial multiplication. Alternatively, one can view them as groups which have multiple identity elements.
+	\begin{definition}
+		A \df{groupoid} consists of a pair of sets \(\grG\) and \(\grG_0\), called the set of \df{arrows}\index{Arrow} and set of \df{objects}\index{Object}, respectively. Associated with these sets, we have \df{structure
+			maps}\index{Structure maps}:
+		\begin{itemize}
+			\item
+			The \df{source map}\index{Source map} \(\grs\colon\grG\to\grG_0\) and \df{target map}\index{Target map} map \(\grt\colon\grG\to\grG_0\). If \(g\in\grG\) has \(\grs\h{g} = x\) and \(\grt\h{g} = y\), then we sometimes denote this as \(y\gto x\in\grG\). Additionally, we define the following sets\footnote{We can define similar notions where \(x,y\) are subsets \(U,V\subset M\), which are then denoted as \(\grG_U,\grG^V, \grG_U^V\).} :
+			\[
+			\grG_x = \grs^{-1}\h{x},\quad \grG^y = \grt^{-1}\h{y},\quad \grG_x^y = \grG_x\cap\grG^y,
+			\]\[
+			\grG^{\h{n}} = \hv{\h{g_1,\ldots,g_n}\in\grG^n|\ \grs\h{g_i} = \grt\h{g_{i+1}}}.
+			\]
+			The set \(\grG_x\) is called the \(\grs\)-fibre at \(x\) (read: source-fibre), and \(\grG^y\) the \(\grt\)-fibre at \(y\) (read: target-fibre). We call \(\grG^{\h{n}}\) the \df{\(n\)-composable arrows}, or if \(n = 2\) just the \df{composable arrows}, and if \(\h{g,h}\in\grG^{\h{2}}\) we call \(g\) and \(h\) \df{composable}.
+			\item
+			The \df{multiplication}\index{Multiplication map} \(\grm\colon\grG^{\h{2}}\to\grG\colon\h{g,h}\mapsto gh\).
+			\item
+			The \df{unit map}\index{Unit map} or \df{object inclusion}\index{Object inclusion} \(\gru\colon\grG_0\to\grG\colon x\mapsto 1_x\).
+			\item
+			The \df{inversion}\index{Inversion map} \(\gri\colon\grG\to\grG\colon g\mapsto g^{-1}\).
+		\end{itemize}
+		The source and target maps interact with the other structure maps as follows:
+		\begin{itemize}
+			\item
+			\(\grs\h{gh} = \grs\h{h}\) and \(\grt\h{gh} = \grt\h{g}\) for all \(\h{g,h}\in\grG^{\h{2}}\).
+			\item
+			\(\grs\h{1_x} = \grt\h{1_x} = x\) for all \(x\in\grG_0\).
+			\item
+			\(\grs\h{g^{-1}} = \grt\h{g}\) and \(\grt\h{g^{-1}} = \grs\h{g}\) for all \(g\in\grG\).
+		\end{itemize}
+		The other structure maps then abide by grouplike axioms.
+		\begin{itemize}
+			\item
+			\(g\h{hk} = \h{gh}k\) for all \(g,h,k\in\grG\) such than \(\h{g,h},\h{h,k}\in\grG^{\h{2}}\).
+			\item
+			\(g1_x = 1_yg = g\) for all \(y\gto x\in\grG\).
+			\item
+			\(g^{-1}g = 1_x\) and \(gg^{-1} = 1_y\) for all \(y\gto x\in\grG\).
+		\end{itemize}
+		A \df{subgroupoid}\index{Subgroupoid} in this sense is a pair \(\grH\subset\grG\) and \(\grH_0\subset\grG_0\) such that \(\grs\h{\grH} = \grt\h{\grH} = \grH_0\), and it is closed under mulltplication and inversion, i.e.\ \(\grm\h{\grH\times\grH\cap\grG^{\h{2}}}\subset\grH\) and \(\gri\h{\grH}\subset\grH\).
+	\end{definition}
+	\begin{notation}
+		While a groupoid consists of a pair \(\grG\) and \(\grG_0\), we will often view \(\grG_0\) as internal to \(\grG\), by considering its inclusion via \(\gru\). Therefore, we will associate a groupoid with its set of arrows \(\grG\). In this case, the object set is always denoted with a subscript \(0\).
+
+		If we want to specify a set of objects, say \(M\), we will write \(\grG\rr M\).
+	\end{notation}
+	Notice that a groupoid still abides by some group-like structure. For example, the units and inverses are unique, in the sense that if \(y\gto x\in\grG\) and \(\h{h,g}\in\grG^{\h{2}}\) then \(hg = g\) implies that \(h = 1_x\), and if \(hg = 1_y\), then \(h = g^{-1}\).
+
+	Let us consider some examples, which showcase how groupoids can describe generalisations of symmetries.
+	\begin{example}\label{ex: general linear groupoids}
+		Consider a vector bundle \(\pi\colon V\to M\) and define \(\operatorname{Gl}\h{E}\) as the set
+		\[
+		\operatorname{Gl}\h{E} = \hv{\h{x,A,y}|x,y\in M\mbox{ and }A\colon E_x\to E_y\mbox{ a linear isomorphism}}.
+		\]
+		This defines a groupoid over \(M\) where \(y\gto[\h{x,A,y}]x\) and the multiplication is \(\h{y,A,z}\h{x,B,y} = \h{x,AB,z}\).
+	\end{example}
+	\begin{example}\label{ex: pseudogroup}
+		Consider the fibre bundle \(\pr_1\colon M\times M\to M\) and let \(C^\infty_M\) denote the sheaf of local sections of this surjective submersion. A section of this sheaf, say \(f\in C^\infty_M\h{U}\), can be viewed as a map \(f\colon U\to M\) by considering its second projection. We can then consider the subpresheaf \(\Diff_M\) defined by
+		\[
+		\Diff_M = \hv{f\in C^\infty_M|\  f\colon\!\operatorname{dom}f\to \im f\mbox{ is a diffeomorphism}}
+		\]
+		This defines only a presheaf, as glueing diffeomorphisms may make them noninjective. Yet this set admits a composition
+		\[
+			\circ\colon \Diff_M\times\Diff_M\to\Diff_M\colon \h{f,g}\mapsto {f\circ g}|_{g^{-1}\h{\operatorname{dom}f}}
+		\]
+		This composition is associative and has a unit, namely \(\id_M\), and it admits inverses.
+
+		A pseudogroup (on \(M\)) is a subset \(G\subset \Diff_M\) such that
+		\begin{itemize}
+			\item \(G\circ G\subset G\), \(G^{-1}\subset G\) and \(\id_M\in G\),
+			\item  if \(f\in \Diff_M\h{U}\) and \(U = \bigcup_{i\in I}U_i\) then \(f\in G\h{U}\) if and only if \(f|_{U_i}\in G\h{U_i}\) for all \(i\in I\).
+		\end{itemize}
+		This means that \(G\) has grouplike properties and it is defined by local data.
+
+		A pseudogroup in particular defines a groupoid, by restricting the multiplication to a fibred product over the domain and image map, i.e.\ \(\Diff_M\fp{\operatorname{dom}}{\operatorname{im}}\Diff_M\), where \(\operatorname{dom}\colon \Diff_M\to\calO_M\) and \(\operatorname{im}\colon\Diff_M\to\calO_M\) send a diffeomorphism to its domain and image, respectively, where \(\calO_M\) denotes the collection of open subsets of \(M\). The source and target are then exactly given by \(\operatorname{dom}\) and \(\operatorname{im}\), while the multiplication is the restriction of \(\circ\). The unit at an open is simply the identity map of that open, and the inverse is by taking the inverse.
+
+		Clearly, this manner of taking a groupoid loses a lot of information. We can retain more information about a pseudogroup on \(M\) by considering germs of the map. The objects of our groupoid are given by \(M\) and the arrows by
+		\[
+		\grG = \hv{\operatorname{germ}_xf|\ f\in G\mbox{ and }x\in\operatorname{dom}f}
+		\]
+		The structure maps are defined as follows:
+		\[
+		\grs\h{\operatorname{germ}_xf} = x,\quad \grt\h{\operatorname{germ}_xf} = f\h{x},
+		\]
+		\[
+		\operatorname{germ}_yf\cdot \operatorname{germ}_xg = \operatorname{germ}_x\h{f\circ g},\quad 1_x = \operatorname{germ}_x\id_M,\quad \h{\operatorname{germ}_xf}^{-1} = \operatorname{germ}_{f\h{x}}\h{f^{-1}}
+		\]
+		One can verify that this indeed defines a groupoid structure on \(\grG\rr M\).
+
+		Notice that some \(f\in\Diff_M\) is fully determined its collection of germs, \(\hv{\operatorname{germ}_xf}_{x\in\operatorname{dom}f}\), as a subset of \(\grG\). Namely, we recover \(f\) via \(f\h{x} = \grt\h{\operatorname{germ}_xf}\). This implies that it is a so-called separated sheaf.
+	\end{example}
+	To fully describe the structure of groupoids, we want to describe an appropriate category into which they fit. As we view a groupoid as a category, there is an obvious choice of maps, namely functors. Given the remarks after Definition~\ref{dfn: groupoid}, we will describe this in more detail related to the internal structure of a groupoid.
+	\begin{definition}\label{dfn: groupoid morphism}
+		A \df{groupoid morphism}\index{Groupoid morphism} from \(\grG\) to \(\grH\) consists of a pair of maps \(\phi\colon\grG\to\grH\) and \(\phi_0\colon\grG_0\to\grH_0\) such that
+		\[
+		\phi_0\circ\grs = \grs\circ\phi,\quad \phi_0\circ\grt = \grt\circ\phi,\quad \phi\h{gh} = \phi\h{g}\phi\h{h}\mbox{ for all
+		}\h{g,h}\in\grG^{\h{2}}.
+		\]
+		We call \(\phi\) the \df{map of arrows}\index{Map!of arrows} and \(\phi_0\) the \df{map of objects}\index{Map!of arrows} or \df{base map}\index{Base map! of a groupoid map}.
+	\end{definition}
+	\begin{notation}
+		Similar to how a groupoid is determined by the set of arrows and the structure maps, where we can view the objects as a structure internal to it, a groupoid morphism is fully determined by the map of arrows. The object map of a groupoid morphisms \(\h{\phi,\phi_0}\) can be recovered as \(\phi_0 = \grs\circ\ \phi\circ\gru\). Therefore, we will identify a groupoid map with its map of arrows. We will always implicitly assume \(\phi_0\) is the object map of a groupoid map \(\phi\) if there is no possible confusion.
+	\end{notation}
+	By using the above notation, the composition of groupoid morphisms is simply given by the composition of the maps of arrows, and in particular, this defines a category.
+	\begin{definition}
+		The category of groupoids with groupoid morphisms is denoted by \(\grpd\).
+	\end{definition}
+	Let us now extend these ideas to the smooth category. This definition will very much be in the same spirit as a Lie group; however, we need some more conditions for it to make sense. We will also generalise the concept of a groupoid morphism and introduce the concept of a Lie subgroupoid.
+	\begin{definition}\label{dfn: Lie groupoid}\label{dfn: Lie groupoid morphism}
+		A \df{Lie groupoid}\index{Lie!groupoid} is a groupoid \(\grG\), where both the spaces of arrows and the base space are manifolds, the structure maps are smooth, and \(\grs\) and \(\grt\) are submersions.
+
+		A \df{Lie groupoid morphism}\index{Lie!groupoid morphism}\index{Morphism! of Lie groupoids} between Lie groupoids \(\grG\) and \(\grH\) is a groupoid morphism which is also a smooth map.
+
+		We denote the associated category of Lie groupoids with Lie groupoid morphisms by \(\lgrpd\).
+	\end{definition}
+	\begin{remark}
+		In this thesis, we will assume our Lie groupoids to be Hausdorff. In general, one often assumes only the source and target fibres to be Hausdorff, but not the whole space in total, as there are natural constructions of groupoids with a nonHausdorff topology.
+	\end{remark}
+	Let us delay giving examples of Lie groupoids until we have defined some more properties for us to discuss in tandem.
+
+	The translation from groupoid to Lie groupoid is akin to that from group to Lie group, except for the additional requirement that \(\grs\) and \(\grt\) are submersions. This assumption is needed to make sure that \(\grG^{\h{2}}\) is an embedded submanifold of \(\grG\times\grG\), such that the multiplication can be smooth in a canonical manner. Of course, one could go with a weaker transversality condition like clean intersections. However, the source and target map being submersions will prove useful in the future, for example, it automatically implies that their fibres are embedded submanifolds. The structure maps have some additional nice geometric properties.
+	\begin{proposition}
+		Let \(\grG\) be a Lie groupoid; then the inversion is a diffeomorphism; moreover, it restricts to a diffeomorphism \(\gri\colon\grG_x\to\grG^x\) for any \(x\in\grG_0\). Additionally, the unit map is a closed embedding.
+	\end{proposition}
+	\begin{proof}
+		As the inversion is its own inverse, it is a diffeomorphism. As \(\grs\) and \(\grt\) are submersions, the \(\grs\)- and \(\grt\)-fibres are automatically embedded submanifolds and thus \(\gri\colon\grG_x\to\grG\) is a smooth map whose image lies in \(\grG^x\), and similarly for \(\gri\colon\grG^x\to\grG\). These restrictions are then each other's inverses, and therefore \(\gri\colon\grG_x\to\grG^x\) is a diffeomorphism.
+
+		To see that the inclusion is an embedding, we remark that it has a left inverse given by the source (or target). Moreover, it is closed as the map \(\delta\colon \grG\to\grG\times\grG\colon g\mapsto \h{g,gg^{-1}}\) is continuous and the units can be identified with \(\delta^{-1}\h{\Delta}\), where \(\Delta\) denotes the diagonal. This diagonal is closed as \(\grG\) is assumed to be Hausdorff.
+	\end{proof}
+	\begin{remark}
+		If we only assume that \(\grs\) is a submersion, then the fact that \(\gri\) is a diffeomorphism and \(\grt = \grs\circ\gri\) implies that \(\grt\) is automatically a submersion. Remark that \(\gri\) being a diffeomorphism only depends on itself being smooth. We will use this without mentioning it going forward, as it reduces a lot of arguments.
+	\end{remark}
+	\begin{proposition}
+		A Lie groupoid morphism which is a diffeomorphism is a Lie groupoid
+		isomorphism.
+	\end{proposition}
+	\begin{proof}
+		Let \(\phi\colon\grG\to\grH\) be a Lie groupoid morphism with a smooth inverse \(\phi^{-1}\). Suppose \(\h{h_1,h_2}\in\grH^{\h{2}}\), then there exist \(g_i\in\grG\), with \(i = 1,2\), such that \(\phi\h{g_i} = h_i\). Remark that \(\phi_0\circ\grs\h{g_1} = \grs\h{h_1} = \grt\h{h_2} = \phi_0\circ\grt\h{g_2}\). As \(\phi_0\) is the restriction of \(\phi\) to the units, it is also a diffeomorphism. This implies that \(\h{g_1,g_2}\in\grG^{\h{2}}\) and we can conclude that:
+		\[
+		\phi^{-1}\h{h_1h_2} = \phi^{-1}\h{\phi\h{g_1}\phi\h{g_2}} = \phi^{-1}\h{\phi\h{g_1g_2}} = g_1g_2 = \phi^{-1}\h{h_1}\phi^{-1}\h{g_2}.
+		\]
+		This shows that \(\phi^{-1}\) is indeed a Lie groupoid morphism and \(\phi\) is thus a Lie groupoid isomorphism.
+	\end{proof}
+	Lastly, we want to define the notion of a subgroupoid. Where normally, one takes an internal object of the groupoid, we will give a slightly more general definition, as this is the norm in the theory of Lie groupoids.
+	\begin{definition}\label{def: lie subgroupoids}
+		A \df{Lie subgroupoid}\index{Lie!subgroupoid} of a Lie groupoid \(\grG\) is a pair \(\h{\grH,\iota}\), where \(\grH\) is Lie groupoid and \(\iota\colon \grH\to\grG\) is a Lie groupoid morphism which is additionally an injective immersion.
+	\end{definition}
+	In the case that a Lie groupoid is also an embedded submanifold, we automatically see that \(\iota_0\h{\grH_0}\subset\grG_0\) is also an embedded submanifold. Therefore, the restriction of the structure maps of \(\grG\) to \(\iota\h{\grH}\) is smooth. Additionally, using that \(\grH\) is a Lie groupoid and \(\iota\) a Lie groupoid morphism, we deduce that the source map is a submersion. Therefore \(\iota\h{\grH}\subset\grG\) is a Lie groupoid in itself, which is then isomorphic as Lie groupoids to \(\grH\). Hence, we will identify Lie subgroupoids which are embedded with their images in the total groupoid.
+	\subsection{Translations, bisections, isotropy groups and orbits}
+	For Lie groups, much of the rich geometric structure follows from their homogeneous nature, in the sense that the left and right translations define diffeomorphisms of the whole group. In the case of Lie groupoids, given an arrow in a groupoid, say \(y\gto x\in\grG\), we do not obtain a diffeomorphism on the Lie groupoid, but only on the source and target fibres:
+	\[
+	l_g\colon \grG^x\to\grG^y\colon h\mapsto gh,\quad r_g\colon \grG_y\to\grG_x\colon h\mapsto hg,
+	\]
+	which we call the \df{left} and \df{right translation maps by \(g\)}\index{Left translation}\index{Right translation}, respectively. Additionally, we define the \df{conjugation by \(g\)}\index{Conjugation map} as \(c_g\colon \grG_x^x\to \grG_y^y\colon h\mapsto ghg^{-1}\).
+
+	Similar to Lie groups, cf.\ \cite[]{Duistermaat2000}, the first-order approximation of the multiplication is given by the left and right translations.
+	\begin{proposition}
+		For \(\h{g,h}\in\grG^{\h{2}}\) with \(\grs\h{g} = \grt\h{h} = x\), \(X\in
+		T_g\grG_x\) and \(Y\in T_h\grG^x\) we have
+		\[
+		T_{\h{g,h}}\grm\h{X,Y} = T_gr_h\h{X} + T_hl_g\h{Y}.
+		\]
+	\end{proposition}
+	\begin{proof}
+		Take some \(\h{g,h}\in\grG^{\h{2}}\) with \(\grs\h{g} = \grt\h{h} = x\), \(X\in T_g\grG_x\) and \(Y\in T_h\grG^x\). The tangent spaces of the \(\grs\)- and \(\grt\)-fibres are given by \(T_g\grG_x = \ker T_g\grs\) and \(T_h\grG^x = \ker T_h\grt\), such that \(T_g\grs\h{X} = 0 = T_h\grt\h{Y}\). Notice that the tangent space of a fibre product is isomorphic to the fibre product of the tangent space, and thus we have the following:
+		\[
+			\h{X, Y}, \h{0, Y}, \h{X,0}\in T_g\grG\fp{T_g\grs}{T_h\grt}T_h\grG = T_{\h{g,h}}\grG^{\h{2}}
+		\]
+		We can conclude that \(\in T_{\h{g,h}}\grG^{\h{2}}\). The following then holds by linearity:
+		\[
+		T_{\h{g,h}}\grm\h{X,Y} = T_{\h{g,h}}\grm\h{X,0} + T_{\h{g,h}}\grm\h{0,Y}
+		\]
+		We will only prove that \(T_{\h{g,h}}\grm\h{X,0} = T_gr_h\h{X}\), as an analogous proof will give \(T_{\h{g,h}}\grm\h{0,Y} = T_hl_g\h{Y}\), such that the result indeed holds.
+
+		Let us pick a path \(\phi\colon \h{-\epsilon,\epsilon}\to\grG_x\) such that \(\phi\h{0} = g\) and \(\dot{\phi}\h{0} = X\). We can then extend this path to \(\gamma\colon \h{-\epsilon,\epsilon}\to\grG^{\h{2}}\colon t\mapsto \h{\phi\h{t},h}\). Notice that \(\dot{\gamma}\h{0} = \h{X,0}\) and:
+		\[
+		\grm\circ\gamma\colon \h{-\epsilon,\epsilon}\to\grG\colon t\mapsto \grm\h{\gamma\h{t}} = \grm\h{\phi\h{t},h} = \phi\h{t}h = r_h\h{\phi\h{t}}.
+		\]
+		This implies that \(T_{\h{g,h}}\grm\h{X,0} = T_gr_h\h{X}\). As remarked before, this proves our result.
+	\end{proof}
+	The above proposition implies that at a unit \(1_x\), the first order differential of the multiplication is simply the restriction of the addition. Explicitly, for some \(X\in T_{1_x}\grG_x\) and \(Y\in T_{1_x}\grG^x\), it satisfies
+	\[
+		T_{\h{1_x,1_x}}\grm\h{X,Y} = X + Y.
+	\]
+	For a Lie group, this equality implies that the first-order derivative of the multiplication cannot capture any nonabelianess. As for a Lie groupoid, this is slightly more complicated as the converse multiplication of some composable \(g\) and \(h\) might not even be defined, as \(\grs\h{h}\) does not need to equal \(\grt\h{h}\). However, we can restrict to subsets where these expressions do make sense.
+	\begin{definition}
+		Let \(\grG\) be a Lie groupoid and \(x\in\grG_0\). The \df{isotropy groups}\index{Isotropy group} at \(x\) is given by \(\grG_x^x\).
+	\end{definition}
+	In particular, the isotropy groups define a bundle of groups \(p\colon G\to M\), where \(G = \bigcup_{x\in M}\grG_x^x\) and \(p\h{g} = \grs\h{g} = \grt\h{g}\). Remark that the fibres of \(p\) are indeed groups, where the multiplication is simply the restrictions of \(\gr\). However, we can even show that they are Lie groups by proving that they are embedded submanifolds of \(\grG\). To show this, we will need a little more machinery. The motivation of which comes from the fact that the left and right translations by an arrow are not defined on the whole groupoid. We can try to extend this definition as follows:
+
+	A \df{left-translation}\index{Left-translation} is a pair of maps \(L\colon \grG\to\grG\) and \(L_0\colon \grG_0\to\grG_0\) such that \(\grt\circ L = L_0\circ\grt\), \(\grs\circ L = \grs\) and on each \(\grG^x\) there exists an \(y\gto x\in\grG\) such that \(L|_{\grG^x} = l_g\). Hence, this map is not characterised by a single arrow, but by a family of arrows indexed by object. This leads us to the following definition:
+	\begin{definition}
+		A \df{local bisection}\index{Bisection} of a Lie groupoid \(\grG\) is a map \(\sigma\colon U\subset\grG_0\to\grG\) such that \(\grs\circ\sigma = \id_U\) and \(\grt\circ\sigma\) is a diffeomorphism. We will call a local bisection defined on the whole of \(\grG_0\) simply a bisection.
+	\end{definition}
+	Given a bisection \(\sigma\colon \grG_0\to\grG\) we can define a left-translation by:
+	\[
+	L_\sigma\colon \grG\to\grG\colon g\mapsto \sigma\circ\grt\h{g}g,\quad L_{0,\sigma}\colon \grG_0\to\grG_0\colon x\mapsto \grt\h{\sigma\h{x}}
+	\]
+	This is an injective mapping, and as composition gives a group structure to the set of left translations, this induces a group structure on the set of bisections.
+
+	One may wonder about the existence of such bisections, and much like for submersions, we can always ensure the existence of a local bisection through any arrow.
+	\begin{proposition}\label{prp: existence bisection}
+		Let \(g\in\grG\), then there exists a local bisection \(\sigma\) such that \(g\in\im\sigma\).
+	\end{proposition}
+	\begin{proof}
+		Notice that \(\grs\) and \(\grt\) are submersions and thus \(\dim\ker T_g\grs = \dim\ker T_g\grt = \dim\grG - \dim\grG_0\). We now remark that we can find some linear subspace \(C\subset T_g\grG\) such that
+		\[
+		T_g\grG = \ker T_g\grs\oplus C = \ker T_g\grt\oplus C.
+		\]
+		This follows from some simple linear algebra: Pick a basis \(\hv{u_i}\) for \(\ker T_g\grs\cap \ker T_g\grt\) and extend these to a basis \(\hv{u_i,v_j}\) of \(\ker T_g\grs\) and \(\hv{u_i,v_j'}\) of \(\ker T_g\grt\), remark that the dimensions are equal and therefore their bases have the same size. Moreover, the union \(\hv{v_j,v_j'}\) is linearly independent. We then remark that we can extend the basis \(\hv{u_i,v_j,v_j'}\) to a basis of \(V\), say \(\hv{u_i,v_j,v_j',w_k}\). Then consider \(C = \hh{v_j + v_j', w_k}_{\bbR}\).
+
+		We can then consider an embedded submanifold \(S\ni g\) such that \(T_gS = C\). Remark that if we restrict \(\grs\) and \(\grt\) to \(S\), they are a submersion at \(g\). Therefore, we can pick an open neighbourhood of \(g\in S\) such that they are of full rank everywhere. However, by counting dimensions, we see that they must be local diffeomorphisms. We can then restrict to a neighbourhood \(U\) such that \(\grs\colon U\to\grs\h{U}\) is a diffeomorphism. The inverse of \(\grs|_U\) will then be a local section attaining the value \(g\).
+	\end{proof}
+	From the existence of local sections, we can find the following interesting results on the restrictions of the target map to source fibres.
+	\begin{proposition}\label{prp: t-constant rank}
+		Let \(x\in\grG_0\), then \(\grt|_{\grG_x}\colon \grG_x\to \grG_0\) has constant rank.
+	\end{proposition}
+	\begin{proof}
+		To show that \(\grt|_{\grG_x}\) has constant rank, we will relate its differential at some \(g,h\in\grG_x\) by using a translation via a bisection. By Proposition~\ref{prp: existence bisection}, we can find a local bisection \(\sigma\colon U\to \grG\) attaining \(gh^{-1}\), and let us denote \(V = \h{\grt\circ\sigma}\h{U}\). Notice that \(V\) is diffeomorphic to \(U\) as \(\grt\circ\sigma\) is a diffeomorphism. Consider the left-translation induced by this local bisection, defined as
+		\[
+		L_\sigma\colon \grG^{U}\to \grG^{V}\colon g'\mapsto \sigma\circ\grt\h{g'}g'.
+		\]
+		Notice that this left translation satisfies \(L_\sigma\h{h} = g\). We want to show that this is a diffeomorphism and then let it translate the tangent map of the target map from \(g\) to \(h\). One can verify that the left translation with the following local bisection defines an inverse.
+		\[
+		\sigma'\colon V\to \grG\colon x\mapsto \h{\gri\circ\sigma\h{\grt\circ\sigma}^{-1}}\h{x} = \sigma\h{\h{\grt\circ\sigma}^{-1}\h{x}}^{-1}
+		\]
+		By a calculation, one can verify that indeed \(L_{\sigma'}\) is the inverse of \(L_\sigma\).
+		%			\begin{align*}
+			%				L_\sigma\circ L_{\sigma'}\h{g'}
+			%				&= \h{\sigma\circ\grt\circ L_{\sigma'}}\h{g'}\cdot L_{\sigma'}\h{g'}
+			%				 = \sigma\circ\grt\h{\sigma\h{\h{\grt\circ\sigma}^{-1}\h{x}}^{-1}\cdot
+				%g'}\cdot L_{\sigma'}\h{g'}\\
+			%				&= \h{\sigma\circ\grs\circ\sigma}\h{\h{\grt\circ\sigma}^{-1}\h{x}}\cdot
+			%L_{\sigma'}\h{g'}
+			%				=
+			%\sigma\h{\h{\grt\circ\sigma}^{-1}\h{x}}\cdot\sigma\h{\h{\grt\circ\sigma}^{-1}\h{x}}^{-1}\cdot
+			%g' = g'\\
+			%				L_{\sigma'}\circ L_{\sigma}\h{g'}
+			%				&= L_{\sigma'}\h{\sigma\circ\grt\h{g'}\cdot g'}
+			%				 =
+			%\sigma\h{\h{\grt\circ\sigma}^{-1}\h{\grt\h{\sigma\circ\grt\h{g'}g'}}}^{-1}\sigma\circ\grt\h{g'}g'\\
+			%				&=
+			%\sigma\h{\h{\grt\circ\sigma}^{-1}\h{\grt\circ\sigma\circ\grt\h{g'}}}^{-1}\sigma\circ\grt\h{g'}g'
+			%				 = \sigma\circ\grt\h{g'}^{-1}\sigma\circ\grt\h{g'}g' = g'
+			%			\end{align*}
+		Moreover, we notice that \(L_\sigma\) induces the following commutative diagram:
+		\[\begin{tikzcd}[sep=huge]
+			{\grG_x^U} & {\grG_x^V} \\
+			U & V
+			\arrow["{L_\sigma}", from=1-1, to=1-2]
+			\arrow["{\grt|_{\grG_x^U}}"', from=1-1, to=2-1]
+			\arrow["{\grt|_{\grG_x^V}}", from=1-2, to=2-2]
+			\arrow["{\grt\circ\sigma}"', from=2-1, to=2-2]
+		\end{tikzcd}\]
+		As \(\grG_x^U\) and \(\grG_x^V\) are open neighbourhoods of \(g\) and \(h\) in \(\grG_x\) respectively, we can conclude that
+		\[
+		T_h\grt|_{\grG_x}\circ T_gL_{\sigma}|_{\grG_x} = T_{\grt\h{g}}\h{\grt\circ\sigma}\circ T_g\grt|_{\grG_x}
+		\]
+		As \(L_{\sigma}\) and \(\grt\circ\sigma\) are diffeomorphisms, we can conclude that \(\grt\) has constant rank.
+	\end{proof}
+	\begin{corollary}
+		For any \(x,y\in\grG_0\), the set \(\grG_x^y\subset\grG\) is embedded, and the isotropy groups are Lie groups.
+	\end{corollary}
+	\begin{corollary}\label{cor: orbit}
+		The subset \(\scrO_x = \grt\h{\grG_x}\) is an immersed submanifold of \(\grG_0\).
+	\end{corollary}
+	For \(x\in\grG_0\), we call the set \(\scrO_x = \grt\h{\grG_x}\) the \df{orbit of \(x\)}\index{Orbit}, and we will denote \(\grG_0/\grG\) for the set of orbits. Notice that the partition into orbits defines an equivalence relation on \(\grG_0\), which is exactly given by the image of \(\h{\grt,\grs}\colon\grG\to\grG_0\times\grG_0\).
+
+	This partition of \(\grG_0\) into the orbits carries some important information on \(\grG\), which will, in particular, be invariant under Lie groupoid isomorphisms. Therefore, we let \(\h{\grt,\grs}\) dictate some properties of \(\grG\).
+	\begin{definition}
+		A Lie groupoid \(\grG\) is called \df{proper}/\df{transitive}, if \(\h{\grt,\grs}\) is a proper/ surjective map, respectively.
+	\end{definition}
+	\begin{proposition}\label{prp: injective anchor}
+		Let \(\grG\) be a Lie groupoid and denote \(f = \h{\grt,\grs}\colon\grG\to\grG_0\times\grG_0\). For any \(x\in \grG_0\) and \(g\in f^{-1}\h{x}\) we have \(T_gf^{-1}\h{x} = \ker T_gf\). In particular, if \(f\) is injective, then it is an immersion.
+	\end{proposition}
+	\begin{proof}
+		Let \(\grG\) be a Lie groupoid, and denote \(f = \h{\grt,\grs}\). Pick some \(y\gto x\in\grG\) and \(v\in \ker T_gf\), which implies that \(v\in\ker T_g\grt\cap \ker T_g\grs\). As \(\grt|_{\grG_x}\) as constant rank, it follows that
+		\[
+		T_g\grG_x^y = T_g\grt^{-1}\h{y} = \ker T_g\grt|_{\grG_x} = \ker T_g\grt\cap \ker T_g\grs.
+		\]
+		Thus \(v\in T_g\grG_x^y\). Hence, if \(f\) is injective, it follows that \(T_g\grG_x^y = T_g\hv{g} = \hv{0}\). Therefore \(T_gf\) is injective, and thus it is an immersion.
+	\end{proof}
+	\subsection{Properties on fibres}
+	Lastly, before we move to examples and constructions of Lie groupoids, we will go over a localised version of imposing topological restrictions on our groupoids by only imposing them on the source and, thus, target fibres.
+	\begin{definition}
+		Given a diffeomorphism invariant property \(P\) of manifolds, we will say that a Lie groupoid \(\grG\) is \(\grs\)-\(P\) if each \(\grs\) fibre has property \(P\). A similar definition holds for \(\grt\)-\(P\).
+	\end{definition}
+	As inversion is a diffeomorphism between \(\grs\)- and \(\grt\)-fibres, a Lie groupoid is \(\grs\)-\(P\) if and only if it is \(\grt\)-\(P\). Notice that the Lie groupoid itself having property \(P\), does not necessarily imply that it is \(\grs\)-\(P\) or vice versa. These notions do coincide for Lie groups, as there the source fibre is the whole group. The idea is that many statements holding for Lie groups with property \(P\) should hold for \(\grs\)-\(P\) groupoids. An important example of this is the following proposition.
+	\begin{proposition}\label{prp: t-conn is generated by open}
+		Let \(\grG\) be a \(\grs\)-connected Lie groupoid, then any open neighbourhood \(U\) of \(\grG_0\subset\grG\) generates the whole groupoid in the following sense: For any \(g\in \grG\), there exist a finite collection \(\hv{u_i}_{i = 1}^n\subset U\) such that \(g = u_1u_2\cdots u_n\).
+	\end{proposition}
+	\begin{proof}
+		Let \(\grG\) be a \(\grs\)-connected Lie groupoid and \(U\subset\grG\) and open neighbourhood of \(\grG_0\). Remark that we can assume that \(\gri\h{U} = U\), as we can always consider \(\gri\h{U}\cap U\), which will contain \(\grG_0 = \gri\h{\grG_0}\). Let us denote \(\hh{U}\) for the following set
+		\[
+		\hh{U} = \hv{u_1\cdots u_n\in\grG|\ n\in\bbN,\ u_i\in U,\ \h{u_1,\ldots,u_n}\in\grG^{\h{n}}}.
+		\]
+		We will show that \(\hh{U}_x = \hh{U}\cap\grG_x\) is clopen for any \(x\in\grG_0\), which, combined with the fact that the \(\grs\)-fibres are connected, implies that \(\hh{U}_x = \grG_x\) and thus \(\hh{U} = \grG\).
+
+		To see that it is open, define \(U_x^n = \hv{u_1\cdots u_n|\ u_i\in U,\ \h{u_1,\ldots,u_n}\in\grG^{\h{n}},\ \grs\h{u_1} = x}\) and notice that \(\hh{U}_x = \bigcup_{n=1}^\infty U_x^n\). We can rewrite the set \(U_x^n\) inductively using the right translation of the Lie groupoid as
+		\[
+			U_x^n = \bigcup_{g\in U^1_x}r_g\hk{U^{n - 1}_{\grt\h{g}}}\subset \grG_x
+		\]
+		As for the case \(n = 1\), we recover \(U_x^1 = U\cap\grG_x\), which is open in the subspace topology of \(\grG_x\), we can conclude that \(U_x^n\) is open for any \(n\) and thus \(\hh{U}_x\) is open.
+
+		Next, remark that if \(g\in\grG_x\backslash \hh{U}_x\), then \(r_g\h{U\cap\grG_{\grt\h{g}}}\) is open in \(\grG_x\) and it is disjoint of \(\hh{U}_x\). This shows that \(\hh{U}_x\) is a closed subset of \(\grG_x\).
+
+		We conclude that \(\hh{U}_x\) is clopen in \(\grG_x\), and using the \(\grs\)-connectedness it follows that \(\hh{U}_x = \grG_x\). This implies that \(\hh{U} = \grG\) and thus any \(g\) can be written as the product of elements in \(U\).
+	\end{proof}
+	\begin{remark}
+		Notice that this proof only relies on the topological properties of the Lie groupoid.
+	\end{remark}
+	\begin{proposition}\label{prp: result on subgroupoid}
+		Let \(\grG\) be a Lie groupoid, and \(\grH\) a subgroupoid (notice this is a priori not a Lie groupoid). If \(\grH\) is an embedded submanifold of \(\grG\), and it is \(\grs\)-connected, then \(\grH\) is a Lie subgroupoid.
+	\end{proposition}
+	The proof of this proposition uses the following somewhat unusual lemma.
+	\begin{lemma}[{\cite[Thm.\ 1.13]{Kolar1993}}]\label{lem: idempotent smooth map}
+		If \(f\colon M\to M\) is a smooth map such that \(f\circ f = f\), then \(\im f\subset M\) is embedded. Moreover, there exists an open neighbourhood \(U\subset M\) of \(f\h{M}\) such that \(f\colon U\to f\h{M}\) is a submersion.
+	\end{lemma}
+	\begin{proof}[Proof of Proposition~\ref{prp: result on subgroupoid}]
+		Remark that \(\gru\circ\grs\colon \grG\to\grG\) restricts to a smooth map \(\grH\to\grH\) such that \(\gru\circ\grs\circ\gru\circ\grs = \gru\circ\grs\). By Lemma~\ref{lem: idempotent smooth map}, it follows that \(\im\gru\circ\grs\) is an embedded submanifold of \(\grH\), however, this is exactly the set of units \(\grH_0\subset\grH\). The structure maps of \(\grH\), except for the multiplication, will then be automatically smooth as they are the restriction of smooth maps. Let us denote the structure maps of \(\grH\) with a tilde.
+
+		Lemma~\ref{lem: idempotent smooth map} additionally provides an open neighbourhood \(U\subset\grH\) of \(\grH_0\) such that \(\tilde{\gru}\circ\tilde{\grs}|_U\) is a submersion. As \(\gru\) is an embedding, it follows that \(\tilde{\grs}|_U\) is a submersion as well. Remark that by possibly shrinking \(U\), we find that \(\tilde{\grt}|_U\) is a submersion and \(\gri\h{U} = U\). It follows that the restriction of the multiplication map of \(\grH\) to \(U\) in the right components i.e.\ the following map:
+		\[
+		\grH\fp{\tilde{\grs}}{\tilde{\grt}}U\to\grH\colon \h{g,k}\mapsto gk,
+		\]
+		is still smooth. Therefore, the restriction of the right translation for some \(k\in U\) is also smooth and by the choice of \(U\) it is a diffeomorphism. This results in an isomorphism of tangent spaces for any \(\h{g,k}\in\grH\fp{\tilde{\grs}}{\tilde{\grt}}U\):
+		\[
+		T_{gk}r_{k^{-1}}\colon \ker T_{gk}\tilde{\grs}\to \ker T_g\tilde{\grs},
+		\] where we identify \(T_{gk}\grH_{\grs\h{k}} = \ker T_{gk}\tilde{\grs}\) and \(T_g\grH_{\grt\h{k}} = \ker T_g\tilde{\grs}\). Using Proposition~\ref{prp: t-conn is generated by open}, we find that \(\grH\) is generated by \(U\). From this, we can conclude that \(\tilde{\grs}\) is a submersion at all points of \(\grH\). As mentioned before, this automatically implies that \(\grt\) is a submersion as well. This then implies that \(\tilde{\grm}\colon \grH\fp{\tilde{\grs}}{\tilde{\grt}}\grH\to\grH\) is smooth as well, such that we can conclude that \(\grH\) is a Lie subgroupoid.
+	\end{proof}
+	Without the assumption that \(\grH\) is \(\grt\)-connected, this result may fail to hold as seen from the following example.
+	\begin{example}
+		Consider \(\bbR\times\bbR\rr\bbR\), where the source and target maps are \(\grs\h{x,y} = \grt\h{x,y} = x\) and the multiplication map is the addition on the second component, such that
+		\[
+		\h{x,y}\h{x,z} = \h{x,y + z},\quad 1_x = \h{x,0},\quad \h{x,y}^{-1} = \h{x,-y}.
+		\]
+		In other words, it is a bundle of groups over \(\bbR\), where the group is \((\bbR,+)\). Consider a map \(f\colon \bbR\to\bbR\colon\mapsto \psi\h{x}x^{\flatfrac{1}{3}} + 1\), where \(\psi\colon\bbR\to\bbR\) is some bump function with support in \(\ha{-1,1}\) such that \(\psi|_{\h{-\epsilon,\epsilon}} \equiv 1\) for some \(\epsilon > 0\). Remark that the graph of this map is a submanifold of \(\bbR^2\) and that the tangent space at \(\h{0,f\h{0}}\) is given by \(\hh{\pdv{y}}\). We can define a set-theoretical subgroupoid of \(\grG\) by
+		\[
+		\grH = \hv{\h{x,kf\h{x}}\colon \ x\in\bbR,\ k\in\bbZ}.
+		\]
+		However, this does not define a Lie groupoid as the source and target maps are not submersions at \(\h{0,0}\).
+	\end{example}
+	In particular, this lets us show that any Lie groupoid contains some \(\grs\)-connected subgroupoid.
+	\begin{corollary}
+		The set \(\grG^0 = \bigcup_{x\in\grG_0}C\h{\grG_x,1_x}\), where \(C\h{\grG_x,1_x}\) denotes the connected component of \(1_x\) in \(\grG_x\), is an \(\grs\)-connected Lie subgroupoid of \(\grG\).
+	\end{corollary}
+	\begin{proof}
+		Let \(\grG\) be a Lie groupoid, we remark that \(\grG^0\) can be determined using the source-foliation of \(\grG\), denoted \(\calF_{\grs}\), as
+		\[
+		\grG^0 = \cup_{L\in\calF_{\grs},\ L\cap \grG_0\neq\emptyset}L.
+		\]
+		Notice that \(\grG_0\) is a transversal to \(\calF_{\grs}\) and thus its saturation, given by \(\grG^0\), is open. Therefore, it is an embedded submanifold of \(\grG\) and by construction it is \(\grs\)-connected.
+
+		Lastly, we need to check that it is indeed a subgroupoid, such that it is closed under multiplication and inversion. For the multiplication, we remark that for \(y\gto x\in\grG^0\), the right translation defines a diffeomorphism \(r_g\colon\grG_y\to \grG_x\) and it in particular maps connected components to connected components. As \(r_g\h{1_y} = g\), it will indeed map \(C\h{\grG_y,1_y}\) to \(C\h{\grG_x,1_x}\) and thus the multiplication restricts to a map on \(\grG^0\). As for the inversion, we notice that \(r_g\h{g^{-1}} = 1_x\) such that \(g^{-1}\) is in \(C\h{\grG_y,1_y}\) by a similar argument. Clearly, it also contains all the units.
+
+		It now follows from Proposition~\ref{prp: result on subgroupoid} that \(\grG^0\) is indeed a Lie subgroupoid of \(\grG\).
+	\end{proof}
+	\section{Examples of (Lie) groupoids}
+	Let us now discuss a series of examples of (Lie) groupoids. Notice that many of the following constructions could be performed in the nonsmooth or topological case, leading to weaker versions of groupoids like topological groupoids.
+	\begin{example}\label{ex: group as groupoid}
+		Given a Lie group \(G\), we can interpret it as a Lie groupoid
+		\[
+		\begin{tikzcd}
+			G \\
+			{\hv{*}}
+			\arrow[shift right, from=1-1, to=2-1, "\grt"']
+			\arrow[shift left, from=1-1, to=2-1, "\grs"]
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }*\gto*}
+		\]
+		Conversely, any Lie groupoid where the base manifold is a point is a Lie group. In this setting, where the object space is a point, Lie group homomorphisms are exactly the same as morphisms of Lie groupoids.
+	\end{example}
+	\begin{example}\label{ex: pair groupoid}\label{ex: submersion groupoid}\label{ex: identity groupoid}
+		Given a manifold \(M\), we can consider the \df{pair groupoid}
+		\[
+		\begin{tikzcd}
+			{M\times M} \\
+			M
+			\arrow["{\pr_1}"', shift right, from=1-1, to=2-1]
+			\arrow["{\pr_2}", shift left, from=1-1, to=2-1]
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }y\gto[\h{x,y}]x}
+		\]
+		where the source map is \(\grs = \pr_2\) and the target map \(\grt = \pr_1\). As this is the Lie groupoid with a single arrow between any two objects, the multiplication, units and inverses are uniquely determined by the source and target relations they satisfy. A map of manifolds induces a Lie groupoid morphism on the pair groupoids, and \(\Pair\) is therefore a functor. Remark that any Lie groupoid \(\grG\rr M\) admits a Lie groupoids morphism to the pair groupoid of its object set, given by \(\h{\grt,\grs}\colon\grG\to\Pair\h{M}\).
+
+		If we additionally have a submersion \(\mu\colon M\to N\), we can define the \df{submersion groupoid} as fibre product \(M\fp{\mu}{\mu}M\):
+		\[
+		\begin{tikzcd}
+			{M\fp{\mu}{\mu}M} \\
+			M
+			\arrow["{\pr_1}"', shift right, from=1-1, to=2-1]
+			\arrow["{\pr_2}", shift left, from=1-1, to=2-1]
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }y\gto[\h{x,y}]x\mbox{ if }\mu\h{y} = \mu\h{x}}
+		\]
+		It is not hard to see that this is a Lie subgroupoid of the pair groupoid. In particular, if \(\mu = \id_M\), then \(M\fp{\mu}{\mu}M = M\) and we will call it the \df{identity groupoid}.
+	\end{example}
+	\begin{example}\label{ex: action groupoid}
+		If \(G\) is a Lie group with a left action on \(M\), denoted by \(\alpha\colon G\times M\to M\), then define \(G\ltimes M\), called the \df{action groupoid}:
+		\[\begin{tikzcd}
+			{G\times M}\arrows{d}{\alpha}{\pr_1}\\
+			M
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }gx\gto[\h{g,x}]x}
+		\]
+		where the structure maps are as follows:
+		\[
+		\grs\h{g,m} = m,\quad \grt\h{g,m} = gm,\quad \gr\h{\h{g,m},\h{h,n}} = \h{gh,n}.
+		\]
+		This groupoid encapsulates various properties of the action. Specifically, the action is free, transitive, or proper if and only if \(\h{\grt,\grs}\) is injective, surjective, or proper, respectively. Furthermore, the isotropy groups of the action groupoid correspond precisely to the stabilisers of the action, while its orbits are exactly the orbits of the action.
+
+		Remark that for right actions a similar construction exists, which we denote by \(M\rtimes G\).
+	\end{example}
+	\begin{example}\label{ex: gauge groupoid}
+		Let \(\pi\colon P\to M\) be a principal \(G\)-bundle, then consider the diagonal action \(G\) on \(P\times P\), explicitly given by \(\h{p,q}g = \h{pg,qg}\). As the action on \(P\) is free and proper, so is this action. The quotient of the product by the diagonal action is then a well-defined manifold, and \(\overline{\pi}\colon P\times P\to \h{P\times P}/G\) is a \(G\)-invariant surjective submersion. Remark that \(\pi\circ\pr_1\) and \(\pi\circ\pr_2\) are constant on the fibres of \(\overline{\pi}\) and thus they descend to the quotient, denoted by \(\overline{\grt}\) and \(\overline{\grs}\) respectively. Moreover, as they are surjective submersions, so is the map on the quotient. We then obtain the \df{Gauge groupoid}, denoted by \(\Gauge_G\h{P}\):
+		\[\begin{tikzcd}
+			\h{P\times P}/G\arrows{d}{\overline{\grt}}{\overline{\grs}}\\
+			M
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }\pi\h{p}\gto[\ha{p,q}]\pi\h{q}},
+		\]
+		The source and target are explicitly given by \(\overline{\grs}\ha{p,q} = \pi\h{q}\) and \(\overline{\grt}\ha{p,q} = \pi\h{p}\). For the multiplication, we remark that a principal \(G\)-bundle comes with a diffeomorphism:
+		\[
+			P\times G\to P\times P\colon \h{p,g}\mapsto \h{p,pg},
+		\]
+		whose inverse is written as
+		\[
+			P\fp{\pi}{\pi}P\to P\times G\colon \h{p,q}\mapsto \h{p,\ha{p:q}}.
+		\]
+		Where \(\ha{p:q}\in G\) is the unique element such that \(\ha{p\colon q}q = p\). Hence, if \(\h{\ha{p,q},\ha{p',q'}}\in\Gauge_G\h{P}^{\h{2}}\), then \(p' = \ha{p'\colon q}q\) and therefore we can define the multiplication as:
+		\[
+		\grm\colon \Gauge_G\h{P}^{\h{2}}\to\Gauge_G\h{P}\colon
+		\h{\ha{p,q},\ha{p',q'}}\to \ha{\ha{p'\colon q}p,q'}.
+		\]
+		It is an easy check that this is indeed independent of the choice of representative.
+
+		An important property of gauge groupoids is that they are transitive, and they classify all transitive groupoids up to isomorphism.
+	\end{example}
+	\begin{example}\label{ex: opposite}
+		Let \(\grG\) be a Lie groupoid, we define \(\grG^{\operatorname{op}}\) for the groupoid whose objects are given by \(\grG_0\) and arrows by \(\grG\). The structure maps are given by:
+		\[
+			\grs_{\operatorname{op}}\h{g} = \grt\h{g},\quad \grt_{\operatorname{op}}\h{g} = \grs\h{g},
+		\]\[
+			\grm_{\operatorname{op}}\colon \grG\fp{\grs_{\operatorname{op}}}{\grt_{\operatorname{op}}}\grG = \grG\fp{\grt}{\grs}\grG\to\grG\colon \h{h,g}\mapsto \grm\h{g,h},\quad \gru_{\operatorname{op}} = \gru,\quad \gri_{\operatorname{op}} = \gri.
+		\]
+		Heuristically, this corresponds to reversing all the arrows in de groupoid; therefore, it is called the \df{opposite groupoid} of \(\grG\). Notice that \(\gri\colon\grG\to\grG^{\operatorname{op}}\) defines a Lie groupoid isomorphism.
+	\end{example}
+	\begin{example}\label{ex: function groupoid}
+		Take a Lie groupoid \(\grG\) and a manifold \(M\), then \(C^\infty\h{M,\grG}\) is a groupoid over \(C^\infty\h{M,\grG_0}\), where the structure maps are pointwise,\ i.e.\ for \(F,G\in C^\infty\h{M,\grG}\):
+		\[
+		\h{\grs\h{F}}\h{x} = \grs\h{F\h{x}},\quad \h{\grt\h{F}}\h{x} =
+		\grt\h{F\h{x}},\quad \grm\h{F,G}\h{x} = F\h{x}G\h{x}.
+		\]
+		Similarly, the unit and the inversion are pointwise. Notice that we can identify the composable arrows of \(\h{C^\infty\h{M,\grG}}\) with \(C^\infty\h{M,\grG^{\h{2}}}\). This identification is given by sending a pair \(\h{F,G}\in \h{C^\infty\h{M,\grG}}^{\h{2}}\) to the map \(\h{F,G}\colon M\to \grG\times\grG\colon x\mapsto \h{F\h{x},G\h{x}}\). Notice that
+		\[
+			\grs\h{F\h{x}} = \h{\grs\h{F}}\h{x} = \h{\grt\h{G}}\h{x} = \grt\h{G\h{x}},
+		\]
+		such that \(\im\h{F,G}\subset\grG^{\h{2}}\).
+
+		Given \(\phi\colon \grG\to \grH\) a Lie groupoid morphism, we obtain an induced groupoid morphism, called the pushforward, given by:
+		\[
+		\phi_*\colon C^\infty\h{M,\grG}\to C^\infty\h{M,\grH}\colon F\mapsto
+		\phi\circ F.
+		\]
+		Dually, if we start with a map \(f\colon M\to N\), then we obtain the pullback:
+		\[
+		f^*\colon C^\infty\h{M,\grG}\to C^\infty\h{N,\grG}\colon F\mapsto F\circ f.
+		\]
+		This also defines a groupoid morphism.
+	\end{example}
+	\begin{example}\label{ex: product groupoids}
+		Let \(\grG\) and \(\grH\) be Lie groupoids, then \(\grG\times\grH\) has the structure of a Lie groupoid over \(\grG_0\times\grH_0\) with the component-wise structure maps. This groupoid is called the \df{product groupoid}.
+
+		The product of two groupoids comes with the usual universal property of products and thus also with canonical projection maps \(\pi_{\grG}\colon \grG\times\grH\to\grG\colon \h{g,h}\mapsto g\) and \(\pi_{\grH}\colon \grG\times\grH\to\grH\colon \h{g,h}\mapsto h\), which are Lie groupoid morphism. Moreover, for any choice \(x\in\grH_0\) we get a Lie groupoid morphism which is the inclusion at \(x\), defined by \(\iota_x\colon \grG\to\grG\times\grH\colon g\mapsto\h{g,1_x}\). A similar inclusion exists for \(x\in\grG_0\).
+	\end{example}
+	One useful application of the product groupoid is that it measures whether a smooth map is a Lie groupoid morphism in the following sense.
+	\begin{lemma}\label{lem: map is groupoid iff graph is groupoid}
+		For Lie groupoids \(\grG\) and \(\grH\) and a smooth map \(\phi\colon \grG\to\grH\), the following are equivalent:
+		\begin{enumerate}
+			\item \(\phi\) is a Lie groupoid morphism,
+			\item \(\gr\h{\phi}\rr\gr\h{\phi_0}\) is a Lie subgroupoid of \(\grG\times\grH\).
+		\end{enumerate}
+	\end{lemma}
+	\begin{proof}
+		Let \(\grG\) and \(\grH\) be Lie groupoids, and suppose that \(\phi\colon\grG\to\grH\) is a map between them.
+
+		i)\(\implies\)ii):
+		Suppose \(\phi\) is a Lie groupoid morphism. As it is a smooth map, its graph is a closed embedded submanifold of \(\grG\times\grH\). Moreover, if \(\h{\h{g,\phi\h{g}},\h{h,\phi\h{h}}}\in\h{\grG\times\grH}^{\h{2}}\), then
+		\[
+			\h{g,\phi\h{g}}\h{h,\phi\h{h}} = \h{gh,\phi\h{g}\phi\h{h}} =
+			\h{gh,\phi\h{gh}}\in\gr\phi,
+		\]
+		and
+		\[
+			\h{g,\phi\h{g}}^{-1} = \h{g^{-1},\phi\h{g}^{-1}} = \h{g^{-1},\phi\h{g^{-1}}}\in\gr\phi.
+		\]
+		This implies that it is closed under multiplication and inversion. Additionally, if \(\h{x,\phi_0\h{x}}\in\gr\h{\phi_0}\), then the unit satisfies \(\h{1_x,1_{\phi_0\h{x}}} = \h{1_x,\phi\h{1_x}}\in\gr\h{\phi}\). Moreover, we can check that \(\grs\) and \(\grt\) map into \(\gr\h{\phi_0}\).  We conclude that \(\gr\h{\phi}\rr\gr\h{\phi_0}\) is a subgroupoid of \(\grG\times\grH\).
+
+		Next, we remark that if \(\h{u,v}\in T_{\h{x,y}}\gr\phi_0\), then \(v = T\phi_0\h{u}\) and we can find a path \(\gamma\colon\h{-\epsilon,\epsilon}\to\grG_0\) such that \(\dot{\gamma}\h{0} = u\). Additionally, suppose that \(\h{g,h}\in\gr\phi\) such that \(\grs\h{g,h} = \h{x,y}\), we can then pick a section \(\sigma\colon U\subset \grG_0\to \grG\) of \(\grs\) such that \(\sigma\h{x} = g\). Set \(\tilde{\gamma}\h{t} = \sigma\h{\gamma\h{t}}\), then it follows that \(T\grs\h{\dot{\tilde{\gamma}}\h{0}} = u\) and \(T\grs\h{T\psi\h{\dot{\tilde{\gamma}}\h{0}}} = T\psi_0\h{T\grs\h{\dot{\tilde{\gamma}}\h{0}}} = T\psi_0\h{u} = v\). Therefore, \(\grs\) is a submersion and \(\gr\phi\) is a Lie subgroupoid of \(\grG\times\grH\).
+
+		ii)\(\implies\)i)
+		Suppose that \(\gr\phi\) is a Lie subgroupoid, then for any \(g,h\in\grG\) we remark that
+		\[
+		\h{gh,\phi\h{g}\phi\h{h}} = \h{g,\phi\h{g}}\h{h,\phi\h{h}}\in\gr\phi
+		\]
+		This implies that \(\phi\h{gh} = \phi\h{g}\phi\h{h}\) and thus \(\phi\) is a Lie groupoid morphism.
+	\end{proof}
+	\begin{example}\label{ex: disjoint union}
+		Let \(\grG\) and \(\grH\) be two Lie groupoids such that \(\dim\grG = \dim\grH\) and \(\dim\grG_0 = \dim\grH_0\). Define \(\grG\coprod\grH\) as the Lie groupoid over \(\grG_0\coprod\grH_0\) where the structure maps are induced by the disjoint union.
+	\end{example}
+	\begin{example}\label{ex: tangent groupoid}
+		Let \(\grG\) be a Lie groupoid, then \(T\grG\) defines a Lie groupoid over \(T\grG_0\) where the structure maps are the tangent maps of the original structure maps. This groupoid is called the \df{tangent groupoid}\index{Tangent groupoid}
+	\end{example}
+	\subsection{Constructions via clean intersections}
+	Besides some general examples and basic constructions of Lie groupoids and groupoids, we now want to work on some of the more involved constructions using more of the geometrical data. In particular, the main goal of this section is to describe the fibre product and pullback construction of Lie groupoids. However, as we are working in the smooth setting, these will not always exist. To fix this, we will introduce the concept of a clean intersection and show that this is enough to ensure the smoothness of the structure maps and the submersiveness of the source and target. A great summary of the application of these results for Lie groupoids can be found in \cite[Section 4.9]{Meinrenken2017}, but the core results, that on fibred products, stem from \cite{Bursztyn2016}.
+
+	Before discussing the geometrical situation, we go over the constructions for set-theoretical groupoids. As groupoids are algebraic objects, the category \(\grpd\) is rather well-behaved, in the sense that it is closed under many constructions.
+	\begin{example}\label{ex: image}
+		Let \(\phi\colon\grG\to\grH\) be a groupoid morphism which covers an injective map; then \(\im\phi\) defines a groupoid. Remark that if \(\phi\) does not cover an injective map, then this may not be the case, as \(\im\phi\) might not be closed under multiplication. For example, we can consider the groupoid \(I = \hv{1_x,1_y,g,g^{-1}}\) over \(x,y\) where \(y\gto x\). Then, consider the map \(\phi\colon I\to\bbZ\) which maps \(\phi\h{g} = 1\) and \(\phi\h{g^{-1}} = -1\). This defines a Lie groupoid morphism whose image is \(\hv{0,\pm 1}'\), which is not a subgroup of \(\bbZ\).
+	\end{example}
+	\begin{example}\label{ex: intersection groupoid}
+		Let \(\grH,\grH'\subset\grG\) be subgroupoids, then \(\grH\cap\grH'\rr \grH_0\cap\grH'_0\) is a subgroupoid of \(\grG\).
+	\end{example}
+	\begin{example}\label{ex: inverse image groupoid}
+		Let \(\grG\) and \(\grH\) be groupoids, \(\phi\colon \grG\to\grH\) a groupoid morphism, and take some subgroupoid \(\grH'\subset\grH\). The inverse image \(\phi^{-1}\h{\grH'}\) defines a subgroupoid of \(\grG\). In particular, the \df{kernel}\index{Kernel!of a groupoid morphism} of a groupoid morphism is defined as \(\ker\phi = \phi^{-1}\h{\gru\h{\grH_0}}\).
+	\end{example}
+	\begin{example}\label{ex: pullback groupoid}
+		For a groupoid \(\grG\) and a function \(f\colon X\to\grG_0\) we define the \df{pullback groupoid}\index{Pullback! of groupoids}, denoted \(f^!\grG\) as the groupoid:
+		\[\begin{tikzcd}
+			X\fp{f}{\grt}\grG\fp{\grs}{f}X\arrows{d}{\pr_1}{\pr_2}\\
+			X
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }y\gto[\h{y,g,x}]x\mbox{ where }\grt\h{g} = f\h{y},\quad \grs\h{g} = f\h{x}}
+		\]
+		Hence, the source and target maps are the projections. Meanwhile, the multiplication is simply the multiplication of the arrows, while adjoining the correct source and target:
+		\[
+		\h{z,g,y}\h{y,h,x} = \h{z,gh,x}
+		\]
+		The units are given by \(1_x = \h{x,1_{f\h{x}},x}\) and the inversion becomes \(\h{y,g,x}^{-1} = \h{x,g^{-1},y}\). The pullback groupoid lets us make a base change to a different object set.
+	\end{example}
+	\begin{example}\label{ex: fibred product groupoid}
+		If \(\phi\colon \grG\to\grK\) and \(\psi\colon \grH\to\grK\) are groupoid morphisms, then we can define the \df{fibred product groupoid}\index{Fibred product groupoid}, denoted by \(\grG\fp{\phi}{\psi}\grH\) as
+		\[\begin{tikzcd}
+			\grG\fp{\phi}{\psi}\grH\arrows{d}{\grt\times\grt}{\grs\times\grs}\\
+			\grG_0\fp{\phi_0}{\psi_0}\grH_0
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }\h{y,n}\gto[\h{g,h}]\h{x,m}\mbox{ where }y\gto x,\
+			n\gto[h]m}
+		\]
+		Here, the structure maps are induced by the inclusion \(\grG\fp{\phi}{\psi}\grH\subset\grG\times\grH\), such that it becomes a subgroupoid.
+
+		We can remark that the fibred product is a generalisation of all three previous constructions:
+		\begin{itemize}
+			\item
+			Let \(\grH,\grH'\subset\grG\) be subgroupoids and denote \(\iota\colon\grH\to\grG\) and \(\iota'\colon\grH'\to\grG\) be their inclusions, then \(\grH\cap\grH'\cong \grH\fp{\iota}{\iota'}\grH'\).
+			\item
+			Let \(\grG\) and \(\grH\) be groupoids, \(\phi\colon \grG\to\grH\) a groupoid morphism, and take some subgroupoid \(\grH'\subset\grH\). The inverse of \(\grH'\) under \(\phi\) is isomorphic to \(\grG\fp{\phi}{\iota}\grH'\) as groupoids, where \(\iota\colon\grH'\to\grH\) is the inclusion.
+			\item
+			Let \(\grG\) be a groupoid and \(f\colon X\to\grG_0\) a function, then the pullback groupoid along \(f\) is isomorphic to \(\h{X\times X}\fp{f\times f}{\h{\grt,\grs}}\grG\) as groupoids.
+		\end{itemize}
+		Categorically, fibred products are therefore the only important construction.
+	\end{example}
+	If we directly translate these constructions to Lie groupoids, we run into the problem that the obtained spaces may not carry a smooth structure any longer. Many examples of this can be found by considering the identity manifolds and remark that the category of manifolds is not closed under taking inverse images, intersections and fibred products. We argue that solving these differential obstructions allows us to perform these constructions in the category of Lie groupoids, without having to solve the submersiveness of the source and target. The ``correct'' notion to fix these obstructions is that of clean intersections, which are a generalisation of transversality of maps and are often neater to work with.
+	\begin{definition}\label{dfn: clean intersection}
+		Let \(M\) be a manifold.
+		\begin{itemize}
+			\item Two embedded submanifolds \(S_1,S_2\subset M\) are said to \df{intersect cleanly} if \(S_1\cap S_2\) is an embedded submanifold and \(T\h{S_1\cap S_2} = TS_1\cap TS_2\).
+			\item A map \(f\colon N\to M\) and an embedded submanifold \(S\subset M\) \df{intersect cleanly} if \(f^{-1}\h{S}\subset N\) is embedded and \(\h{T_xf}^{-1}\h{T_{f\h{x}}S} = T_xf^{-1}\h{S}\) for all \(x\in f^{-1}\h{S}\).
+			\item Two smooth maps \(f_i\colon N_i\to M\) \df{intersect cleanly} if \(f_1\times f_2\colon N_1\times N_2\to M\times M\) intersects cleanly with \(\Delta\subset M\times M\).
+		\end{itemize}
+	\end{definition}
+	\begin{proposition}
+		If \(f_i\colon N_i\to M\) for \(i = 1,2\) have clean intersection, then their fibre product, \(N_1\fp{f_1}{f_2}N_2\), is a an embedded manifold of \(N_1\times N_2\) such that
+		\[
+			T\h{N_1\fp{f_1}{f_2}N_2} = TN_1\fp{Tf_1}{Tf_2}TN_2.
+		\]
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(f_i\colon N_i\to M\) for \(i = 1,2\) have clean intersection,then remark that
+		\[
+		N_1\fp{f_1}{f_2}N_2 = \h{f_1\times f_2}^{-1}\h{\Delta}.
+		\]
+		It then follows from the definition that it is embedded with the appropriate tangent bundle.
+	\end{proof}
+	While categorically, the fibred product is the most important construction, in the geometrical case, we will translate all the constructions to intersections instead. Hence, we first show that the intersections of cleanly intersecting Lie subgroupoids are Lie subgroupoids.
+	\begin{theorem}\label{thm: clean intersection of subgroupoids}
+		Let \(\grG\) be a Lie groupoid and \(\grH,\grH'\subset\grG\) embedded Lie subgroupoids which intersect cleanly, then \(\grH\cap\grH'\) is a Lie subgroupoid.
+	\end{theorem}
+	\begin{proof}
+		Let \(\grG\) be a Lie groupoid, and let \(\grH, \grH' \subset \grG\) be embedded Lie subgroupoids that intersect cleanly. In particular, their intersection as manifolds \(\grK = \grH \cap \grH'\) is an embedded submanifold of \(\grG\). This implies that the map \(\gru_{\grG} \circ \grs_{\grG} \colon \grG \to \grG\), when restricted to \(\grK\), remains smooth. The image of this restriction is exactly the image of the intersection of the object sets \(\grK_0 = \grH_0 \cap \grH'_0\) under \(\gru_{\grG}\), and hence by Lemma~\ref{lem: idempotent smooth map}, the unit inclusion is an embedding. It follows that all structure maps of the groupoid, except for the multiplication, restrict to smooth maps on \(\grK\). The remaining task is to verify that the source and target maps restrict to submersions, which would then imply the smoothness of the multiplication.
+
+		We restrict our focus to the source map, as this will automatically imply that the target map is a submersion. From Lemma~\ref{lem: idempotent smooth map}, there exists a neighbourhood \(U\) of \(\gru_{\grK}(\grK_0)\) in \(\grK\) such that \(\gru_{\grK} \circ \grs_{\grK}|_U\) is a submersion. Since \(\gru_{\grK}\) is an embedding, it follows that \(\grs_{\grK}|_U\) is a submersion as well. To extend this to all of \(\grK\), we use the right translation in \(\grG\), which induces an isomorphism of tangent spaces:
+		\[
+		T_g r_{g^{-1}} \colon \ker T_g \grs_{\grG} \to \ker T_{1_{\grt(g)}}
+		\grs_{\grG},
+		\]
+		where we identify the source fiber tangent space \(T_g \grG_{\grs(g)}\) with \(\ker T_g \grs_{\grG}\).
+
+		Since \(\ grH\subset\grG \) is an embedded subgroupoid, it intersects cleanly with the source fibres of \(\grG\). Indeed, for \(x \in \grG_0\), we have \(\grH \cap \grG_x = \grH_x\), which is an embedded submanifold. Moreover, as \(\grs_{\grH} = \grs_{\grG}|_{\grH}\), we have \(T_g \grs_{\grH} = T_g \grs_{\grG} \circ T_g \iota\), where \(\iota \colon \grH \to \grG\) is the inclusion. Since \(\iota\) is an immersion, it follows that at \(g\in\grH\)
+		\[
+		\ker T_g \grs_{\grH} = T_g \grH \cap \ker T_g \grs_{\grG}.
+		\]
+		A similar expression holds for \(\grH'\). Hence, for any \(g \in \grK\), we obtain the following isomorphisms:
+		\begin{align*}
+			T_g r_{g^{-1}} &\colon T_g \grH \cap \ker T_g \grs_{\grG} \to
+			T_{1_{\grt(g)}} \grH \cap \ker T_{1_{\grt(g)}} \grs_{\grG}, \\
+			T_g r_{g^{-1}} &\colon T_g \grH' \cap \ker T_g \grs_{\grG} \to
+			T_{1_{\grt(g)}} \grH' \cap \ker T_{1_{\grt(g)}} \grs_{\grG}.
+		\end{align*}
+
+		Since \(\grH\) and \(\grH'\) intersect cleanly, we can take the intersection of the respective tangent spaces, yielding:
+		\[
+		T_g r_{g^{-1}} \colon T_g \grK \cap \ker T_g \grs_{\grG} \to T_{1_{\grt(g)}} \grK \cap \ker T_{1_{\grt(g)}} \grs.
+		\]
+		Now observe that \(\ker T_g \grs_{\grK} = T_g \grK \cap \ker T_g \grs\), since \(\grs_{\grK} = \grs \circ \iota\). Therefore, this defines an isomorphism between \(\ker T_g \grs_{\grK}\) and \(\ker T_{1_{\grs\h{G}}} \grs_{\grK}\), which we know is minimal. Hence, we conclude that \(\grs\) and \(\grt\) are submersions, such that \(\grK\) is a Lie groupoid.
+	\end{proof}
+	\begin{corollary}\label{cor: inverse image groupoids}
+		Let \(\phi\colon \grG\to\grH\) be a Lie groupoid morphism and \(\grH'\) is a Lie subgroupoid of \(\grH\) such that \(\phi\) intersects cleanly with \(\grH'\), then the inverse image groupoid \(\phi^{-1}\h{\grH'}\) is a Lie subgroupoid of \(\grG\).
+	\end{corollary}
+	\begin{proof}
+		Let \(\phi\colon\grG\to\grH\) and \(\grH'\subset\grH\) be as in the lemma. Remark that the inverse image of \(\grH'\) under \(\phi\) can be rewritten as \(\pr_1\h{\gr\h{\phi}\cap\grG\times\grH'}\). Remark that the restriction of \(\pr_1\) to the graph of \(\phi\) is a Lie groupoid isomorphism. Therefore, if \(\gr\h{\phi}\) and \(\grG\times\grH'\) have a clean intersection, then \(\phi^{-1}\h{\grH'}\) has an induced Lie groupoid structure through this isomorphism.
+
+		Clearly, \(\phi^{-1}\h{\grH'}\) is an embedded submanifold and as \(\pr_1\) is a diffeomorphism it follows that \(\gr\h{\phi}\cap\grG\times\grH'\) is an embedded submanifold. For the tangent condition, we remark the following:
+		\[
+		T_{\h{g,\phi\h{g}}}\h{\gr\phi\cap \grG\times\grH'} = T_g\h{\pr_1^{-1}}T_g\phi^{-1}\h{\grH'} = T_g\h{\pr_1^{-1}}\h{T_g\phi}^{-1}\h{T_{\phi\h{g}}\grH'}.
+		\]
+		Using the fact that \(\pr_1^{-1} = \h{\id,\phi}\), we can remark that the following are equivalent:
+		\begin{align*}
+			v\in\h{T_g\phi}^{-1}\h{T_{\phi\h{g}}\grH'}
+			&\iff T_g\phi\h{v}\in T_{\phi\h{g}}\grH',\\
+			&\iff \h{v,T_g\phi\h{v}}\in T_g\grG\times T_{\phi\h{g}}\grH' = T_{\h{g,\phi\h{g}}}\h{\grG\times\grH'},\\
+			&\iff\h{v,w}\in T_{\h{g,\phi\h{g}}}{\gr\phi}\cap T_{\h{g,\phi\h{g}}}\h{\grG\times\grH'}.
+		\end{align*}
+		Combining these two lines, we conclude that \(T_{\h{g,\phi\h{g}}}\h{\gr\phi\cap\grG\times\grH'} = T_{\h{g,\phi\h{g}}}{\gr\phi}\cap T_{\h{g,\phi\h{g}}}\h{\grG\times\grH'}\) such that the intersection of \(\gr\phi\) and \(\grG\times\grH'\) is clean. From Theorem~\ref{thm: clean intersection of subgroupoids} we can conclude that \(\gr\phi\cap\grG\times\grH'\) is a Lie subgroupoid of \(\grG\times\grH\) and thus \(\phi^{-1}\h{\grH'}\subset\grG\) is as well.
+	\end{proof}
+	\begin{corollary}\label{cor: fibred groupoid}
+		If \(\phi\colon \grG\to\grK\) and \(\psi\colon \grG\to\grK\) are Lie groupoid morphisms such that \(\phi\) and \(\psi\) intersect cleanly, then \(\grG\fp{\phi}{\psi}\grH\) is a Lie subgroupoid of the product groupoid.
+	\end{corollary}
+	\begin{proof}
+		We remark that the fibred product of \(\phi\) and \(\psi\) is the subgroupoid of \(\grG\times\grH\) given by \(\h{\phi,\psi}^{-1}\h{\Delta}\). By the previous corollary, we find that this is a Lie subgroupoid as \(\phi\) and \(\psi\) intersect cleanly.
+	\end{proof}
+	\begin{corollary}\label{cor: pullback groupoid}
+		For a Lie groupoid \(\grG\) and \(f\colon M\to\grG_0\) smooth such that \(f\times f\) and \(\h{\grt,\grs}\) have clean intersection, then \(f^!\grG \colon = \h{M\fp{f}{\grt}\grG\fp{\grs}{f}M\rr M}\) is a Lie groupoid.
+	\end{corollary}
+	\begin{proof}
+		As remarked in Example~\ref{ex: fibred product groupoid}, the pullback groupoid is a special case of a fibred product groupoid. The assumptions made above are exactly such that we can apply the previous corollary.
+	\end{proof}
+
+	\section{Morita equivalences}
+	In the simplest sense, we think of two Lie groupoids being the same if there exists a Lie groupoid isomorphism between them. However, we can also construct a more general notion of equivalence between Lie groupoids, where we do not focus on the internal structure but on the way they act on sets, called Morita equivalence. To introduce this notion, we first have to discuss groupoid actions and bundles, before we can define so-called bibundles.
+
+	\subsection{Groupoid actions}
+		A groupoid can be seen as a generalised symmetry of a system: whereas a group describes symmetries of a single object, a groupoid captures symmetries between multiple objects. For example, \(\operatorname{Gl}\h{E}\) for a vector bundle \(E\) or the groupoid of germs associated to a pseudogroup, see Examples~\ref{ex: general linear groupoids} and \ref{ex: pseudogroup}. internally, a groupoid \(\grG\) acts on its object set \(\grG_0\), by moving along the arrows. A core ingredient in these symmetries, is the fact that some \(g\in\grG\) does not act on all elements of the associated set, but this is mediated by some map: For example, \(A\in \operatorname{Gl}\h{E}\) ``acts'' on \(E_x = \pi^{-1}\h{x}\), where \(x = \grs\h{A}\), but not on the whole of \(E\). Let us generalise this type of symmetry to arbitrary manifolds \(M\).
+		\begin{definition}
+			For a Lie groupoid \(\grG\) and map \(\mu\colon M\to\grG_0\), a \df{(left) action}\index{Groupoid action} of \(\grG\) on \(\mu\) is a smooth map:
+			\[
+			\alpha\colon \grG\fp{\grt}{\mu}M\colon\h{g,x}\mapsto gx
+			\]
+			which satisfies the following:
+			\[
+				\mu\h{gx} = \grt\h{g},\quad h\h{gx} = \h{hg}x,\quad 1_{\mu\h{x}}x = x.
+			\]
+			We denote a left action by \(\grG\acts[\mu]M\), and call \(\h{M,\mu}\) or \(M\) a \df{(left) \(\grG\)-space} and \(\mu\) the \df{moment map}\index{Moment map}.
+
+			Denote \(\scrO_x = \hv{gx\in M\colon g\in\grG_{\mu\h{x}}}\) for the \df{orbit}\index{Orbit!of an action} of \(x\)\footnote{Similar definition exist for subset \(U\subset M\), which we denote by \(\scrO_U\)}, and \(\grG^y_x = \hv{g\in\grG\colon gx = y}\). If \(x = y\), we call \(\grG_x^x\) the \df{stabilizer of \(x\)}\index{Stabilizer of an action}.
+		\end{definition}
+		\begin{remark}
+			A \df{right action} and other associated notions are defined similarly by interchanging the roles of \(\grs\) and \(\grt\) and are denoted by \(M\sact[\mu]\grG\). Yet, when it is clear on which side the groupoid acts, we will simply refer to it by an action.
+		\end{remark}
+		\begin{remark}
+			Notice that there is a \(1\)-\(1\) correspondence between right \(\grG\)-spaces and left \(\grG^{\operatorname{op}}\)-spaces ,where \(\grG^{\operatorname{op}}\) is as in Example~\ref{ex: opposite}.
+		\end{remark}
+		We already saw that a Lie group action can be encapsulated in an action groupoid. A similar construction can be done for groupoid action as follows: Let \(\grG\acts[\mu]M\) be a \(\grG\)-space, and define the following groupoid:
+		\[\begin{tikzcd}
+			\grG\fp{\grs}{\mu}M\arrows{d}{\alpha}{\id}\\
+			M
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }gx\gto[\h{g,x}]x\mbox{ where }\grs\h{g} = \mu\h{x}}
+		\]
+		where the structure maps are defined similarly to Example~\ref{ex: action groupoid}. This is called the \df{action groupoid}\index{Action groupoid} and is denoted by \(\grG\ltimes_{\mu}M\). Remark that a similar construction exists for right actions, which we will denote by \(M{}_{\mu}\rtimes\grG\). The properties of groupoid actions are then defined through this action groupoid, inspired by the way action groupoids encapsulate a Lie group action.
+		\begin{definition}
+			Let \(\h{M,\mu}\) be a \(\grG\)-space, and \(\h{\grt,\grs}\colon \grG\ltimes_{\mu}M\to M\) the source and target map of the associated action groupoid. The action is called \df{free}, \df{transitive}, or \df{proper} if \(\h{\grt,\grs}\) is injective, surjective or proper, respectively.
+		\end{definition}
+		\begin{example}
+			Let \(\grG\) be a Lie groupoid, then \(\grG\) acts on \(\grG_0\) over \(\id\) as
+			\[
+				\grG\fp{\grs}{\id}\grG_0\to \grG_0\colon \h{g,x}\mapsto \grt\h{g}.
+			\]
+			In particular, a Lie group acts on its object space, which is a singleton.
+
+			Notice that the orbits of this action are exactly the orbits of the groupoid, as described after Corollary~\ref{cor: orbit}. The stabilisers of this action coincide with the isotropy groups of the Lie groupoid.
+
+			There is also a right action of \(\grG\) on \(\grG_0\) over \(\id\) where we map to the source of \(g\), but remark that these give the exact same orbits and stabilisers.
+		\end{example}
+		\begin{example}\label{ex: trivial action}
+			A Lie groupoid \(\grG\) acts on itself from both the left (over \(\grt\)) and right (over \(\grs\)) by left or right multiplication, respectively. The associated action groupoids are isomorphic to submersion groupoids via the following isomorphisms:
+			\begin{align*}
+				\grG\ltimes_{\grt}\grG\to \grG\fp{\grs}{\grs}\grG\colon \h{g,h}\mapsto \h{gh,h},\\
+				\grG{}_{\grs}\rtimes\grG\to \grG\fp{\grt}{\grt}\grG\colon \h{g,h}\mapsto \h{g,gh}.
+			\end{align*}
+			From these isomorphisms, we can deduce that these actions are free and proper. Additionally, the action is transitive if and only if the object set is a singleton, i.e.\ \(\grG\) is a Lie group.
+		\end{example}
+
+		To extend our theory of \(\grG\)-spaces, we also need a notion of a map with respect to the \(\grG\)-space structure, which we can do either invariantly or equivariantly, depending on the context. These definitions are again similar to that of \(G\)-spaces, for a group \(G\).
+		\begin{definition}
+			Let \(\h{M,\mu}\) be a \(\grG\)-space and \(N\) a manifold, a smooth map \(f\colon M\to N\) is \df{\(\grG\)-invariant}\index{\(\grG\)-invariant map} if for all \(\h{g,x}\in \grG\fp{\grs}{\mu}M\) it satisfies \(f\h{gx} = f\h{x}\).
+		\end{definition}
+		Besides a good notion of an invariant map, we can also consider an invariant notion of a subset of a \(\grG\)-space.
+		\begin{definition}
+			Let \(\h{M,\mu}\) be a \(\grG\)-space, an embedded submanifold \(X\subset M\) is called \df{\(\grG\)-invariant} if for all \(\h{g,x}\in \grG\fp{\grs}{\mu}X\) it satisfies \(gx\in X\).
+		\end{definition}
+		\begin{proposition}
+			Let \(\h{M,\nu}\) be a \(\grG\)-space and \(X\subset M\) is a \(\grG\)-invariant subspace if and only if \(\scrO_x\subset X\) for all \(x\in X\). In particular, the \(\grG\) action over \(\mu\) restricts to \(X\), and \(X\) coincides with its orbit in the \(\grG\) action on \(M\), i.e\ \(X = \scrO_X\).
+		\end{proposition}
+		Lastly, let us give a notion of a map which intertwines two actions, i.e.\ which is equivariant for two actions.
+		\begin{definition}
+			Let \(\h{M,\mu}\) be a \(\grG\)-space and \(\h{N,\nu}\) be a \(\grH\)-space, and \(\phi\colon\grG\to\grH\) a Lie groupoid morphism. A map \(f\colon M\to N\) is a \df{\(\grG\)-\(\grH\)-equivariant map  over \(\phi\)}\index{\(\grG\)-\(\grH\)-equivariant map} if \(f\h{gx} = \phi\h{g}f\h{x}\) for any choice \(\h{g,x}\in \grG\fp{\grs}{\mu}M\). In particular, the following diagram must commute:
+			\[\begin{tikzcd}[sep = huge]
+				M\arrow[r,"f"]\arrow[d,"\mu"']&N\arrow[d,"\nu"]\\
+				\grG_0\arrow[r,"\phi_0"]&\grH_0
+			\end{tikzcd}\]
+		\end{definition}
+		A particular example of an equivariant map is the moment map of a \(\grG\)-space with respect to the canonical action of \(\grG\) on \(\grG_0\).
+
+	\subsection{Quotients by proper free actions}
+	Given a \(\grG\)-space \(\h{M,\mu}\) we obtain an equivalence relation induced by the image of \(\h{\grt,\grs}\) associated to the action groupoid, i.e.\ the image of the map
+	\[
+		\grG\fp{\grs}{\mu}M\to M\times M\h{g,x}\mapsto \h{gx,x}.
+	\]
+	Similar to group actions, we can consider the orbit space of the action, denoted by \(M/\grG\), or for left actions sometimes as \(\grG\backslash M\). This space is exactly the quotient by the induced equivalent relation. However, again, similar to the case of Lie groups, this does not have an induced manifold structure. The geometric structure of the quotient is controlled by the geometry of the induced equivalence relation through Godement's criterion.
+	\begin{proposition}[{\cite[Thm.\ 12.2]{Serre2006}}]\label{prp: godement}
+		Let \(M\) be a manifold and \(R\subset M\times M\) an equivalence relation on \(M\), then the following are equivalent:
+		\begin{enumerate}
+			\item \(R\subset M\times M\) is a properly embedded submanifold and \(\pr_2:R\to M\) is a submersion.
+			\item \(M/R\) is a manifold and \(q:M\to M/R\) is a surjective submersion.
+		\end{enumerate}
+	\end{proposition}
+	\begin{proof}
+		Let \(R\) be an equivalence relation on a manifold \(M\) and let \(q\colon M\to M/R\) denote its quotient map.\\
+
+		i)\(\implies\)ii): Suppose that \(R\) is properly embedded in \(M\times M\) and \(\pr_2:R\to M\) is a submersion. To show that \(M/R\) admits a smooth structure such that \(q\colon M\to M/R\) is a submersion, we will first show that it can be reduced to a local statement by showing it need only hold on an open cover, and then we will construct such an open cover.
+
+		\begin{enumerate}[label = {\arabic*)}]
+			\item
+			Suppose that \(\hv{U_\alpha}_{\alpha\in\Lambda}\) is an open cover of \(M\) by saturated sets, i.e.\ they satisfy \(U_\alpha = q^{-1}\h{q\h{U_\alpha}}\) for each \(\alpha\in\Lambda\), such that the quotient \(U_\alpha/R_\alpha\), where \(R_\alpha = R\cap\h{U_\alpha\times U_\alpha}\) is the restricted equivalence relation, has a manifold structure. Additionally, assume that \(q\colon U_\alpha\to U_\alpha/R_\alpha\) is a surjective submersion.
+
+			As the quotient map is open and \(q\h{U_\alpha} = U_\alpha/R_\alpha\) it follows that \(\hv{U_\alpha/R_\alpha}_{\alpha\in\Lambda}\) defines an open cover of \(M/R\). Due to \(U_\alpha\) and \(U_\beta\) being saturated, their intersection, \(U_{\alpha\beta} = U_\alpha\cap U_\beta\), is as well. Let us denote the induces equivalence relation as \(R_{\alpha\beta} = R\cap\h{U_{\alpha\beta}\times U_{\alpha\beta}}\). It follows that \(U_{\alpha\beta}/R_{\alpha\beta}\subset U_\alpha/R_\alpha\cap U_\beta/R_\beta\), as \(U_{\alpha\beta}\) being saturated implies that any orbit of an element in the relation \(R\) is completely contained in \(U_{\alpha\beta}\).
+
+			By assumption \(U_\alpha/R_\alpha\) and \(U_\beta/R_\beta\) carry a manifold structure, and as \(U_{\alpha\beta}/R_{\alpha\beta}\) is open it inherits one from both, in both of which the quotient map \(q\colon U_{\alpha\beta}\to U_{\alpha\beta}/R_{\alpha\beta}\) is a surjective submersion as it is simply the restriction to open subsets. However, this implies that the induced smooth structures are diffeomorphic and thus the transition maps between the smooth structures of \(U_\alpha/R_\alpha\) and \(U_\beta/R_\beta\) are smooth. This implies that they glue together to a smooth structure on \(M/R\) as well.
+
+			\item\label{prt: reduction to non sat}
+			Next, we will show that we can drop the assumption of the cover being by saturated sets. Suppose that \(U\subset M\) is open, such that \(U/R_U\), where \(R_U = R\cap\h{U\times U}\), is a manifold and \(q\colon U\to U/R_U\) is a surjective submersion. We will show that this translates to its saturations, given by \(\operatorname{Sat}\h{U} = q^{-1}\h{q\h{U}}\) or \(\operatorname{Sat}\h{U} = \pr_2\h{R\cap\h{U\times M}}\). Firstly, we remark that it will still be open as \(q\) is a continuous open map.
+
+			Secondly, we need to show that \(\operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\) admits a manifold structure for which the quotient map, i.e.\ \(q\colon \operatorname{Sat}\h{U}\to \operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\), is a surjective submersion. Remark that we have the following canonically induced map:
+			\[
+				\alpha\colon U/R_U\to\operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\colon\ha{x}_{R_U}\mapsto \ha{x}_{R_{\operatorname{Sat}\h{U}}}.
+			\]
+			For the well-definedness, see that \(R_U\subset R_{\operatorname{Sat}\h{U}}\). Additionally, it is surjective as for any \(\ha{y}_{R_{\operatorname{Sat}\h{U}}}\) there exists an \(x\in U\) such that \(q\h{y} = q\h{x}\), i.e.\ \(\alpha\h{\ha{x}_{R_U}} = \ha{x}_{R_{\operatorname{Sat}\h{U}}} = \ha{y}_{R_{\operatorname{Sat}\h{U}}}\). Lastly, injectivity follows as for any \(\ha{x}_{R_{\operatorname{Sat}\h{U}}} = \ha{y}_{R_{\operatorname{Sat}\h{U}}}\) with \(x,y\in U\), then
+			\[
+				\h{x,y}\in R_{\operatorname{Sat}\h{U}}\cap \h{U\times U} = R\cap \h{\operatorname{Sat}\h{U}\times\operatorname{Sat}\h{U}}\cap \h{U\times U} = R\cap \h{U\times U} = R_U.
+			\]
+			We can conclude that \(\ha{x}_{R_U} = \ha{y}_{R_U}\), such that \(\alpha\) is injective as well.
+
+			We now consider the following commutative diagram
+			\[\begin{tikzcd}[column sep = tiny]
+				&R\cap \h{U\times \operatorname{Sat}\h{U}}\arrow[ld,"\pr_1", swap]\arrow[rd,"\pr_2"]&\\
+				U\arrow[d,"q", swap]&&\operatorname{Sat}\h{U}\arrow[d,"q"]\\
+				U/R_U\arrow[rr,"\alpha"]&&\operatorname{Sat}\h{U}/R_{\operatorname{U}}
+			\end{tikzcd}\]
+			As \(q\circ\pr_1\) is a surjective submersion and \(\pr_2\) is surjective, it follows that \(\alpha^{-1}\circ q\) is a surjective submersion. The restriction \(\alpha^{-1}\circ q|_U\) is still a submersion as \(U\) is open. We can then define a manifold structure on \(\operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\) such that \(\alpha\) is a diffeomorphism and by composing, we see that the quotient map \(q:\operatorname{Sat}\h{U}\to\operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\) is also a submersion and thus \(\operatorname{Sat}\h{U}/R_{\operatorname{Sat}\h{U}}\) is a quotient manifold.
+
+			We can conclude that, given a cover \(\hv{U_\alpha}_{\alpha\in\Lambda}\) of \(M\) where \(U_\alpha/R_\alpha\) is a manifold and \(q\colon U_\alpha\to U_\alpha/R_\alpha\) is a submersion for each \(\alpha\in\Lambda\), their saturations \(\hv{\operatorname{Sat}\h{U}_\alpha}_{\alpha\in\Lambda}\) satisfies these properties as well.
+
+			\item\label{prt: construct open}
+			The last step then needs to construct a cover of such opens. For some \(x_0\in M\), define the following set
+			\[
+			N = \hv{v\in T_{x_0}M|\ \h{v,0}\in T_{\h{x_0,x_0}}R},\quad \mbox{with }T_{\h{x_0,x_0}}R\subset T_{\h{x_0,x_0}}\h{M\times M} = T_{x_0}M\oplus T_{x_0}M.
+			\]
+			Pick some embedded submanifold \(W'\subset M\) which complements \(N\), i.e.\ \(T_{x_0}W' \oplus N = T_{x_0}M\), and we set \(\Sigma = R\cap\h{W'\times M}\), and we claim the following:
+			\begin{enumerate}[label = {\alph*)}]
+				\item \(\Sigma\subset R\) is an embedded submanifold;
+				\item \(\pr_2\colon\Sigma\to M\) is a local diffeomorphism at \(\h{x_0,x_0}\).
+			\end{enumerate}
+			Let us prove these statements.
+			\begin{enumerate}[label = {\alph*)}]
+				\item
+				We remark that \(\Sigma\) is recovered from \(W'\) as \(\Sigma = \pr_1^{-1}\h{W'}\), where \(\pr_1\colon R\to M\) is a submersion as \(\pr_2\) is, this implies that \(\Sigma\) is an embedded submanifold.
+				\item
+				To show that \(\pr_2\colon\Sigma\to M\) is a local diffeomorphism at \(\h{x_0,x_0}\), we need to show that its differential at this point is an isomorphism.
+
+				For injectivity, we remark that a tangent vector in factors as
+				\[
+				\h{v_1,v_2}\in T_{\h{x_0,x_0}}\Sigma \subset T_{\h{x_0,x_0}}R\cap\h{T_{x_0}W'\oplus T_{x_0}M}.
+				\]
+				Thus, if \(\h{v_1,v_2}\in \ker T_{\h{x_0,x_0}}\pr_2\) it follows that \(v_1\in T_{x_0}W'\), but \(0 = T_{\h{x_0,x_0}}\pr_2\h{v_1,v_2} = v_2\), such that \(v_1\in N\) as well. As \(T_{x_0}W'\cap N = \hv{0}\), it follows that \(\ker T_{\h{x_0,x_0}}\pr_2\) is trivial and thus it is injective.
+
+				For surjectivity, if \(u\in T_{x_0}M\) we can find some \(v\in T_{x_0}M\) such that \(\h{v,u}\in T_{\h{x_0,x_0}}R\). As \(T_{x_0}W'\oplus N\), we can find \(v_1\in T_{x_0}W'\) and \(v_2\in N\) such that \(v = v_1 + v_2\). However, as \(\h{v_2,0}\in T_{\h{x_0,x_0}}R\) it follows that \(\h{v_1,u}\in T_{\h{x_0,x_0}}R\) as well. This elements maps to \(u\) under \(T_{\h{x_0,x_0}}\pr_2\) and thus \(\pr_2\) has surjective differential at \(\h{x_0,x_0}\).
+
+				We can conclude that \(\pr_2\colon\Sigma\to M\) is a local diffeomorphism at \(\h{x_0,x_0}\).
+			\end{enumerate}
+
+			From these two properties of \(\Sigma\), we can conclude that there exist open neighbourhoods \(U_1\subset W'\times M\) of \(\h{x_0,x_0}\) and \(U_2\subset M\) of \(x_0\) such that \(\pr_2\colon \Sigma\cap U_1\to U_2\) is a diffeomorphism. We can then find some smooth map \(r\colon U_2\to \pr_1\h{U_1}\) such that \(\h{r\h{x},x}\in \Sigma\cap U_1\). We remark that on \(W'\cap U_2\) this map takes the form \(r\h{x} = x\) as \(\pr_2\h{x,x} = x = \pr_2\h{r\h{x},x}\). We now define the following sets
+			\[
+			U = \hv{x\in U_2|\ r\h{x}\in W'} = r^{-1}\h{W'\cap U_2}\quad\mbox{and}\quad W = U\cap W'
+			\]
+			These then define open subsets of \(W'\) which therefore automatically carry a manifold structure. Additionally, we remark that \(r\h{U}\subset W\) as \(r\h{r\h{x}} = r\h{x}\) due to \(r|_{W'\cap U_2} = \id\), and for all \(x\in U\) the element \(r\h{x}\in W\) is the only one equivalent to \(x\) as \(\pr_2\) is injective on this set. In particular, this implies that there exists a bijection \(\phi\colon U/R_U\to W\) which makes the following diagram commute:
+			\[\begin{tikzcd}[column sep = huge]
+				&U\arrow[ld,"q"']\arrow[rd,"r"]&\\
+				U/R_U\arrow[rr,"\sim"', "\phi"]&&W
+			\end{tikzcd}\]
+			Through this bijection, we can induce a manifold structure on \(U/R_U\) which is compatible with the assumptions made in part \ref{prt: reduction to non sat} of this proof.
+		\end{enumerate}
+		The construction in step~\ref{prt: construct open} can be done around any point \(M\), and thus this defines a cover of opens which satisfy the conditions of step~\ref{prt: reduction to non sat}. Therefore, \(M/R\) obtains a manifold structure.\\
+
+		ii)\(\implies\)i): Suppose that \(M/R\) is a manifold and \(q:M\to M/R\) is a surjective submersion. Notice that we can obtain \(R\) as the following pullback:
+		\[\begin{tikzcd}[sep = huge]
+			R\arrow[r,"\pr_2"]\arrow[d,"\pr_1"]&M\arrow[d,"q"]\\
+			M\arrow[r,"q"]&M/R
+		\end{tikzcd}\]
+		It follows that \(R\) is a closed embedded manifold as \(q\) is a surjective submersion. Moreover, we can remark that for any \(\h{x,y}\in R\) such that \(z = q\h{x} = q\h{y}\) and we have that
+		\[
+		T_{\h{x,y}}R = T_xM\fp{T_xq}{T_yq}T_yM
+		\]
+		Next, pick some \(v\in T_yM\), and consider \(T_yq\h{v}\in T_{\ha{y}}M/R\). As \(T_xq\colon T_xM\to T_{\ha{x}}M/R = T_{\ha{y}}M/R\) is surjective, we can find some \(u\in T_xM\) such that \(T_xq\h{u} = T_yq\h{v}\). In particular, it follows that \(\h{u,v}\in T_{\h{x,y}}R\) and \(T_{\h{x,y}}\pr_2\h{u,v} = v\), such that it is indeed a surjective submersion.
+	\end{proof}
+	In particular, this has the following corollary.
+	\begin{corollary}\label{cor: quotient}
+		Let \(\grG\) act freely and properly on \(M\) over \(\mu\), then the quotient \(M/\grG\) is a manifold.
+	\end{corollary}
+	\begin{proof}
+		Suppose that \(\grG\) acts propertly and freely over \(\mu\colon M\to\grG_0\), in other words
+		\[
+			\alpha\colon \grG\fp{\grs}{\mu}M\to M\times M\colon\h{g,x}\mapsto \h{gx,x},
+		\]
+		is a proper injective map and an immersion by Proposition~\ref{prp: injective anchor}. This implies that the induced equivalence relation is an embedded submanifold.
+
+		Remark that the second projection \(\pr_2\colon \im\alpha\to M\) is a submersion, as for any \(\h{y,x}\in \im\alpha\) we can find a \(g\in\grG\) such that \(xg = y\). Suppose that \(U\subset M\) is an open neighbourhood of \(x\), such that \(\sigma_1\colon U\to \grG\) local bisection such that \(\sigma_1\h{x} = g^{-1}\). The map \(\sigma\colon U\to M\times M\colon x\mapsto \h{x\sigma_1\h{x}^{-1},x}\) is a section of \(\pr_2\) whose image lies in \(\im\alpha\).
+
+		We can now apply Proposition~\ref{prp: godement}, and we find that the quotient is a manifold.
+	\end{proof}
+	\begin{remark}
+		Given that Corollary~\ref{cor: quotient} holds, we also obtain Proposition~\ref{prp: godement}. Namely, given an equivalence relation \(R\) which is closed embedded in \(M\times M\) such that \(\pr_2\) is a submersion, then it is a Lie subgroupoid of the pair groupoid of \(M\). The quotient of \(M\) by this groupoid is then the quotient by the equivalence relation.
+	\end{remark}
+
+	We finish this section with a last definition, defining principal \(\grG\)-bundles, which are the groupoid equivalent of the classical principal bundles.
+	\begin{definition}
+		Let \(\grG\) be a Lie groupoid. A \df{principal \(\grG\)-bundle} is given by a \(\grG\)-space \(\h{P,\mu}\) with a \(\grG\)-invariant surjective submersion \(\pi\colon P\to M\) such that the map
+		\[
+			\grG\ltimes P\to P\fp{\pi}{\pi}P\colon \h{g,p}\mapsto \h{gp,p}
+		\]
+		is a diffeomorphism.
+	\end{definition}
+	Notice that, just like in the classical case, there is a correspondence between principal \(\grG\)-bundles and free and proper actions of \(\grG\).
+	\begin{proposition}
+		A \(\grG\)-space \(\h{P,\mu}\) with a \(\grG\)-invariant surjective submersion \(\pi\colon P\to M\) is a principal \(\grG\)-bundle if and only if the action is free and proper, and \(\overline{\pi}\colon \grG\backslash P\to M\) is a diffeomorphism.
+	\end{proposition}
+
+	\subsection{Products with \(\grG\)-spaces}\label{sec: product of G-spaces}
+	Given a \(\grG\)-space \(M\) and some manifold \(N\), we obtain a canonical action on \(M\times N\) over \(\mu\circ\pr_1\), where \(\mu\) is the moment map of the \(\grG\) action on \(M\). This action is then defined by
+	\[
+	\h{M\times N}\fp{\mu\circ\pr_1}{\grt}\grG\to M\times N\colon \h{x,y,g}\mapsto \h{xg,y}.
+	\]
+	This induced action acts nicely within the collection of \(\grG\)-spaces.
+	\begin{proposition}\label{prp: action}
+		Let \(\h{M,\mu}\) be a \(\grG\)-space and \(N\) some manifold, and let \(M\times N\) carry the action as above. Then:
+		\begin{enumerate}
+			\item The first projection \(\pr_1\colon M\times N\to M\) is \(\grG\)-equivariant.
+			\item The second projection \(\pr_2\colon M\times N\to N\) is \(\grG\)-invariant.
+			\item If the action on \(M\) is free (resp. proper), then the action on \(M\times N\) is free (resp. proper).
+		\end{enumerate}
+	\end{proposition}
+	\begin{proof}
+		The fact that the induced map defines an action, such that the projections are equivariant and invariant, should be clear. Additionally, if the action on \(M\) is free, then \(g\h{x,y} = \h{x,y}\) if and only if \(gx = x\) if and only if \(g\) is a unit.
+
+		Lastly, suppose that \(\grG\) acts properly on \(M\), we need to show that the following map is proper:
+		\[
+		\alpha_{\times}\colon \h{M\times N}\fp{\mu\circ\pr_1}{\grt}\grG\to M\times
+		N\times M\times N\colon \h{x,y,g}\mapsto \h{xg,y,x,y},
+		\]
+		Let us denote \(\alpha_M\colon M\fp{\mu}{\grt}\grG\to M\times M\colon \h{x,g}\mapsto \h{xg,g}\), which is proper by assumption, and \(\pr_i\) for the projection of \(\h{M\times N}\times \h{M\times N}\) onto the \(i\)-component. Suppose that \(K\subset M\times N\times M\times N\) is compact, and remark that \(K_1 = \pr_1\times\pr_3\h{K}\subset M\times M\) and \(K_2 = \pr_4\h{K}\subset N\) are compact as well. One can readily verify that \(\alpha_\times^{-1}\h{K}\subset \alpha_M^{-1}\h{K_1}\times K_2\), and therefore it is a closed subset of a compact subset, which implies it is compact itself.
+	\end{proof}
+
+
+	We can also take the product of two \(\grG\)-spaces, \(\h{M,\mu}\) and \(\h{N,\nu}\), by taking a sort of diagonal action. However, the naive approach of trying to define an action on \(M\times N\) fails, as there is no canonical moment map on this set such that an \(g\in\grG\) can act on both components of \(M\times N\). To solve this, we instead consider their fibred \(M\fp{\mu}{\nu}N\), which has a canonically induced map \(\mu\times\nu = \mu\circ\pr_1 = \nu\circ\pr_2\colon M\fp{\mu}{\nu}N\to\grG_0\).
+	\begin{proposition}\label{prp: diagonal action}
+		Let \(\h{M,\mu}\) and \(\h{N,\nu}\) be a \(\grG\)-space, such that \(\mu\) and \(\nu\) have a clean intersection, then \(M\fp{\mu}{\nu} N\) is a \(\grG\)-space with the action:
+		\[
+			\grG\fp{\grs}{\mu\times\nu}\h{M\fp{\mu}{\nu}N}\to M\fp{\mu}{\nu}N\colon\h{g,x,y} = \h{gx,gy}.
+		\]
+		Moreover, with respect to this action:
+		\begin{enumerate}
+			\item The projections \(\pr_1\colon M\times N\to M\) and \(\pr_2\colon M\times N\to N\) are \(\grG\)-equivariant.
+			\item If the action on \(M\) or \(N\) is free (resp. proper), then the action on \(M\fp{\mu}{\nu}N\) is free (resp. proper).
+		\end{enumerate}
+	\end{proposition}
+	\begin{proof}
+		Here, we need the condition of a clean intersection to make sure that \(M\fp{\mu}{\nu}N\) is an embedded manifold, such that the action is automatically smooth. The rest of this proof is analogous to the proof of Proposition~\ref{prp: action}.
+	\end{proof}
+
+	\subsection{Bibundles}
+	To relate the spaces of actions by different Lie groupoids, we work with bibundles. These are manifold which have an action of two Lie groupoids, which commute. We will see that in certain cases, these let us translate between the spaces of Lie groupoid actions of different Lie groupoids.
+	\begin{definition}
+		For two Lie groupoids \(\grG\) and \(\grH\), a \df{\(\grG\)-\(\grH\) bibundle}\index{Bibundle} is a triple \(\h{P,\mu,\nu}\) such that
+		\begin{itemize}
+			\item \(\grG\acts[\mu]P\) is a left action,
+			\item \(P\sact[\nu]\grH\) is a right action,
+			\item \(\mu\) is \(\grH\)-invariant, and \(\nu\) is \(\grG\)-invariant,
+			\item for some \(\h{g,x,h}\in\grG\fp{\grs}{\mu}P\fp{\nu}{\grt}\grH\) we have \(\h{gx}h = g\h{xh}\).
+		\end{itemize}
+	\end{definition}
+	\begin{example}
+		Let \(M\) be a left \(\grG\)-space, with moment map \(\mu\). Consider the right action of the identity groupoid \(M\rr M\) on \(M\), over \(\id\colon M\to M\). This defines a \(\grG\)-\(M\) bibundle.
+	\end{example}
+	\begin{remark}
+		Notice that the collection of \(\grG-\grH\) bibundles corresponds with \(\grG\times\grH^{\operatorname{op}}\)-spaces. From this correspondence, the notions of orbits and stabilisers immediately translate to bibundles.
+	\end{remark}
+	A bibundle comes with two intrinsic invariant maps, namely \(\mu\) and \(\nu\). By imposing additional conditions on these maps, we obtain a stronger type of bibundle.
+	\begin{definition}
+		If \(\h{P,\mu,\nu}\) is a \(\grG\)-\(\grH\) bibundle we call \(\grG\acts[\mu]P\overset{\nu}{\to}\grH_0\) and \(\grG_0\overset{\mu}{\longleftarrow}P\sact[\nu]\grH\) the \df{left and right underlying bundle}\index{Underlying bundle}, respectively.
+
+		A bibundle is then called \df{left or right principal} if the left or right underlying bundle is principal, respectively. In the case where it is both left and right principal, it is simply called \df{principal}\index{Principal bibundle}.
+	\end{definition}
+
+	\begin{example}
+		A Lie groupoid \(\grG\) is a principal \(\grG\)-\(\grG\) bibundle with left and right multiplication as action. Clearly, this defines a bibundle, and it is free and principal as the left and right multiplication are automatically free and proper, see Example~\ref{ex: trivial action}.
+	\end{example}
+	\begin{notation}
+		Much like actions, we may omit writing the moment maps. Moreover, we will denote the collection of \(\grG\)-\(\grH\) bibundles that are right principal by \(\PBBr\h{\grG,\grH}\), and \(\PBB\h{\grG,\grH}\) denotes the \(\grG\)-\(\grH\) bibundles that are principal.
+	\end{notation}
+	Much like a normal groupoid action, we can capture the geometric behaviour of a bibundle in a groupoid structure as follows: Given a bibundle \(\grG\acts[\mu]P\sact[\nu]\grH\), we can define the action groupoid \(\grG\ltimes P\rtimes\grH\) as
+	\[\begin{tikzcd}
+		\grG\fp{\grs}{\mu}P\fp{\nu}{\grt}\grH\arrows{d}{\grt}{\grs}\\ P
+	\end{tikzcd}
+	\hspace{1cm}
+	\h{\mbox{arrows: }gph\gto[\h{g,p,h}]p}\]
+	One can verify that \(\h{g',gph,h'}\h{g,p,h} = \h{g'g,p,hh'}\) defines a groupoid multiplication. Alternatively, we can view this as the action groupoid of the induced action of \(\grG\times\grH^{\operatorname{op}}\) on \(P\). This automatically implies that it defines a Lie groupoid. Moreover, we obtain canonical projection maps
+	\[
+		\pr_{\grG}\colon \grG\fp{\grs}{\mu}P\fp{\nu}{\grt}\grH\to\grG\colon \h{g,p,h}\mapsto g\quad\mbox{and}\quad \pr_{\grH}\colon \grG\fp{\grs}{\mu}P\fp{\nu}{\grt}\grH\to\grH\colon \h{g,p,h}\mapsto h^{-1},
+	\]
+	which are Lie groupoid morphisms.
+
+	The notion of a map of \(\grG\)-spaces now extends to these double action structures, and so does the notion of an invariant subspace.
+	\begin{definition}
+		An \df{equivalence of \(\grG\)-\(\grH\) bibundles}\index{Equivalence of bibundles }, say \(P\) and \(Q\), is a diffeomorphism \(f\colon P\to Q\) which is both \(\grG\)- and \(\grH\)-equivariant. Additionally, a subset \(Q\subset P\) is called \df{biinvariant} if it is invariant for the \(\grG\) and \(\grH\) action.
+ 	\end{definition}
+
+	Next, we want to use bibundles to describe a category of Lie groupoids up to their representation theory, or spaces of actions. In other words, we want to realise these bibundles as the morphisms in some category. For this, we in particular need a notion of a composition of bibundles.
+	\begin{proposition}\label{prp: tensor of pbb}
+		Given \(P\in\PBBr\h{\grG,\grH}\) and \(Q\in\PBBr\h{\grH,\grK}\), then the space
+		\[
+			P\otimes Q = \h{P\fp{\mu}{\alpha}Q}/\grH
+		\]
+		has the structure of a \(\grG\)-\(\grK\) bibundle that it right principle. Moreover, this assignment satisfies the following:
+		\begin{itemize}
+			\item It is associative up to isomorphism, i.e.\ \(\h{P\otimes Q}\otimes R \cong P\otimes \h{Q\otimes R}\).
+			\item It is well-defined on isomorphism classes, i.e.\ if \(P\cong P'\in\PBBr\h{\grG,\grH}\) and \(Q\cong Q'\in\PBBr\h{\grH,\grK}\), then \(P\otimes Q\cong P'\otimes Q'\)
+		\end{itemize}
+	\end{proposition}
+	\begin{proof}
+		Take some \(\h{P,\mu,\nu}\in\PBBr\h{\grG,\grH}\) and \(\h{Q,\alpha,\beta}\in\PBBr\h{\grH,\grK}\), which reads as the following diagram:
+		\[\begin{tikzcd}[sep = huge]
+			{\grG} & P & {\grH} & Q & {\grK} \\
+			{\grG_0} && {\grH_0} && {\grK_0}
+			\arrow[from=1-1, to=2-1,"\grs"]
+			\arrow[from=1-2, to=1-2, loop, in=155, out=205, distance=22mm,shorten <=8pt,
+			shorten >=8pt]
+			\arrow[from=1-2, to=1-2, loop, in=25 , out=335, distance=22mm,shorten <=8pt,
+			shorten >=8pt]
+			\arrow[from=1-2, to=2-1,"\mu"]
+			\arrow[from=1-2, to=2-3,"\nu"']
+			\arrow[shift left, from=1-3, to=2-3,"\grt"]
+			\arrow[shift right, from=1-3, to=2-3,"\grs"']
+			\arrow[from=1-4, to=1-4, loop, in=155, out=205, distance=22mm,shorten <=8pt,
+			shorten >=8pt]
+			\arrow[from=1-4, to=1-4, loop, in=25 , out=335, distance=22mm,shorten <=8pt,
+			shorten >=8pt]
+			\arrow[from=1-4, to=2-3,"\alpha"]
+			\arrow[from=1-4, to=2-5,"\beta"']
+			\arrow[from=1-5, to=2-5,"\grt"]
+		\end{tikzcd}\]
+		As \(\alpha\) is a submersion, it has a clean intersection with \(\nu\) and thus we obtain an induced action on \(P\fp{\nu}{\alpha}Q\), cf.\ Proposition~\ref{prp: diagonal action}. Due to the action of \(\grH\) being free and proper on \(P\), the diagonal action on \(P\fp{\nu}{\alpha}Q\) is also free and proper, see Proposition~\ref{prp: diagonal action} as well. This implies that we can take its quotient to obtain a set \(P\otimes Q = \h{P\fp{\mu}{\alpha}Q}/\grH\).
+
+		On this set, we have an induced principal \(\grG-\grK\) bibundle structure by remarking the following: Consider the induced action of \(\grG\) on \(P\times Q\) and remark that \(P\fp{\mu}{\alpha}Q\) is an invariant subset of this action as \(\mu\) is \(\grG\) invariant. This implies that this has an induced \(\grG\) action and as the actions of \(\grG\) and \(\grH\) commute on \(P\), the also commute on \(P\fp{\mu}{\alpha}Q\), such that it restricts to the quotient. Similarly, \(\grK\) induces an action on \(P\otimes Q\) as well.
+
+		To verify that the action is free, suppose that \(\ha{x,y} = \ha{x',y'}\) and \(\h{x,yk} = \ha{x',y'l}\). The first equality implies that there exists some \(h\in\grH\) with \(x' = xh\) and \(y' = hy\) such that \(\h{x,yk} = \ha{x',y'l} = \ha{xh,h^{-1}yl} = \ha{x,yl}\), where we used that the action commute. Therefore, we find some \(h'\in\grH\) such that \(xh' = x\) and \(h'^{-1}yk = yl\). As the action of \(\grH\) on \(P\) is free, we find that \(h'\) is an identity and thus \(yk = yl\). Now, because the \(\grK\) action on \(Q\) is free, we find that \(k = l\) and our \(\grK\) action on \(P\otimes Q\) is also free.
+
+		For properness, we remark that \(\grK\) acts properly on \(P\times Q\), see Proposition~\ref{prp: action}, and thus this descends to a proper action on \(P\fp{\mu}{\nu}Q\). Moreover, we have the following commuting diagram:
+		\[\begin{tikzcd}[sep = huge]
+			{\h{P\fp{\nu}{\alpha}Q}\fp{\overline{\beta}}{\grt}\grK} &&
+			{\h{P\fp{\nu}{\alpha}Q}\times\h{P\fp{\nu}{\alpha}Q}} \\
+			{P\otimes Q\fp{\overline{\beta}}{\grt}\grK} && {P\otimes Q\times P\otimes Q}
+			\arrow["\alpha\colon{\h{x,y,k}\mapsto \h{xk,yk,k}}", from=1-1, to=1-3]
+			\arrow["{q\times\id}", from=1-1, to=2-1]
+			\arrow["{q \times q}", from=1-3, to=2-3]
+			\arrow["\beta\colon{\h{\ha{x,y},k}\mapsto \h{\ha{xk,yk},\ha{x,y}}}",
+			from=2-1, to=2-3]
+		\end{tikzcd}\]
+
+		Consider some compact \(K\subset P\otimes Q\times P\otimes Q\) and let \(\hv{U_i}\) be a cover of \(K\) such that for each \(i\) the closure \(\overline{U_i}\) is compact and we can find sections \(\sigma_i\colon \overline{U_i}\to \h{P\fp{\nu}{\alpha}Q}\times\h{P\fp{\nu}{\alpha}Q}\) of \(q\times q\). Remark that we can find such a section as \(q\times q\) is a submersion and a manifold is locally compact. As \(K\) is compact, we can assume this is a finite cover.
+
+		We can conclude that \(\tilde{U}_i = \alpha^{-1}\h{\sigma_i\h{\overline{U_i}}}\) is compact as well and thus \(\tilde{U} = \bigcup_i\tilde{U}_i\) is compact as it is a finite union. Per construction, we know that \(\beta^{-1}\h{K}\subset q\times\id\h{\tilde{U}}\), which is a closed subset of a compact and thus it is itself compact. Therefore, \(\grK\) acts properly on \(P\otimes Q\).
+
+		We conclude that \(P\otimes Q\in\PBBr\h{\grG,\grK}\) and the associativity up to isomorphism follows from the map:
+		\[
+		\h{P\otimes Q}\otimes R\to P\otimes\h{Q\otimes R}\colon \ha{\ha{p,q},r}\mapsto \ha{p,\ha{q,r}}
+		\]
+		Moreover, this construction is well-defined on isomorphism classes of bibundles. Namely, given equivalences \(\psi\colon P\to P'\) and \(\phi\colon Q\to Q'\), we obtain an equivalence
+		\[
+		P\otimes Q\to P'\otimes Q'\colon \ha{p,q}\mapsto \ha{\psi\h{p},\phi\h{q}}.
+		\]
+	\end{proof}
+	The above proposition implies that bibundles that are right principal define a type of morphism on Lie groupoids, when considered up to equivalence. We will denote the category by \(\lgrpd_{\mbox{\footnotesize{weak}}}\), and remark that this is a much bigger category compared to taking only Lie groupoid morphisms. In particular, given a Lie groupoid morphism \(\phi\colon \grH\to\grG\), we obtain the bibundle. \(\grG\acts[\phi_0\circ\grt]\grH\sact[\grs]\grH\), where the right action is the normal multiplication, thus it is free and proper, and the left action is the action by applying \(\phi\). This bibundle is right principal, and thus defines a morphism in \(\lgrpd_{\mbox{\footnotesize{weak}}}\). As we allow for more morphisms in the category \(\lgrpd_{\mbox{\footnotesize{weak}}}\), we obtain a weaker notion of equivalence, which we will call \df{Morita equivalence}. In other words, two Lie groupoids are \df{Morita equivalent}\index{Morita equivalent} if they are isomorphic in \(\lgrpd_{\mbox{\footnotesize{weak}}}\).
+
+	Moreover, under the identification of a \(\grG\)-space with the right principal \(\grG-M\) bibundle, we can see that \(P\in\PBBr\h{\grG,\grH}\) defines a map
+	\[
+		P\colon \grG\mbox{-spaces}\to\grH\mbox{-spaces}\colon M\mapsto P\otimes M.
+	\]
+	Therefore, they define maps on the collections of \(\grG\)-spaces.
+
+	We will finish this chapter with a slight reformulation of the notion of a Morita equivalence.
+	\begin{proposition}[{\cite[Thm.\ 4.6.3]{delHoyo2013}}]
+		Let \(\grG\) and \(\grH\) be Lie groupoids, then the following are equivalent:
+		\begin{itemize}
+			\item \(\grG\) and \(\grH\) are Morita equivalent.
+			\item There exist a principal \(\grG-\grH\) bibundle.
+		\end{itemize}
+	\end{proposition}
+	Remark that there is an equivalent description in terms of generalised maps, which are constructed using localisation with respect to so-called weak equivalences. For details on this construction, refer to \cite{Moerdijk2003,delHoyo2013}.
+\end{document}

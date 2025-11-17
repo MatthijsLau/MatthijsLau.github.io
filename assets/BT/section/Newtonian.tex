@@ -1,0 +1,69 @@
+\documentclass[class = article, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+	\section{Newtonian Formalism}
+	We will make our first step into describing classical mechanics by taking a look at Newton's formulation and basic principles in the form of his three laws of motion. Nowadays these still form the foundation of classical mechanics. Newton was one of the first persons who saw that we could describe physics using some general mathematical model, which can be seen as the goal of classical physics nowadays: to predict the motions of a physical space using a mathematical model. Before we go into the actual model Newton built, we will discuss how we can even translate a physical space to a mathematical one in the first place.
+	
+	\subsection{Space, Time and Kinematics}
+	As the goal is to describe the motions of mechanical systems mathematically, we should first determine the types of systems we are studying and how we could translate these to mathematical spaces. The assumptions in classical mechanics are that the objects are relatively large such that there are no quantum mechanical effects and the speeds are relatively small to stay non-relativistic. We then follow our intuition and suppose that positions in physical space are points of a three-dimensional Euclidean space \(E^3\). We would like to induce some vector space structure onto \(E^3\), which can be done by fixing an origin \(o\in E^3\), also called an observer, and we then identify a point \(s\in E^3\) with the vector \(\vec{os}\in\R^3\). When working with these vectors, we then also need to choose some basis vectors. We have some freedom of choice for what position acts as the origin and how we arrange the basis vectors, depending on this choice the position of an object may seemingly change, see Example~\ref{exp: reference frame plane}. In a physical problem, we can often choose a reference frame that uses the symmetries of a system.
+	\begin{example}\label{exp: reference frame plane}
+		Let us assume that the reference frames are chosen such that the positions in this example are constrained to \(\R[2]\times\hv{0}\subset\R[3]\). Therefore, we will only consider the position on a plane instead of a three-dimensional space. Suppose that we have a ball at a point \(p\) on \(E^3\) and some observers \(A\) and \(B\), see Figure~\ref{fig: configuration}. We can then view the position \(p\) from both the reference frame of \(A\) and \(B\). We can then measure the position of \(P\) in both reference frames, see Figure~\ref{fig: measurements}. Observer \(A\) measures the position of \(P\) as \(r_{PA} = \h{4,-2}^T\), while Observer \(B\) measures \(P\) to be at \(r_{PB} = \h{-1,2}^T\).
+	\end{example}
+	\begin{figure}
+		\centering
+		\begin{subfigure}[t]{.49\textwidth}
+			\centering
+			\includegraphics{img/ReferenceFrame_Configuration.pdf}
+			\caption{The space \(E^3\) given by some grid on a plane on which a ball is placed at position \(P\) and two observers are positioned at \(A\) and \(B\).}
+			\label{fig: configuration}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[t]{.49\textwidth}
+			\centering
+			\includegraphics{img/ReferenceFrame_Measurement.pdf}
+			\caption{The reference frames and measurements of observer \(A\) and \(B\). The reference frame of observer \(A\) is given in blue, and the measured position of \(P\) is denoted by \(r_{PA}\). For observer \(B\) everything is in red and the position is given by \(r_{PB}\).}
+			\label{fig: measurements}
+		\end{subfigure}
+		\caption{Example of how to translate a physical situation, Figure~\ref{fig: configuration}, to measurements in different reference frames, Figure~\ref{fig: measurements}.}
+		\label{fig: numberline}
+	\end{figure}
+	As we mentioned, we are not dealing with any relativistic effects in this theory, and hence, we can identify time as a separate axis, called the time axis identifiable with \(\R\). This time axis is important when talking about motion, as this is all about the position over time. We define the motion of an object as some smooth function \(\mathcal{C}:I\to E^3\), where \(I\) is an interval on the time axis. In our reference frame, we can obtain a function \(r:I\to\R[3]\) called the trajectory of the object. Notice that this is the composition of the actual motion with our choice of reference frame, hence, it is dependent on this choice which may differ over time. Using this mathematical trajectory, we can describe some physical quantities as vectors. Namely, the velocity and acceleration, \(v\) and \(a\) respectively, are defined as follows
+	\begin{equation*}
+		v\h{t} = \dv{t}r\h{t} = \dot{r}\h{t}\qquad\mbox{and}\qquad a\h{t} = \dv[2]{t}r\h{t} = \ddot{r}\h{t} = \dot{v}\h{t}.
+	\end{equation*}
+	The importance of these quantities stems from Newton's laws of motion. However, before discussing these in detail, we should find a way to model more than just a single object in a system. We have thus far described a position of a single object while we are often dealing with a system that includes many bodies that are interacting. Intuitively we assign a single \(E^3\) for each object in the system, which can be formalised in terms of a product space. In other words, in an \(n\)-body system a position of the system is described as a point in \(E^{3n} = E^3\times\cdots\times E^3\). The position of the bodies in the system is described using a single vector \(r = \h{r_1,\ldots, r_n}\in\R[3n]\), implying that the motion becomes a smooth map \(r\h{t} = \h{r_1\h{t},\ldots,r_n\h{t}}\in\R[3n]\). The definition of velocity and acceleration then still applies.
+	
+	\subsection{Newton's Laws of Motion}\label{sec: laws of motion}
+	Newton's laws of motion determine the motions of a system through two important concepts: momentum and forces. Momentum is a quantity of an object and is given for some object of mass \(m\) by \(p = mv\). This is often intuitively thought of as the amount of movement an object has. Forces on the other hand should be thought of as the interactions bodies have with each other or the system. These come in many shapes and forms, for example, the gravitational force or Coulomb force. All these forces are the product of some interaction between two physical bodies and are described as some vector \(F\in\R[3]\) acting on a body. As we will approximate motion to our best capability, it will often be useful to neglect some forces acting on larger bodies, this choice will make more sense in the light of Newton's second law. Let us now state these laws.
+	\begin{enumerate}[label = {\arabic*.}]
+		\item If the sum of all forces acting on a body is zero, there exists a reference frame in which its velocity is constant.
+		\item In any inertial frame, the time derivative of the momentum of a body is equal to the sum of forces acting on it.
+		\item For every action, there is an equal and opposite reaction.
+	\end{enumerate}
+	While the first law seems to follow from the second law, we still need to ensure the existence of an inertial frame to use the second law. The second law then gives us the following equation, also called the equation of motion
+	\begin{equation*}
+		\sum_iF_i\h{r,\dot{r},t} = \dot{p}\h{t},
+	\end{equation*}
+	where \(F_i\) are all the forces acting on the body, \(p\h{t}\) is its momentum at time \(t\). We will often denote the sum of all forces acting on a body with \(F_{\net}\). If we also assume that the body has a constant mass this equation simplifies to
+	\begin{equation*}
+		F_{\net}\h{t,r,\dot{r}} = m\ddot{r}.
+	\end{equation*}
+	If we generalise this to an \(n\)-body system, we obtain an equation of motion for each of the bodies. In the case that the masses of all objects are constant, which is nearly always the case, this results in the following system of equations:
+	\begin{equation}\label{eq: n equation of motion}
+		\mqty(\dot{r}\\\dot{v}) = \mqty(v\\M^{-1}F\h{r,v,t}),\qquad M = \diag\h{m_1I_3,\ldots,m_nI_3}.
+	\end{equation}
+	Remark that we have transformed the differential equation by substituting \(v = \dot{r}\). This system of equations is the one we solve most often in Newtonian mechanics. The process of solving for the motions of a system uses the following steps:
+	\begin{enumerate}[label = {\alph*)}]
+		\item Choose a reference frame, and initial values then determine which forces are at play.
+		\item Describe the forces in terms of the reference frame.
+		\item Solve the equation of motion.
+	\end{enumerate}
+	Let us showcase this with a couple of examples.
+	\begin{example}\label{exp: projectile}
+		\input{example/projectile.tex}
+	\end{example}
+	\begin{example}\label{exp: atwood newton}
+		\input{example/atwood_new.tex}
+	\end{example}
+\end{document}

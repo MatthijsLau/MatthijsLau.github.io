@@ -1,0 +1,218 @@
+\documentclass[class = report, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+	
+\chapter{Symplectic Geometry on Manifolds}\label{chp: symplectic manifolds}
+In the previous chapter, we introduced linear symplectic geometry in terms of symplectic vector spaces. Now we will evolve this to a more general geometric theory by extending it to manifolds. This is done naturally by using the locally linear structure of the tangent space, hence, imposing a symplectic form as a non-degenerate \(2\)-form which we will also require to be closed. We will see how this theory differs from its linear counterpart in the main focus of this chapter: Darboux's theorem. This is the non-linear version of Theorem~\ref{thm: linear darboux}, but it requires a much more involved theory on differential forms. In this chapter, we follow the structure and definitions of chapters 1, 7 and 8 in \cite{CannasdaSilva2008}. Furthermore, we will use differential forms and the exterior derivative in this chapter, the definitions of which are recalled in Section \ref{sec: exterior derivative}. If one is not yet familiar with these concepts, one should refer to more detailed sources like \cites{Lee2013, Marcut2017, Tu2011}.
+
+\section{Basics and Definitions}\label{sec: basics symplectic manifolds}
+	We will start this section with the definition of a symplectic manifold, followed by some examples. As mentioned, we want to generalise a linear algebra structure to differential geometry. Hence, we want to make use of the linear structure a manifold has in the form of its tangent space. This method is comparable to that of Riemannian geometry, which generalises an inner product space using a symmetric covariant \(2\)-tensor field that is positive definite everywhere, such that the tensor field is an inner product at each point. Similarly, we generalise the linear symplectic forms by looking at a tensor that is a linear symplectic form at each point.
+	\begin{definition}\label{def: symplectic manifold}
+		Let \(\m\) be a manifold, a \(2\)-form \(\omega\) is \textbf{symplectic} if it is closed, i.e. \(d\omega = 0\) and \(\omega_p:T_p\m\times T_p\m\to\R\) is symplectic for all \(p\in\m\) in the sense of vector spaces. The pair \(\h{\m,\omega}\) is then called a \textbf{symplectic manifold}.
+	\end{definition}
+	Once again we will go over some basic examples of symplectic vector spaces before we proceed. The first two of these are the equivalents to Examples~\ref{exp: trivial symplectic vector space} and~\ref{exp: linear canonical symplectic form}.
+	\begin{example}\label{exp: trivial manifold}
+		Let us define the \textbf{trivial symplectic manifold of dimension \(2n\)}. Take the manifold \(\R[2n]\) and take the global coordinates \(\symcor{x}{y}\). Define the \(2\)-form \(\omega_{\st,2n}\) as
+		\begin{equation*}
+			\omega_{\st,2n} = \sum_{i = 1}^ndx^i\wedge dy^i.
+		\end{equation*}
+		This form is symplectic as for each \(p\in\m\) the set
+		\begin{equation*}
+			\hv{\eval{\pdv{x^1}}_p,\cdots,\eval{\pdv{x^n}}_p,\eval{\pdv{y^1}}_p,\cdots,\eval{\pdv{y^n}}_p},
+		\end{equation*}
+		forms a symplectic basis for \(T_p\m\). Furthermore, one can easily check that this form is closed with a calculation.
+		\begin{equation*}
+			d\omega_{\st,2n} = d\sum_{i = 1}^ndx^i\wedge dy^i = \sum_{i = 1}^nd\h{dx^i\wedge dy^i} = \sum_{i = 1}^n\h{d^2}x^i\wedge dy^i - dx^i\wedge \h{d^2}y^i = 0.
+		\end{equation*}
+		This proves that \(\h{\R[2n],\omega_{\st,2n}}\) is a symplectic manifold. We call \(\omega_{\st,2n}\) a \textbf{trivial symplectic form} of which we sometimes mention the dimension.
+	\end{example}
+	\begin{example}\label{exp: canonical manifold}
+		Let \(\m\) be an \(n\)-dimensional manifold and let \(\cotang\) be its \textbf{cotangent bundle}, which is defined as
+		\begin{equation*}
+			\cotang = \coprod_{p\in\m}\dual{\h{\loctang{p}}} = \coprod_{p\in\m}\loccotang{p}.
+		\end{equation*}
+		Firstly, we define a \textbf{tautological \(1\)-form on \(\cotang\)}, denoted by \(\alpha_{\taut}\), pointwise as
+		\begin{equation*}
+			{\alpha_{\taut}}_{\h{p,\xi}} = \pull[\h{p,\xi}]{d\pi}\h{\xi},
+		\end{equation*}
+		We then define the \textbf{canonical symplectic form on \(\cotang\)}, denoted as \(\omega_{\can}\), as
+		\begin{equation*}
+			\omega_{\can} = -d\alpha_{\taut}.
+		\end{equation*}
+		It should be clear that this is a closed and alternating \(2\)-tensor. To show that it is non-degenerate we will consider it in coordinates. Let us first look at the structure of \(\cotang\), which has some natural coordinates induced by a chart on \(\m\). Suppose that \(\h{U,\h{x^1,\ldots,x^n}}\) is a chart around \(p\in\m\). Via the differentials, \(\h{dx^1_p,\ldots,dx^n_p}\), we induce the following coordinates on \(\cotang[\m[U]]\):
+		\begin{equation*}
+			\cotang[\m[U]]\to\R[2n]:\xi_idx^i|_p\mapsto\h{x^1\h{p},\ldots,x^n\h{p},\xi_1,\ldots,\xi_n}.
+ 		\end{equation*}
+	 	In these coordinates the projection is trivial and the differential is of the form \(\pull[\h{x,\xi}]{d\pi}\h{dx^i} = dx^i\). Hence, in coordinates the tautological \(1\)-form is given by
+		\begin{equation*}
+			{\alpha_{\taut}}_{\h{x,\xi}} = \xi_i dx^i.
+		\end{equation*}
+		As the charts are smooth, the tautological form is also smooth. Furthermore, the coordinate form of \(\alpha_{\taut}\) implies that \(\omega_{\can}\) is given by
+		\begin{equation*}
+			\omega_{\can} = \sum_{i = 1}^ndx^i\wedge d\xi_i,
+		\end{equation*}
+		in the coordinates \(\h{x^1,\ldots,x^n,\xi_1,\ldots,\xi_n}\). This form is locally equivalent to that of Example~\ref{exp: trivial manifold}, therefore it is symplectic by the same reasoning. It follows that \(\h{\cotang, \omega_{\can}}\) is a symplectic manifold.
+	\end{example}
+	\begin{proposition}\label{prp: existence canonical form}
+		Every manifold admits a symplectic form on its cotangent bundle.
+	\end{proposition}
+	\begin{proof}
+		This follows directly from the construction of the canonical symplectic form in Example~\ref{exp: canonical manifold}.
+	\end{proof}
+	There are of course many different symplectic manifolds and even different symplectic forms on a single manifold.
+	\begin{example}\label{exp: 2-sphere}
+		Take the \(2\)-sphere, denoted by \(S^2\). For the construction of the symplectic form, we identify \(S^2\) as a subset of \(\R[3]\), which we endow with the dot product, denoted by \(\inp{\cdot}{\cdot}\), and the cross product, denoted by \(\cross\). We then define the \(\mathring{\omega}\) at a point \(p\in S^2\) as
+		\begin{equation*}
+			 \mathring{\omega}_p:\loctang[S^2]{p}\times\loctang[S^2]{p}\to\R:\h{u,v}\mapsto\inp{p}{u\cross v}.
+		\end{equation*}
+		By the skew-symmetry and bilinearity of the cross product and the linearity of the inner product, it follows that \(\mathring{\omega}_p\) is a symplectic form on \(\loctang[S^2]{p}\). As the inner product and cross product are linear in both components, it is also smooth. Due to it being top-degree, it is closed. It follows that \(\mathring{\omega}\) is a symplectic form and \(\h{S^2,\mathring{\omega}}\) is a symplectic manifold. 
+	\end{example}
+	\begin{example}\label{exp: exotic}
+		Let us define a symplectic form on \(\R[2]\) that is not the trivial symplectic form. Take the global coordinates \(\h{x,y}\) of \(\R[2]\) and define the \(2\)-form \(\omega_{\st[exp]}\) as
+		\begin{equation*}
+			\omega_{\st[exp]} = e^{-\h{x^2 + y^2}}dx\wedge dy.
+		\end{equation*}
+		We can quite easily recognise that this is a skew-symmetric non-degenerate form. Furthermore, as it is of top-degree it is also closed. Therefore, \(\h{\R[2],\omega_{\st[exp]}}\) is a symplectic vector space.
+	\end{example}
+	With these examples, we will again go on to the geometric side of symplectic manifolds.
+
+\section{Symplectomorphisms}\label{sec: symplectomorphism}
+	With this new category of structured objects, we look for a class of functions preserving our structure, which we will call symplectomorphisms. As they should be functions preserving manifolds they ought to be diffeomorphisms. Furthermore, they should preserve the structure added to the tangent spaces as well. Hence, we want the function to satisfy the commutative diagram of Figure~\ref{comdia: symplectomorphism}. This is done using the pullback of differential forms, see \cite[p. 360]{Lee2013}. This then leads to the following definition.
+	\begin{figure}
+		\centering
+		\includegraphics{img/CommutativeDiagram_Symplectomorphism.pdf}
+		\caption{A commutative diagram showing the way the symplectomorphism
+			\(F:\m\to\m[N]\) should commute with the symplectic forms. Here, \(dF_p\) denotes
+			the pointwise pushforward of \(F\).}
+		\label{comdia: symplectomorphism}
+	\end{figure}
+	\begin{definition}\label{def: symplectomorphism}
+		Let \(\h{\m_1,\omega_1}\) and \(\h{\m_2,\omega_2}\) be symplectic manifolds. A \textbf{symplectomorphism} between \(\h{\m_1,\omega_1}\) and \(\h{\m_2,\omega_2}\) is a diffeomorphism \(\phi:\m_1\to\m_2\) such that \(\pull{\phi}\omega_2 = \omega_1\). If such a symplectomorphism exists, then \(\h{\m_1,\omega_1}\) and \(\h{\m_2,\omega_2}\) are \textbf{symplectomorphic}.
+	\end{definition}
+	For vector spaces, the next important result was Theorem~\ref{thm: existence symplectic basis}, which described how we can find a basis in which the symplectic form is written as
+	\begin{equation*}
+		\ha{\Omega}_\beta = \mqty(0&\id\\-\id&0).
+	\end{equation*}
+	Implying that any symplectic vector space is isomorphic to \(\h{\R[2n],\Omega_{\st,2n}}\) for some \(n\). However, this runs into a problem when we try it with manifolds. For example, consider \(\h{\R[2],\omega_{\st,2}}\) and \(\h{S^2,\mathring{\omega}}\) as in Example~\ref{exp: 2-sphere}. If we could construct a symplectomorphism between these spaces, it would in particular be a homeomorphism between \(S^2\) and \(\R[2]\). However, as \(S^2\) is bounded and closed in \(\R[3]\) it is compact and homeomorphisms preserve compactness. This would then imply that \(\R[2]\) is compact, which leads to a contradiction. Thus, a symplectomorphism between \(\h{\R[2],\omega_{\st,2}}\) and \(\h{S^2,\mathring{\omega}}\) can not exist.
+	
+	We might then expect that we should at least be able to find a symplectomorphism between symplectic forms on the same manifold, but Example~\ref{exp: exotic} showcases that this is also not true. If a symplectomorphism \(\phi\) between \(\h{\R[2],\omega_{\st,2}}\) and \(\h{\R[2],\omega_{\st[exp]}}\) as in Example~\ref{exp: exotic}, would exist, it should preserve integrals, see \cite[Proposition 16.6]{Lee2013}. Hence the following equation should hold.
+	\begin{equation}\label{eq: equivalence under symp}
+		\int_{\R[2]}\omega_{\st[exp]} = \int_{\R[2]}\pull{\phi}\omega_{\st[exp]} = \int_{\R[2]}\omega_{\st,2}.
+	\end{equation}
+	Now we can calculate both sides of the equation. The integral of \(\omega_{\st,2}\) diverges as \(\omega_{\st,2}\) is a positive constant on the whole of \(\R[2]\). Meanwhile, the integral of \(\omega_{\st[exp]}\) can be calculated using a simple change of coordinates and a substitution as in the proof of the Gauss integral.
+	\begin{equation*}
+		\int_{\R[2]}\omega_{\st[exp]} = \int_{-\infty}^\infty\int_{-\infty}^\infty e^{-\h{x^2 + y^2}}dxdy = \int_{0}^{2\pi}\int_{0}^{\infty}e^{-r^2}rdrd\phi = \pi\int_{0}^\infty e^{-u}du = \pi.
+	\end{equation*}
+	As this integral does not diverge, we can conclude from Equation \ref{eq: equivalence under symp} that a symplectomorphism between \(\h{\R[2],\omega_{\st,2}}\) and \(\h{\R[2],\omega_{\st[exp]}}\) can not exist. Furthermore, this implies that these two symplectic manifolds are not symplectomorphic.
+	
+	From these examples, we can conclude that we can not simply study the global behaviour of \(\h{\R[2],\omega_{\st,2}}\) in symplectic geometry. The construction of a symplectomorphism is not even limited to the topological properties of the manifolds and may even fail for two symplectic forms on the same manifold.
+	
+\section{Normal Coordinates}\label{sec: normal coordinates}
+	We saw in the previous section that there are many symplectic manifolds which are not symplectomorphic to \(\h{\R[2n],\omega_{\st,2n}}\).	This means we cannot encapsulate the global behaviour of symplectic manifolds by just studying this simple model space. Luckily, the structure of a manifold lends itself perfectly to studying local behaviour instead. To this extent, we will look for certain coordinates in which the symplectic form is of a `nice' form. Such coordinates are generally called normal coordinates.
+	
+	To get an idea of what is possible, we will once again compare symplectic manifolds to Riemannian manifolds. We already remarked that they are constructed similarly; take a structure on a vector space and implement it at each point to a tangent space. For the symplectic manifold, we use symplectic forms and for the Riemannian case, we consider inner products. For both linear structures, there are no invariants that determine the structures, i.e. the inner product is diagonal and the linear symplectic form is anti-diagonal and skew-symmetric, see Theorem~\ref{thm: existence symplectic basis}. We would hope that this simplistic structure would naturally be inherited by the manifold structure locally. Riemannian manifolds already show that this is not necessarily true. At a point, we can find a chart in which the metric becomes diagonal, but when extended to a neighbourhood this fails. Instead of a diagonal form, it becomes a function of the Riemannian curvature. We will not prove the following theorem, but one can refer to \cite[Corollary 9.8]{Gray2004} for a thorough exposition and proof.
+	\begin{theorem}\label{thm: local riemannian metric}
+		Let \(\h{\m,g}\) denote an Riemannian manifold with curvature tensor \(R_{ijkl}\). Around any point \(p\in\m\) there is a coordinate chart \(\h{U,\h{x^i}}\) centred at \(p\), such that the metric is given by
+		\begin{equation*}
+			g_{ij}|_U = \delta_{ij} - \dfrac{1}{3}\sum_{kl = 1}^nR_{kilj}\h{p}x^kx^l - \dfrac{1}{6}\sum_{klm = 1}^n\nabla_kR_{limj}\h{p}x^kx^lx^m + h\circ x,
+		\end{equation*}
+		where \(\lim_{x\to 0}\flatfrac{h\h{x}}{\norm{x}^5} = 0\).
+	\end{theorem}
+	This theorem tells us that a Riemannian manifold has some local invariant, namely the curvature, that determines whether two Riemannian manifolds are locally isometric. We will now prove this theorem as it is not in our current domain of study. However, we can give an informal argument which explains why we expect to find such an invariant. This is called the counting argument and was already given by Riemann in \cite{Riemann1921}, see \cite[Chapter 4]{Spivak1979} for a translation. In this `proof', he tries to count the number of degrees of freedom in the metric and the amount we can determine under a transformation of coordinates.
+	
+	Suppose that \(\h{\m,g}\) is an \(n\) dimensional Riemannian manifold. Around a point \(p\in\m\) we can write \(g\) is some coordinate chart \(\h{U,\h{x^i}}\) as \(g|_U = \sum_{i = 1}^ng_{ij}dx^idx^j\), such that \(g\) is fully determined in the neighbourhood \(U\) by \(n^2\) functions. This implies that we have \(n^2\) degrees of freedom, but we lose \(\flatfrac{n\h{n - 1}}{2}\) degrees of freedom to the symmetry of the metric. Hence, there are just \(n^2 - \flatfrac{n\h{n - 1}}{2} = \flatfrac{n\h{n + 1}}{2}\) degrees of freedom left. If we then take into account the ambiguity of choosing coordinates, we lose another \(n\) degrees of freedom. This leaves us with just \(\flatfrac{n\h{n - 1}}{2}\) degrees of freedom we can not determine further. Hence, we have shown that there are some degrees of freedom in our choice of metric, which we conveniently capture in the Riemannian curvature.
+	
+	This goes to show that we can not ensure the existence of a chart in which the metric is given by \(g|_U = \sum_{i = 1}^ndx^idx^i\). A Riemannian manifold does therefore not directly inherit the properties of the inner product locally. If there exists a map from the Riemannian manifold to the Euclidean space which locally restricts to an isometry, we call this Riemannian manifold flat. It should be clear that there exist some coordinates \(\h{U,\h{x^i}}\) on a flat Riemannian manifold such that the metric is given by \(g|_U = \sum_{i = 1}^ndx^idx^i\). We can then find a direct connection between the flatness of a Riemannian manifold and its Riemannian curvature tensor, something we will again not prove here, but a proof can be found in \cite[Theorem 7.10]{Lee2019}. 
+	\begin{proposition}
+		A Riemannian manifold is flat if and only if its Riemannian curvature tensor vanishes identically.
+	\end{proposition}
+	This is a rather simple condition for a Riemannian manifold to be flat. However, we will show that this holds in general for symplectic forms in a theorem that is called Darboux's theorem. A proof of this was first given by Jean Gaston Darboux in 1882 \cite{Darboux1882}, but later it was simplified by Weinstein \cite{Weinstein1971} based on a method developed by Moser \cite{Moser1965}. This second proof is the one we will follow in Section~\ref{sec: darboux}. This proof requires some more knowledge of the geometry of differential forms and their associated operator. Moreover, even to make the counting argument work for symplectic forms, we would need this extra knowledge. For now, we will simply state the theorem and prove it after going into the prerequisites of differential geometry.
+	\begin{restatable}{theorem}{darboux}\label{thm: darboux}
+		Around every point on a symplectic manifold \(\h{\m,\omega}\), there exists a neighbourhood \(\h{U,\h{x^1,\ldots,x^n,y^1,\ldots,y^n}}\) such that on \(U\) the symplectic form is given by
+		\begin{equation*}
+			\omega|_U = \sum_{i = 1}^ndx^i\wedge dy^i.
+		\end{equation*}
+		Such coordinates are called Darboux coordinates.
+	\end{restatable}
+	\input{subsection/differential_operators.tex}
+
+	\subsection{Darboux's Theorem}\label{sec: darboux}
+		We are now able to prove Theorem~\ref{thm: darboux}. However, much like the Riemannian metric, we can also give a short intuitive proof of this statement akin to Riemann's counting argument given above. It now deviates as we can use Corollary~\ref{cor: closed is exact}. When given a symplectic form \(\omega\) it can be written is coordinates \(\h{x^i}\) as \(\omega = d\theta = d\h{\theta_idx^i}\). This then leaves just \(n\) function we need to determine, however with our \(n\) choices for coordinates we have these exactly covered and there are no local invariants for a symplectic form.
+		
+		Now we will give a formal proof, for which will restate the theorem once more. Then we will go into the proof where we use linear symplectic geometry and extend its structure locally using Moser's trick, Poincaré's lemma and Cartan's magic formula. 
+		\darboux*
+		\begin{proof}
+			To prove this theorem for a point \(p\) on a symplectic manifold \(\h{\m,\omega}\) we will do the following. Firstly, we will use Theorem~\ref{thm: existence symplectic basis} to generate a basis for the tangent space at this point. We will then extend this basis to a neighbourhood of this point, generating a chart. Subsequently, we will show that part of this neighbourhood can be pulled back to the standard symplectic form in these coordinates. This will then define coordinates that satisfy Darboux's theorem.
+			
+			Suppose that \(\h{\m,\omega}\) is a symplectic \(m\)-manifold and \(p\in\m\). By theorem~\ref{thm: existence symplectic basis} there exists a symplectic basis of \(\loctang{p}\), denoted as \(\symbasv{u}{v}\). This also implies that \(m = 2n\) such that \(\m\) is even dimensional. Furthermore, the symplectic form \(\omega_p\) can be written in the associated dual basis \(\symcorv{\mu}{\nu}\) as
+			\begin{equation*}
+				\omega_p = \sum_{i = 1}^n \mu^i\wedge \nu^i.
+			\end{equation*}
+			We will try to extend this basis to a coordinate chart \(\symcor{x}{y}\) such that \(\mu^i = dx^i\) and \(\nu^i = dy^i\). These can be found rather easily by taking an arbitrary coordinate chart around \(p\), \(\h{U,\symcor{\tilde{x}}{\tilde{y}}}\), and then remarking that both \(\symcor{\mu}{\nu}\) and \(\symcor[p]{d\tilde{x}}{d\tilde{y}}\) are both basis for \(\loccotang{p}\). Hence, there exists a basis transformation, which is linear and non-singular, given by some matrices \(A,B,C\) and \(D\)
+			\begin{equation*}
+				\mu^i = A^i_jd\tilde{x}^j_p + B^i_jd\tilde{y}^j_p,\quad\nu^i = C^i_jd\tilde{x}^j_p + D^i_jd\tilde{y}^j_p.
+			\end{equation*}
+			Then define now coordinates \(\symcor{x}{y}\) as follows
+			\begin{equation*}
+				x^i = A^i_j\tilde{x}^j + B^i_j\tilde{y}^j,\quad y^i = C^i_j\tilde{x}^j + D^i_j\tilde{y}^j.
+			\end{equation*}
+			These form a coordinate chart, as they are the composition of a diffeomorphism and a non-singular linear map. Furthermore, notice that by definition \(\mu^i = dx^i_p\) and \(\nu^i = dy^i_p\). Thus we have found a coordinate chart \(\h{U,\phi = \symcor{x}{y}}\) that satisfies
+			\begin{equation*}
+				\omega_p = \sum_{i = 1}^ndx^i_p\wedge dy^i_p.
+			\end{equation*}
+			We now want to compare \(\omega\) with the standard symplectic form \(\omega_1 = \sum_{i = 1}^ndx^i\wedge dy^i\). To do this, we will have to restrict to some smaller neighbourhood of \(p\) than \(U\). We will construct a symplectomorphism \(\psi\) between \(\h{V,\omega}\) and \(\h{V,\omega_1}\) such that \(\psi\h{p} = p\). Let us set \(\omega_0 = \omega\) in this process.
+			
+			To construct such a symplectomorphism we use Moser's trick. This comes down to constructing an isotopy, which is a map \(\rho:U\times\ha{0,1}\to U:\h{p,t}\mapsto\rho_t\h{p}\) such that \(\rho_t\) is a diffeomorphism on \(U\) and \(\rho_0 = \id_{U}\). We will give a short exposition to motivate this construction. Suppose that we are given an isotopy \(\rho_t\) and a family of symplectic forms \(\omega_t\) such that \(\pull{\rho_t}\omega_t = \omega_0\). Define some vector field \(X_t\) generated by \(\rho_t\) as
+			\begin{equation*}
+				X_t = \dv{\rho_t}{t}\circ\rho_t^{-1}.
+			\end{equation*}
+			Let us now consider the derivative of the pullback of \(\omega_t\) by \(\rho_t\). We can rewrite this using Proposition \ref{prp: lie derivative flow commute} and Cartan's magic formula.
+			\begin{equation*}
+				0 = \eval{\dv{s}}_{s = t}\h{\pull{\rho_s}\omega_s} = \pull{\rho_t}\h{\ld[X_t]\omega_t + \dv{\omega_t}{t}} = \pull{\rho_t}\h{d\h{\iota_{X_t}\omega_t} + \dv{\omega_t}{t}}.
+			\end{equation*}
+			As \(\rho_t\) is a diffeomorphism, we deduce the following equation called Moser's equation:
+			\begin{equation*}
+				\h{d\circ\iota_{X_t}}\omega_t = -\dv{\omega_t}{t}.
+			\end{equation*}
+			Hence, an isotopy generates a vector field which satisfies Moser's equation. Remark that we could also recover the isotopy if we were given a vector field that satisfies Moser's equation. Hence, to generate an isotopy, we will try to solve Moser's equation.
+			
+			Consider the difference \(\eta = \omega_1 - \omega_0\) and remark that this is a closed \(2\)-form. Therefore, by Corollary~\ref{cor: closed is exact} we can find a neighbourhood \(U_0\) of \(p\) such that \(\eta\) is exact, i.e. there exists a \(1\)-form \(\alpha\) such that \(\eta = -d\alpha\) and we can assume that \(\alpha_{p}= 0\) using the linearity of the exterior derivative. Furthermore, we can assume that \(U_0\subset U\). We will then consider the family of symplectic forms \(\omega_t\) with \(t\in\ha{0,1}\) given by
+			\begin{equation*}
+				\omega_t = \omega_0 - td\alpha = \h{1 - t}\omega_0 + t\omega_1.
+			\end{equation*}
+			This is again closed and as \(\omega_t|_{p}\) is non-degenerate and \(\omega_t\) is smooth it follows that \(\omega_t\) is non-degenerate in a neighbourhood \(U_1\) of \(p\). Again, we can assume that \(U_1\subset U_0\). Thus we have found a family of symplectic forms that we can enter into Moser's equations to get the following
+			\begin{equation*}
+				\h{d\circ\iota_{X_t}}\omega_t = -\dv{\omega_t}{t} = \omega_0 - \omega_1 = -\eta = d\alpha.
+			\end{equation*}
+			To solve this equation, it is sufficient to solve for \(\iota_{X_t}\omega_t = \alpha\). By the non-degeneracy of \(\omega_t\), this equation can be solved locally. As for an arbitrary \(Y\in\vf\) we can calculate this expression in the coordinates \(\h{z^1,\ldots,z^n,z^{n + 1},\ldots,z^{2n}} = \h{x^1,\ldots,x^n,y^1,\ldots,y^n}\). The left-hand side then becomes
+			\begin{align}
+				\iota_{X_t}\omega_t\h{Y} 
+				\notag&= \omega_t\h{X_t,Y} = \sum_{i,j}\dfrac{1}{2}\h{\omega_t}_{ij}dz^i\wedge dz^j\h{X_t,Y}
+				= \sum_{i,j}\dfrac{1}{2}\h{\omega_t}_{ij}\h{X_t^iY^j - X_t^jY^i},\\
+				\label{eq: lefthandside}&= \sum_{i,j}\dfrac{1}{2}\h{\h{\omega_t}_{ij} - \h{\omega_t}_{ji}}X_t^iY^j =
+				\sum_{i,j}\h{\omega_t}_{ij}X_t^iY^j.
+			\end{align}
+			Meanwhile, the right-hand side can be expressed as
+			\begin{equation}
+				\label{eq: righthandside}\alpha\h{Y} = \sum_{j}\alpha_j dz^j\h{Y} = \sum_{j}\alpha_jY^j.
+			\end{equation}
+			As \(Y\) is arbitrary, we can assume that there is some \(1\leq k\leq 2n\) such that \(Y = \pdv*{z^k}\). Combining Equations \ref{eq: lefthandside} and \ref{eq: righthandside} then gives us that \(\sum_{i}\h{\omega_t}_{ik}X_t^i = \alpha_k\). As \(\omega_t\) is non-degenerate, \(\h{\omega_t}_{ik}\) has an inverse, which we denote as \(\h{\omega_t}^{ik}\). We can then express \(X_t\) in terms of \(\omega_t\) and \(\alpha\)
+			\begin{equation*}
+				X_t^i = \sum_{k}\h{\omega_t}^{ik}\alpha_k.
+			\end{equation*}
+			From the smoothness of \(\omega_t\) and \(\alpha\), and the fact that \(\h{\omega_t}^{ik}\) is a rational function of the coefficients of \(\h{\omega_t}_{ik}\) it follows that \(X_t^i\)  is smooth as well. Thus we can smoothly solve for \(X_t\).
+			
+			Remark that \(\alpha_{p} = 0\) and therefore \(X\h{t,p} = 0\) which implies that \(\phi_X^{t,0}\h{p} = p\) for all \(t\in\ha{0,1}\). As the flow domain of is open, we can use the tube lemma, see \cite[Lemma 26.8]{Munkres2013} to find a neighbourhood \(U_2\) of \(p\) such that \(\phi_X^{t,0}\) is defined on \(U_2\) for all \(t\in\ha{0,1}\), where we can once again assume \(U_2\subset U_1\). Then by defining \(\rho_t = \phi_X^{t,0}\), we get the isotopy we wanted as \(\rho_0 = \phi_X^{0,0} = \id_{U_2}\), and we have already shown that this satisfies Moser's equation. It follows that \(\psi = \rho_1\) defines a symplectomorphism on \(U_2\) between \(\omega_0\) and \(\omega_1\) that preserves \(p\).
+			
+			We can now define the coordinate chart on \(V = U_2\) by \(\hat{x}^i = x^i\circ \psi\) and \(\hat{y}^i = y^i\circ\psi\), then it follows
+			\begin{equation*}
+				\sum_{i = 1}^n d\hat{x}^i\wedge d\hat{y}^i = \sum_{i = 1}^nd\h{x^i\circ\psi}\wedge d\h{y^0\circ\psi} = \pull{\psi}\h{\sum_{i = 1}^n dx^i\wedge dy^i} = \pull{\psi}\omega_1 = \omega_0.
+			\end{equation*}
+			Thus \(\h{\hat{x}^i, \hat{y}^i}\) are the coordinates we wanted.
+		\end{proof}
+		\begin{remark}
+			The closedness of the symplectic form is necessary as \(\omega_{\st,2n}\) is closed. If \(\omega\) is symplectomorphic to \(\omega_{\st,2n}\) in some neighbourhood, this symplectomorphism would preserve the closedness. Hence, closedness is necessary for the symplectic form to be `flat'.
+		\end{remark}
+		The local theory is therefore always that of the trivial theory, however, this does not mean that there are no interesting global phenomena to explore. We will not go in this direction now, instead, we will discuss one of the main applications and the birthplace of symplectic geometry: Classical mechanics.
+\end{document}

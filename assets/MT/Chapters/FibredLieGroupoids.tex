@@ -1,0 +1,585 @@
+\textit{}\documentclass{standalone}
+\begin{document}
+\chapter{Fibred Lie Groupoids and Multiplicative connections}
+	The theory of what we will call fibred Lie groupoids is a generalisation of the theory of Lie groupoid extensions as proposed in \cite{LaurentGengoux2009} and \cite{Fernandes2023}, which are a generalisation of short exact sequences of groups and surjective submersions. While they focused on Lie groupoid morphisms, which are surjective submersions and cover the identity map, we will relax the second condition so that they may cover an arbitrary map. These types of objects can then be viewed as surjective submersions in the category of Lie groupoids, and we therefore will try to replicate the theory of Chapter~\ref{ch: surjective submersions}. Additionally, they will be a generalisation of the notion of a family of Lie groupoids, as in \cite{Cardenas2021}, which we will discuss in more detail in this chapter as well.
+
+	The central focus of this chapter is the development of the basic notions of fibred Lie groupoids and the associated families of Lie groupoids, for which we introduce a concept of local triviality. We then define multiplicative Ehresmann connections using the language of \VB-groupoids, and in particular, demonstrate that these connections are also the algebraically correct formulation. Using this framework of multiplicative connections, we prove an analogue of Theorem~\ref{thm: complete iff fibre bundle} for families of Lie groupoids. We further examine multiplicative connections on arbitrary fibred Lie groupoids by relating their completeness to an internal family of Lie groupoids and the base surjective submersion. Finally, we show that a family of Lie groupoids admitting sufficiently many lifts of arrows, meaning it admits a cleavage, gives rise to internal equivalences between unit fibres, in the sense of Morita equivalence.
+\section{Basic Definitions}
+	Let us start with the definition of the objects of interest.
+	\begin{definition}
+		A \df{fibred Lie groupoid}\index{Fibered Lie groupoid} is a Lie groupoid morphism \(\phi\colon \grG\to\grH\) such that \(\phi\) is a surjective submersion.
+	\end{definition}
+	Recall that the base map of a Lie groupoid morphism can be obtained as the unique map \(\phi_0\), such that \(\phi_0\circ\grs = \grs\circ\phi\). In particular, we see that the fibre of a fibred Lie groupoid \(\phi\colon\grG\to\grH\) at some \(y\gto[h]x\in\grH\) is automatically an embedded submanifold of \(\grG\), and that the source and target maps restrict to
+	\[
+		\grs\colon\phi^{-1}\h{h}\mapsto \phi^{-1}_0\h{x},\quad \grt\colon\phi^{-1}\h{h}\mapsto \phi^{-1}_0\h{y}.
+	\]
+	If \(\grs\h{h}\neq \grt\h{h}\), then the restriction of \(\grm\) to \(\phi^{-1}\h{h}\) is defined on an empty set. Even if \(\grs\h{h} = \grt\h{h}\), then the fibre \(\phi^{-1}\h{h}\) can only contain a unit if \(h\) is a unit. This implies that a lot of fibres, namely any fibre above \(\grH\backslash\grH_0\), cannot contain any algebraic data on its own. In particular, this means that a local trivialisation of \(\phi\), which would look like \(U\times F\), cannot contain any interesting data as \(\phi^{-1}\h{U}\) is not necessarily a groupoid.
+
+	Luckily, a fibred Lie groupoid does contain an internal fibred structure whose fibres are automatically Lie groupoids, namely: \(\ker\phi\subset\grG\), which is smooth by Corollary~\ref{cor: inverse image groupoids}. We can see that these are exactly the fibres of \(\phi\) which have a natural groupoid structure as they contain units and are closed under multiplication. As \(\ker\phi\) and \(\grH_0\) are embedded submanifold, we obtain a fibred Lie groupoid \(\phi\colon \ker\phi\to\grH_0\) covering \(\phi_0\colon \grG_0\to\grH_0\), where we interpret \(\grH_0\) as the identity groupoid. Given a fibred Lie groupoid \(\phi\), we will refer to \(\phi\colon\ker\phi\to\grH_0\) as the kernel bundle.
+	\begin{remark}
+		If \(\phi_0\) is a diffeomorphism, then the kernel bundle is a bundle of Lie groups.
+	\end{remark}
+	Clearly, using Corollary~\ref{cor: inverse image groupoids} the fibres of \(\phi\colon \ker\phi\to\grH_0\) are Lie groupoids. The kernel, therefore, carries the natural structure of a collection of Lie groupoids, which is parametrised by some manifold.
+	\subsection{Families of Lie groupoids}
+		To highlight the structure of a kernel of a Lie groupoid morphism as a collection of Lie groupoids, we will discuss this structure separately. We will first come up with a slightly different definition of such families, but quickly see that they are equivalent.
+		\begin{definition}\label{dfn: family of Lie groupoids}
+			A \df{family of Lie groupoids over \(B\)}\index{Family of Lie groupoids} consists of a Lie groupoid \(\grK\) and a surjective submersion \(p\colon \grK_0\to B\) such that \(p\circ\grs = p\circ\grt\).
+
+			An \df{equivalence of families of Lie groupoids}\index{Equivalence of families of Lie groupoids} \(\grK\), with map \(p\), and \(\grH\), with map \(p'\), over \(B\) is a Lie groupoid isomorphism \(\phi\colon \grK\to\grH\) such that \(p'\circ\phi = p\).
+		\end{definition}
+		\begin{remark}
+			In the case that \(p\) is a diffeomorphism, this becomes a family of Lie groups. These are much more friendly, and this is where the theory of general fibred Lie groupoid diverges from Lie groupoid extensions.
+		\end{remark}
+		Notice that a family of Lie groupoids \(\grK\) with map \(p\colon \grK_0\to B\) induces a map \(\tilde{p}\colon \grK\to B\colon k\mapsto p\circ\grs\h{k}\) which fits into the following commutative diagram:
+		\[\begin{tikzcd}[sep = huge]
+			\grK\arrows{d}{\grt}{\grs}\arrow[r,"\tilde{p}"]&B\arrows{d}{\id}{\id}\\
+			\grK_0\arrow[r,"p"]&B
+		\end{tikzcd}\]
+		Such that \(\tilde{p}\colon \grK\to B\) defines a Lie groupoid morphism to the identity groupoid, and as \(p\) is a surjective submersion, so is \(\tilde{p}\). In this way, we obtain a \(1\)-\(1\) correspondence between families of Lie groupoids over \(B\) and fibred Lie groupoid over \(B\rr B\). Hence, we will simply denote \(p\colon \grK\to B\) for a family of Lie groupoids where we view \(p\) as a Lie groupoid map, and let \(p_0\colon \grK_0\to B\) be its map on the base, which is recovered as \(p_0 = p\circ\gru\).
+
+		Another characterisation of families of Lie groupoids is in terms of the orbit space of the Lie groupoid \(\grK\). Let us denote this by \(X = \grK_0/\grK\) and \(q\colon \grK_0\to X\) for the quotient map. We can call a map \(f\colon X\to B\), where \(B\) is a manifold, \df{smooth} if \(f\circ q\colon \grK_0\to B\) is smooth and a \df{submersion} if \(f\circ\pi\) is. Then there exists an equivalence between maps \(p\colon \grK\to B\) defining a family of Lie groupoids and smooth submersions \(p'\colon X\to B\). Firstly, the base map of a family \(p\colon \grK\to B\) is constant on the fibres of \(q\), and thus descends to the quotient. Going the other way, from a smooth submersion \(f\colon X\to B\), we can define \(p = f\circ q\circ\grs \) to obtain a family of Lie groupoids.
+
+		In this general setting, we obtain a similar result to the remark on kernels, which justifies the name of a family of Lie groupoids.
+		\begin{proposition}\label{prp: fibres of family of Lie groupoids}
+			Let \(p\colon \grK\to B\) and \(p'\colon \grH\to B\) be families of Lie groupoids. The fibres of \(p\) are Lie subgroupoids over the fibres of \(p_0\), i.e.\ \(p^{-1}\h{b}\rr p_0^{-1}\h{b}\), and an equivalence of families of Lie groupoids \(\phi\colon \grK\to\grH\) induces a Lie groupoid isomorphism between the fibres.
+		\end{proposition}
+		\begin{proof}
+			Remark that \(b\subset B\) is a subgroupoid, and as \(p\) is a surjective submersion, it will have a clean intersection. Therefore \(p^{-1}\h{b}\) defines a Lie groupoid over \(p_0^{-1}\h{b}\) by Corollary~\ref{cor: inverse image groupoids}.
+
+			To see that an equivalence of families of Lie groupoids \(\phi\) induces Lie groupoid morphisms, we notice that the restrictions are well-defined. As \(\phi\) is an isomorphism, there exists a Lie groupoid morphism \(\phi^{-1}\) which is its inverse. If we restrict this inverse to the fibres, we obtain exactly the inverse of \(\phi\) after restricting to the fibres. Therefore, it induces an isomorphism of the fibres as Lie groupoids.
+		\end{proof}
+		Our main example of families of Lie groupoids, at least the one we are most interested in, is the kernel of a fibred Lie groupoid. However, many examples come from deformation theory, see \cite{Cardenas2021}, but also from working with bundles of Lie groups. Of course, there is also a trivial example.
+		\begin{example}
+			Given a Lie groupoid \(\grF\) and manifold \(B\), consider the product groupoid \(\grF\times B\rr \grF_0\times B\) where we view \(B\rr B\) as the identity groupoids. With the map \(\pr_1\colon B\times\grF\to B\), this is a family of Lie groupoids over \(B\), called the \df{trivial family with fibre \(\grF\)}. Moreover, we will call a family of Lie groupoids \df{trivial}\index{Trivial family of Lie groupoids} if it is isomorphic to the trivial family.
+		\end{example}
+		\begin{proposition}
+			Let \(p\colon \grK\to B\) be a family of Lie groupoids and \(U\subset B\) an open subset. The restriction \(p\colon p^{-1}\h{U}\to U\) is a family of Lie groupoids.
+		\end{proposition}
+		\begin{proof}
+			Remark that \(U\subset B\) is an open subgroupoid and therefore by Corollary~\ref{cor: inverse image groupoids}, \(p^{-1}\h{U}\) is a Lie groupoid. As \(T_gp^{-1}\h{U} = T_g\grK\), it follows that \(p\colon p^{-1}\h{U}\to U\) is still a surjective submersion and thus it is a family of Lie groupoids.
+		\end{proof}
+		Using the fact that we have a trivial model and that a family of Lie groupoids descends to local data via restrictions, we can define local triviality in the sense of families of Lie groupoids.
+		\begin{definition}
+			A family of Lie groupoids \(p\colon \grK\to B\) is called \df{locally trivial} if there exists a trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) of \(p\) as a surjective submersion such that \(\psi_\alpha\colon p^{-1}\h{U_\alpha}\to U_\alpha\times\grF\) is a Lie groupoid isomorphism, where \(U_\alpha\times\grF\) is the trivial family of Lie groupoids with as fibre some Lie groupoid \(\grF\).
+		\end{definition}
+		\begin{terminology}
+			In the context of families of Lie groupoids, we will refer to a trivialising cover by equivalences of families of Lie groupoids, i.e.\ one in the above sense, simply by a trivialising cover.
+		\end{terminology}
+		\begin{proposition}
+			If \(p\colon \grK\to B\) is a locally trivial family of Lie groupoids, then \(p\colon \grK_0\to B\) is a fibre bundle.
+		\end{proposition}
+		\begin{proof}
+			Suppose that \(p\colon \grK\to B\) is a locally trivial family of Lie groupoids and let \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) be a trivialising cover. As \(\psi_\alpha\colon p^{-1}\h{U_\alpha}\to U_\alpha\times\grH\) is a Lie groupoid morphism, it will cover a map on the base, denoted by \(\phi_{\alpha,0}\colon p^{-1}_0\h{U_\alpha}\to U_\alpha\times\grH_0\). This then fits into the following diagram
+			\[\begin{tikzcd}[sep = huge]
+				p^{-1}\h{U}
+					\arrows{d}{\grt}{\grs}
+%					\arrow[dd,"p"', bend right = 40pt]
+					\arrow[r,"\psi_\alpha"]
+				&U_\alpha\times\grH
+					\arrows{d}{\grt}{\grs}
+%					\arrow[dd,"\pr_1",bend left = 40pt]
+%					\arrow[l,"\psi_\alpha^{-1}", bend left = 6pt]
+					\\
+				p^{-1}_0\h{U}
+					\arrow[d,"p_0"]
+					\arrow[r,"\psi_{\alpha,0}"]
+				&U_\alpha\times\grH_0
+					\arrow[d,"\pr_1"]
+%					\arrow[l,"\psi_{\alpha,0}^{-1}", bend left = 6pt]
+					\\
+				U_\alpha
+					\arrow[r,shift right, no head]
+					\arrow[r,shift left, no head]
+				&U_{\alpha}
+			\end{tikzcd}\]
+			As \(\psi_{\alpha}\) is an isomorphism, it has an inverse, and the base map of the inverse will be an inverse to \(\psi_{\alpha,0}\). Moreover, as \(\psi_{\alpha,0}\) is a map which preserve the fibres of \(p_0\) and \(\pr_1\), we obtain a local trivialisation.
+
+			Collecting all these trivialisations, we conclude that \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) is a trivialising cover for \(p_0\).
+		\end{proof}
+		Notice that the map \(p\colon\grK\to B\) must be a fibre bundle if we want it to be a locally trivial family of Lie groupoids; however, it is not sufficient. Even under mild compactness conditions, like properness of the fibres, the converse implication still does not hold, cf.\ Remark~7.2 in \cite{Crainic2018}. We can show that under certain compactness conditions, a family of Lie groupoids is automatically locally trivial.
+		\begin{proposition}[{\cite[Thm.\ 7.8]{Crainic2018}}]
+			Let \(\colon\grK\to B\) be a family of Lie groupoids with \(\grK\) compact, then it is a locally trivial family of Lie groupoids.
+		\end{proposition}
+
+\section{Multiplicative connections}
+	To describe multiplicative connections on fibred Lie groupoids, we take inspiration from the classical notion, where we defined it as a splitting of the short exact sequence induced by the tangent map. As a fibred Lie groupoid \(\phi\colon \grG\to\grH\) consists of a pair of surjective submersions, we also obtain a pair of vertical bundles, namely \(\Ver = \ker T\phi\) and \(\Ver_0 = \ker T\phi_0\), where the kernel is a vector bundle morphism. Because \(\phi\) is a Lie groupoid morphism, we can see that these combine to form the \VB-groupoid morphism kernel of \(T\phi\colon T\grG\to T\grH\), as was shown in Example~\ref{ex: VBkernel}. Notice that these then fit into a short exact sequence of \VB-groupoids covering \(\grG\):
+	\[\begin{tikzcd}[sep = huge]
+		0\arrow[r]&\Ver\arrow[r]\arrows{d}{}{}&T\grG\arrow[r, "T\phi"]\arrows{d}{}{}&\phi^*T\grH\arrow[r]\arrows{d}{}{}&0\\
+		0\arrow[r]&\Ver_0\arrow[r]&T\grG_0\arrow[r, "T\phi_0"]&\phi_0^*T\grH_0\arrow[r]&0
+	\end{tikzcd}\]
+	Recall that \(\phi^*T\grH\rr \phi_0^*T\grH_0\) is the pullback of a \VB-groupoid along a Lie groupoid morphism as defined in Example~\ref{ex: pullback VB}. As we have an analogue to Lemma~\ref{lem: splitting of vector bundles} in the multiplicative setting, namely Lemma~\ref{lem: splitting lemma vb-groupoid}, we can easily translate the definition of a connection as a splitting of this short exact sequence to the multiplicative setting.
+	\begin{definition}
+		Let \(\phi\colon \grG\to\grH\) be a fibred Lie groupoid, then define the following:
+		\begin{itemize}
+			\item \df{Multiplicative horizontal lift}: A right inverse \(h\colon \phi^*T\grH\to T\grG\) as a \VB-groupoid map.
+			\item \df{Multiplicative connection idempotent}: An idempotent \VB-groupoid map \(p\colon T\grG\to T\grG\) such that \(\im p = \Ver\).
+			\item \df{Multiplicative Ehresmann connection}: A \VB-subgroupoid \(E\subset TM\) complementary to \(\Ver\).
+			\item \df{Multiplicative connection form}: A \(\Ver\)-valued multiplicative \(1\)-form \(\alpha\in\Omega^1_{\mult}\h{\grG;\Ver}\) such that \(\alpha|_{\Ver} = \id|_{\Ver}\). Let us denote \(\conn{\grG}\) for the set of connection forms.
+		\end{itemize}
+	\end{definition}
+	By the nature of \VB-groupoid morphisms and \VB-subgroupoids, a multiplicative connection canonically defines a connection on the base space as well. In particular, if \(\Hor\) is a multiplicative Ehresmann connection on \(\phi\colon \grG\to\grH\), then \(\Hor_0 = \Hor\cap T\gru\h{T\grG_0}\) and thus \(T\grs,T\grt\colon \Hor\to\Hor_0\) as surjective.
+
+    Let us come with a last, but useful interpretation of multiplicative connections in terms of parallel transport, which also shows that these connections correctly intertwine the algebraic and geometric structure of a fibred Lie groupoid.
+	\begin{proposition}\label{prp: mult lift}
+		Let \(\phi\colon \grG\to\grH\) be a fibred Lie groupoid and \(\Hor\) an Ehresmann connection on \(\phi\colon \grG\to\grH\) as a surjective submersion. The following are equivalent:
+		\begin{enumerate}
+			\item \(E\) is a multiplicative Ehresmann connection,
+			\item For \(\h{\gamma_1,\gamma_2}\in C^\infty\h{\ha{0,1},\grH^{\h{2}}}\) and \(g_i\in\phi^{-1}\h{\gamma_i\h{0}}\), such that \(\h{g_1,g_2}\in\grG^{\h{2}}\), the following hold:
+			\[
+				\tilde{\gamma_1\gamma_2}_{g_1g_2} = \tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2},\quad \h{\tilde{\gamma_1}_{g_1}}^{-1} = \tilde{\h{\gamma_1^{-1}}}_{g_1^{-1}},
+			\]
+			wherever the horizontal lifts are defined.
+		\end{enumerate}
+	\end{proposition}
+	\begin{proof}
+		Fix a \(\phi\colon \grG\to\grH\) be a fibred Lie groupoid and \(\Hor\) an Ehresmann connection on \(\phi\colon \grG\to\grH\).
+
+		{i)\(\boldsymbol{\implies}\)ii):}
+			Suppose that \(\Hor\) is a multiplicative connection and recall from Example~\ref{ex: function groupoid} that \(C^\infty\h{\ha{0,1},\grH}\) carries a groupoid structure. Let us also fix some \(\h{\gamma_1,\gamma_2}\in C^\infty\h{\ha{0,1},\grH}^{\h{2}}\) and \(g_i\in\phi^{-1}\h{\gamma_i\h{0}}\), such that \(\h{g_1,g_2}\in\grG^{\h{2}}\).
+
+			This proof will rely on the fact that the horizontal lifts are defined locally as a solution to an ordinary differential equation with some initial values:
+			The horizontal lift of a curve \(\gamma\) to \(x\) by a connection \(\Hor\) is a solution to:
+			\[
+				\dot{\tilde{\gamma}}_x\h{t} = h\h{\dot{\gamma}\h{t}}\in \Hor_{\tilde{\gamma}_x\h{t}},\quad \tilde{\gamma}_x\h{s} = x
+			\]
+			Therefore, proving that these identities hold comes down to checking the initial values and showing that the derivatives are horizontal.
+
+			Let us now show that \(\tilde{\gamma_1\gamma_2}_{g_1g_2} = \tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}\). In particular, we need to show that \(\grs\h{\tilde{\gamma_1}_{g_1}} = \grt\h{\tilde{\gamma_2}_{g_2}}\). Let us show that \(\grs\h{\tilde{\gamma_1}_{g_1}}\) is the horizontal lift of \(\grs\h{\gamma_1}\) to \(\grs\h{g_1}\) with respect to the induced connection \(\Hor_0\), and by symmetry of the problem and the proof this will also implies that \(\grt\h{\tilde{\gamma_2}}_{g_2}\) is the horizontal lift of \(\grt\h{\gamma_2}\) to \(\grt\h{g_2}\). Firstly, notice that \(\grs\h{\tilde{\gamma_1}_{g_1}}\h{0} = \grs\h{g_1}\) and \(\phi_0\h{\grs\h{\tilde{\gamma_1}_{g_1}}} = \grs\h{\phi\h{\tilde{\gamma_1}_{g_1}}} = \grs\h{\gamma_1}\). Lastly, we need to check that \(\grs\h{\tilde{\gamma_1}_{g_1}}\) is horizontal. This also follows from a simple calculation and the fact that \(\Hor_0 = T\grs\Hor\)
+			\[
+				\dv{t}\grs\h{\tilde{\gamma}_g} = T\grs\h{\dot{\tilde{\gamma}}_g}\in T\grs\Hor = \Hor_0.
+			\]
+			Hence, we can conclude that \(\grs\h{\tilde{\gamma}_g} = \tilde{\grs\h{\gamma}}_{\grs\h{g}}\) and \(\grt\h{\tilde{\gamma}_g} = \tilde{\grt\h{\gamma}}_{\grt\h{g}}\). From our choice of \(\gamma_i\) and \(g_i\) we find that \(\grs\h{\gamma_1} = \grt\h{\gamma_2}\) and \(\grs\h{g_1} = \grt\h{g_2}\). Applying the argument of the previous paragraph to \(\tilde{\gamma_1}_{g_1}\) and \(\tilde{\gamma_2}_{g_2}\), we obtain \(\grs\h{\tilde{\gamma_1}_{g_1}} = \grt\h{\tilde{\gamma_2}_{g_2}}\) and thus the lifts can indeed be multiplied.
+
+			This implies that the multiplication of \(\tilde{\gamma_1}_{g_1}\) and \(\tilde{\gamma_2}_{g_2}\) is actually well-defined. To show that this multiplication is indeed the horizontal lift of the multiplication, we need to check the initial conditions and the fact that it is horizontal. This is followed by some easy calculations:
+			\[
+				\h{\tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}}\h{0} = \tilde{\gamma_1}_{g_1}\h{0}\tilde{\gamma_2}_{g_2}\h{0} = g_1g_2,\quad \phi\h{\tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}} = \phi\h{\tilde{\gamma_1}_{g_1}}\phi\h{\tilde{\gamma_2}_{g_2}} = \gamma_1\gamma_2,
+			\]
+			and the fact that \(\Hor\) is closed under multiplication, given by \(T\grm\):
+			\[
+				\dv{t}\h{\tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}} = T\grm\h{\dot{\tilde{\gamma_1}}_{g_1},\dot{\tilde{\gamma_2}}_{g_2}}\in T\grm\h{\Hor^{\h{2}}} \subset\Hor.
+			\]
+			Hence, we can conclude that \(\tilde{\gamma_1\gamma_2}_{g_1g_2} = \tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}\)
+
+			Next, we want to check that \(\h{\tilde{\gamma_1}_{g_1}}^{-1} = \tilde{\h{\gamma_1^{-1}}}_{g_1^{-1}}\). Notice that the following hold:
+			\[
+				\h{\tilde{\gamma_1}_{g_1}}^{-1}\h{0} = \h{\tilde{\gamma_1}_{g_1}\h{0}}^{-1} = g_1^{-1},\quad \phi\h{\h{\tilde{\gamma_1}_{g_1}}^{-1}} = \h{\phi\h{\tilde{\gamma_1}_{g_1}}}^{-1} = \gamma_1^{-1},
+			\]
+			and as \(\Hor\) is closed under the inversion, \(T\gri\), we also get:
+			\[
+				\dv{t}\h{\tilde{\gamma_1}_{g_1}}^{-1} = T\gri\h{\dot{\tilde{\gamma_1}}_{g_1}}\in T\gri\h{\Hor}\subset\Hor.
+			\]
+			We can conclude that \(\h{\tilde{\gamma_1}_{g_1}}^{-1} = \tilde{\h{\gamma_1^{-1}}}_{g_1^{-1}}\).
+
+		{ii)\(\boldsymbol{\implies}\)i):}
+			Suppose that condition ii) holds. We want to show that \(\Hor\) is multiplicative; thus, we need to show that it is closed under multiplication and inversion, as the source and target maps will automatically be surjective, as they are fibrewise surjective and they cover a submersion.
+
+			For the multiplication, pick some \(\h{u_1,u_2}\in \Hor\fp{T\grs}{T\grt}\Hor\), and set \(g_i\in\grG\) such that \(u_i\in\Hor_{g_i}\). As \(T\grs\h{u_1} = T\grt\h{u_2}\) it follows in particular that \(\grs\h{g_1} = \grt\h{g_2}\). From this we can conclude that \(\h{\phi\h{g_1},\phi\h{g_2}}\in\grH^{\h{2}}\) and \(\h{T\phi\h{u_1},T\phi\h{u_2}}\in \h{T\grH}^{\h{2}} = T\h{\grH^{\h{2}}}\).
+
+			Let \(\eta\colon \h{-\epsilon,\epsilon}\colon \grH^{\h{2}}\) be such that \(\eta\h{0} = \h{\phi\h{g_1},\phi\h{g_2}}\) and \(\dot{\eta}\h{0} = \h{T\phi\h{u_1},T\phi\h{u_2}}\). If we let \(\pr_i\colon \grH^{\h{2}}\to\grH\)
+			Suppose that the second condition holds, we need to show that \(\Hor\) is closed under multiplication and inversion.\\
+			For multiplication, take some \(\h{u_1,u_2}\in \Hor\fp{d\grs}{d\grt}\Hor\), which we assume is nonempty. We can then find \(g_1,g_2\in\grG\) such that \(u_1\in E_{g_1}\) and \(u_2\in E_{g_2}\). Notice that \(d\grs\h{u_1} = d\grt\h{u_2}\), while \(d\grs\h{u_1}\in \Hor_{0,\grs\h{g_1}}\) and \(d\grt\h{u_2}\in\Hor_{0,\grt\h{g_2}}\), such that \(\grs\h{g_1} = \grt\h{g_2}\), i.e. \(\h{g_1,g_2}\in\grG^{\h{2}}\). Moreover, \(\h{\phi\h{g_1},\phi\h{g_2}}\in\grH^{\h{2}}\) and \(\h{T\phi\h{u_1},T\phi\h{u_2}}\in T\grH\fp{d\grs}{d\grt}T\grH = T\grH^{\h{2}}\).\\
+			Let \(\eta\colon \h{-\epsilon,\epsilon}\to \grH^{\h{2}}\) be such that \(\eta\h{0} = \h{\phi\h{g_1},\phi\h{g_2}}\) and \(\dot{\eta}\h{0} = \h{T\phi\h{u_1},T\phi\h{u_2}}\). Then define \(\gamma_i = \pr_i\circ\eta\colon \h{-\epsilon,\epsilon}\to\grH\), such that \(\h{\gamma_1,\gamma_2}\in C^\infty\h{\h{-\epsilon,\epsilon},\grH}^{\h{2}}\).\\
+			From the second conditions, it follows that \(\tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2} = \tilde{\gamma_1\gamma_2}_{g_1g_2}\) and \(\eval{\dv{t}}_{t_0}i\h{g_i} = u_i\). Hence, it follows that:
+			\[
+				d\grm\h{u_1,u_2} = d\grm\hk{\eval{\dv{t}}_{t_0}\tilde{\gamma_1}_{g_1},\eval{\dv{t}}_{t_0}\tilde{\gamma_2}_{g_2}} = \eval{\dv{t}}_{t_0}\hk{\tilde{\gamma_1}_{g_1}\tilde{\gamma_2}_{g_2}} = \eval{\dv{t}}_{t_0}\tilde{\gamma_1\gamma_2}_{g_1g_2}.
+			\]
+			We remark that \(\tilde{\gamma_1\gamma_2}_{g_1g_2}\) is horizontal and thus \(d\grm\h{u_1,u_2}\in\Hor\).\\
+			For invertibility, if \(u\in\Hor_g\) consider \(\gamma\colon \h{-\epsilon,\epsilon}\to\grH\) such that \(\gamma\h{0} = \phi\h{g}\) and \(\dot{\gamma}\h{0} = T\phi\h{u}\). Then the assumptions of the second condition imply \(\h{\tilde{\gamma}_{g}}^{-1} = \tilde{\gamma^{-1}}_{g^{-1}}\) and \(\eval{\dv{t}}_{t_0}\tilde{\gamma}_g\). We find that
+			\[
+				d\gri\h{u} = d\gri\hk{\eval{\dv{t}}_{t_0}\tilde{\gamma}_g} = \eval{\dv{t}}_{t_0}\hk{\tilde{\gamma}_g^{-1}} = \eval{\dv{t}}_{t_0}\tilde{\gamma^{-1}}_{g^{-1}}.
+			\]
+			As \(\tilde{\gamma^{-1}}_{g^{-1}}\) is horizontal, we have that \(d\gri\h{u}\in\Hor\).\\
+			We conclude that \(E\) is a multiplicative connection.
+	\end{proof}
+	In particular, it follows from the proof that the following must hold as well.
+	\begin{corollary}\label{cor: source of lift}
+		Let \(\phi\colon \grG\to\grH\) be a fibred Lie groupoid with some multiplicative connection \(\Hor\). For a curve \(\gamma\colon \ha{0,1}\to\grH\) and \(g\in\phi^{-1}\h{\gamma\h{0}}\) we have that \(\grs\h{\tilde{\gamma}_g} = \tilde{\grs\h{\gamma}}_{\grs\h{g}}\) and \(\grt\h{\tilde{\gamma}_g} = \tilde{\grt\h{\gamma}}_{\grt\h{g}}\)
+	\end{corollary}
+	\subsection{Existence problem of multiplicative connections}
+		While the existence of a connection on a surjective submersion is automatic, because any vector subbundle admits a complement, this construction is nontrivial in the case of \VB-groupoids.
+
+		Firstly, notice that even in the case of fibred Lie groupoids covering the identity, there does not always exist a multiplicative connection. The obstructions to the existence have been well researched and were already known in \cite[Prp.\ 6.13]{LaurentGengoux2009}. Here, they construct a cohomology class controlling the existence of multiplicative connections. In \cite{Grad2025}, in particular Proposition 5.2, they prove that this obstruction class is dependent on the data for the obstruction class which lies in \(\grG\) and a particular subbundle of its Lie algebroid, coming from the Lie groupoid morphism. In particular, if \(\phi\colon\grG\to\grH\) is a fibred Lie groupoid covering the identity and \(\grG\) is proper, then it always admits a multiplicative connection \cite[Thm.\ 4.2]{Fernandes2023}.
+
+		In our more general case, the properness of \(\grG\) is not enough to ensure the existence of multiplicative connections. Without going into too much detail, this is related to the fact that a general fibred Lie groupoid does not induce a bundle of ideals, as defined in \cite{Fernandes2023} and used in \cite[Prp.\ 5.2]{Grad2025}. In particular, we can remark the following class of examples.
+		\begin{example}
+			Consider an action \(G\acts M\) of a connected Lie group on a compact manifold \(M\) and let \(G\ltimes M\) denote the action groupoid, as in Example~\ref{ex: action groupoid}. Remark that the projection on \(G\) defines a Lie groupoid morphism, i.e.\ the map
+			\[
+				\pr_1\colon G\ltimes M\to G\colon \h{g,x}\mapsto g.
+			\]
+			Moreover, as the space of arrows of \(G\ltimes M\) is the product \(G\times M\), the projection defines a fibre bundle with compact fibres. It therefore defines a fibred Lie groupoid covering the trivial map \(M\to\hv{*}\).
+
+			Suppose that a multiplicative connection on \(\pr_1\) exists, and let \(\Hor\) be a multiplicative connection. Remark that the induced connection on the base map is the zero bundle as \(\Ver = TM\). The lift of a curve \(\ha{0,1}\to \hv{*}\) through this connection to some \(x\in M\) is the constant curve \(\ha{0,1}\to M\colon t\mapsto x\). Notice that both \(\Hor\) and \(\Hor_0\) are complete connections by Proposition~\ref{prp: Ehresmannlem}.
+
+			Take some curve \(\gamma\colon \ha{0,1}\to G\) with \(\gamma\h{0} = g\) and notice that \(\grs\circ\gamma\h{t} = * = \grt\circ\gamma\h{t}\). By Corollary~\ref{cor: source of lift}, we find that
+			\[
+				\pr_2\circ\tilde{\gamma}_{\h{g,x}}\h{t} = \grs\h{\tilde{\gamma}_{\h{g,x}}}\h{t} = \tilde{\grs\h{\gamma}}_x\h{t} = x.
+			\]
+			As \(\tilde{\gamma}_{\h{g,x}}\) is a lift of \(\gamma\) through \(\pr_1\) it follows that \(\tilde{\gamma}_{\h{g,x}}\h{t} = \h{\gamma\h{t},x}\). However, by Corollary~\ref{cor: source of lift} and completeness of the lift, it follows that
+			\[
+				\gamma\h{t}x = \grt\h{\tilde{\gamma}_{\h{g,x}}\h{t}} = \tilde{\grt\h{\gamma}}_{gx} = gx.
+			\]
+			We can conclude that the action of \(G\acts M\) is constant on the connected components of \(G\). Specifically, the action of \(G^\circ\subset G\), the connected component of the identity, is trivial.
+		\end{example}
+		The above shows that there are fibred Lie groupoids \(\phi\colon\grG\to\grH\) where \(\grG\) is proper, such that there does not exist a multiplicative connection \textemdash take the action groupoid of a nontrivial proper action of a connected Lie group on a compact manifold. The results from \cite{Fernandes2023, Grad2025, LaurentGengoux2009}, therefore, do not directly translate to our generalised case as the obtained obstruction classes are more intricate and need to incorporate the geometry of the base map. In Section~\ref{sec: complete fams of Lie grpds}, we will come back to this issue and give some geometric conditions for existence.
+
+\section{Completeness}
+	The main result of Chapter~\ref{ch: surjective submersions} was the equivalence between the existence of a complete connection and local triviality. We would like to generalise this to the groupoid case as well, where a multiplicative connection is called complete if it is complete as a connection on the top surjective submersion. We have already run into an obstacle here, in the fact that a fibred Lie groupoid \(\phi\colon \grG\to\grH\) does not admit any useful local trivialisations, and we will therefore have to focus on families of Lie groupoids for such a result. Let us first show that the canonical internal family of Lie groupoids, the kernel bundle, almost completely characterises completeness. Then, we will show how local triviality and completeness almost coincide in the case of families of Lie groupoids.
+
+	Remark that in the case of complete connections, there is a variant of Proposition~\ref{prp: mult lift} which incorporates the map
+	\[
+		C^\infty\h{\ha{0,1},\grH}\fp{\operatorname{ev}_0}{\phi}\grG\to C^\infty\h{\ha{0,1},\grG}\colon \h{\gamma,g}\mapsto \tilde{\gamma}_g.
+	\]
+	We remark that \(C^\infty\h{\ha{0,1},\grH}\fp{\operatorname{ev}_0}{\phi}\grG\) defines a subgroupoid of \(C^\infty\h{\ha{0,1},\grH}\times\grG\). Moreover, this is a subgroupoid over the fibred product \(C^\infty\h{\ha{0,1},\grH_0}\fp{\operatorname{ev}_0}{\phi_0}\grG_0\). We remark that the proof of Proposition~\ref{prp: mult lift} implies the following proposition.
+	\begin{proposition}\label{prp: complete mult lift}
+		Let \(\phi\colon\grG\to\grH\) be a fibred Lie groupoid and \(\Hor\) a complete connection, then the following are equivalent:
+		\begin{enumerate}
+			\item \(\Hor\) is multiplicative
+			\item The horizontal lift map, given by
+			\[
+				C^\infty\h{\ha{0,1},\grH}\fp{\operatorname{ev}_0}{\phi}\grG\to C^\infty\h{\ha{0,1},\grG}\colon \h{\gamma,g}\mapsto \tilde{\gamma}_g,
+			\]
+			is a groupoid morphism covering the map
+			\[
+				C^\infty\h{\ha{0,1},\grH_0}\fp{\operatorname{ev}_0}{\phi_0}\grG_0\to C^\infty\h{\ha{0,1},\grG_0}\colon \h{\gamma,x}\mapsto \tilde{\gamma}_x.
+			\]
+		\end{enumerate}
+		In particular, the connection on the base of a complete multiplicative connection is automatically complete.
+	\end{proposition}
+	\begin{proof}
+		This follows directly from Proposition~\ref{prp: mult lift} and its proof.
+	\end{proof}
+	\subsection{Reduction to the kernel}
+		Let us fix some fibred Lie groupoid \(\phi\colon \grG\to\grH\), a multiplicative connection \(\Hor\), and denote \(\grK = \ker\phi\rr \grG_0\). Let us denote \(p\colon \grK\to\grH_0\) for the induced map, i.e. \(p = \phi|_{\grK}\). We notice that there is an induced connection on \(\grK\), given by \(\Hor^{\grK} = \Hor\cap T\grK\). Notice that this defines a vector bundle as it is the complement to \(\ker Tp = \ker T\phi\cap T\grK\) in \(T\grK\). Therefore, the intersection is clean and from Theorem~\ref{thm: clean intersection of subgroupoids} it follows that \(\Hor^{\grK}\) defines a \VB-subgroupoid of \(T\grK\) and thus a multiplicative connection on \(p\).
+		\begin{proposition}
+			Let \(\phi\colon\grG\to\grH\) be a fibred Lie groupoids with a multiplicative connection \(\Hor\) and suppose that \(\gamma\colon\ha{0,1}\to\grH_0\). Then the horizontal lift to some \(g\in\phi^{-1}\h{1_{\gamma\h{0}}}\) by \(\Hor\) and \(\Hor^{\grK}\) coincide.
+		\end{proposition}
+		\begin{proof}
+			Let \(\phi\colon\grG\to\grH\) be a fibred Lie groupoids with a multiplicative connection \(\Hor\), \(\gamma\colon \ha{0,1}\to\grH_0\subset\grH\) a curve and set \(x = \gamma\h{0}\). For any \(g\in\phi^{-1}\h{1_x}\) remark that \(\phi\circ\tilde{\gamma}^{\Hor}_g\h{t} = \gamma\h{t}\in\grH_0\). This implies that \(\tilde{\gamma}^{\Hor}_g\colon \ha{0,1}\to\grK\subset\grG\) and \(\dot{\tilde{\gamma}_g^{\Hor}}\h{t}\in E\cap T\grK = \Hor^{\grK}\), such that \(\tilde{\gamma}_g^{\Hor} = \tilde{\gamma}_g^{\Hor^{\grK}}\).
+		\end{proof}
+		As mentioned before, the kernel of a fibred Lie groupoid defines a family of Lie groupoids, which are arguably much nicer structures to work with. Therefore, we want to reduce our completeness of \(\Hor\) to a completeness of \(\Hor^{\grK}\). One of these implications follows directly from the above proposition.
+		\begin{corollary}\label{cor: cmplt implies cmplt}
+			If \(\Hor\) is a complete, then \(\Hor^{\grK}\) is a complete.
+		\end{corollary}
+	Ideally, this implication would have a direct converse; however, this is not true in general, as can be seen from the following example.
+	\begin{example}\label{ex: counter}
+		Consider the groupoid \(\grH\) defined as the following bundle of groups:
+		\[\begin{tikzcd}
+			\bbR\times\h{\bbZ/2\bbZ}\arrows{d}{\pr_1}{\pr_1}\\
+			\bbR
+		\end{tikzcd}
+		\hspace{1cm}
+		\h{\mbox{arrows: }x\gto[\h{x,n}]x}
+		\]
+		We define the multiplication to be \(\h{x,n}\h{x,m} = \h{x,n + m}\). Then consider the complement of \(\h{0,\hat{1}}\), \(\grH\backslash\hv{\h{0,\hat{1}}}\), and remark that it is closed under multiplication, inversion and contains all the units, while also being an open submanifold, such that the restriction of the source map is still a submersion. This implies that \(\grH\backslash\hv{\h{0,\hat{1}}}\) is still a Lie groupoid over \(\bbR\), and in particular it is a Lie subgroupoid of \(\grH\).
+
+		Next, we consider the disjoint union groupoids \(\grG = \grH\coprod\h{\grH\backslash\hv{\h{0,\hat{1}}}}\) as in Example~\ref{ex: disjoint union}, which is a Lie groupoid over \(\bbR\coprod\bbR\). Moreover, it obtains an induced map \(\phi:\grG\to\grH\) as the disjoint union of the identity and inclusion map, which is a fibred Lie groupoid.
+
+		Notice that \(\phi\) is a local diffeomorphism, but not a covering space, as any neighbourhood of \(\h{0,\hat{1}}\) is not evenly covered. In particular, this implies that the kernel of \(T\phi\) is the trivial bundle and thus there is just a unique multiplicative connection on \(\phi\). However, this connection is not complete: Consider the curve \(\gamma:\ha{0,1}\to \grH:t\mapsto \h{1-t,1}\) and notice that this cannot be lifted on the whole of \(\ha{0,1}\) to the second component of \(\grG\), i.e. to \(\h{\h{0,\hat{1}},1}\in \grH\backslash\hv{\h{0,\hat{1}}}\subset\grG\), due to \(\h{\h{0,\hat{1}},1}\notin\grG\) by construction.
+
+		The kernel bundle of \(\phi\) is given by \(\bbR\times\hv{0}\coprod\bbR\times\hv{0}\), on which the induced connection is trivial and a lift of a curve is simply given by the inclusion into a component. Remark that \(\grs:\phi^{-1}\h{h}\to\phi^{-1}_0\h{\grs\h{h}}\) is not surjective for \(h = \h{0,\hat{1}}\) as \(\phi^{-1}\h{0,\hat{1}} = \hv{\h{\h{0,\hat{1}},0}}\) and \(\phi^{-1}_0\h{0,\hat{1}} = \hv{\h{0,0},\h{0,\hat{1}}}\).
+	\end{example}
+	Under some additional conditions, we do obtain a converse of Corollary~\ref{cor: cmplt implies cmplt}. In particular, the failure of the map \(\grs\colon\phi^{-1}\h{h}\to\phi_0^{-1}\h{\grs\h{h}}\) to be surjective in Example~\ref{ex: counter} was problematic remark however, the following does hold
+	\begin{proposition}\label{prp: auto sub}
+		Given a fibred Lie groupoid \(\phi\colon\grG\to\grH\), for any \(h\in \grH\), the restrictions of the source and target map, \(\grs\colon \phi^{-1}\h{h}\to \phi^{-1}_0\h{\grs\h{h}}\) and \(\grt\colon \phi^{-1}\h{h}\to \phi^{-1}_0\h{\grt\h{h}}\), are submersions.
+	\end{proposition}
+	\begin{proof}
+		Let \(\phi\colon\grG\to\grH\) be a fibred Lie groupoid and take some \(h\in\grH\). Remark that it is enough to show it for \(\grs\), as it follows for \(\grt\) by applying the diffeomorphism \(\gri\), thus let us denote \(\grs\h{h} = x\). We rewrite the tangent spaces as follows:
+		\[
+			T_g\phi^{-1}\h{h} = \ker T_g\phi = \Ver_g,\quad T_y\phi^{-1}_0\h{x} = \ker T_y\phi_0 = \Ver_{0,y}.
+		\]
+		It follows from Example~\ref{ex: VBkernel} that \(T_g\grs\h{\Ver_g} = \Ver_{0,y}\) when \(\grs\h{g} = y\). Therefore \(\grs\colon \phi^{-1}\h{h}\to\phi^{-1}_0\h{x}\) is a submersion.
+	\end{proof}
+	A solution to this is to consider only specific fibred Lie groupoids, the class of which is inspired by the definition of fibred categories, cf.\ \cite[\href{https://stacks.math.columbia.edu/tag/0123}{Tag 02XJ}]{stacks-project}.
+	\begin{definition}
+		A fibred Lie groupoid \(\phi\colon\grG\to\grH\) is said to be \df{arrow complete} if the following map is surjective:
+		\[
+			\grs\times\phi\colon\grG\to\grG_0\fp{\phi_0}{\grs}\grH\colon g\mapsto \h{\grs\h{g},\phi\h{g}}.
+		\]
+	\end{definition}
+	In particular, this definition is equivalent to the particular restrictions of the sources being surjective.
+	\begin{proposition}
+		A fibred Lie groupoid \(\phi\colon\grG\to\grH\) is arrow complete if and only if for all \(h\in\grH\) the restriction \(\grs\colon\phi^{-1}\h{h}\to\phi_0^{-1}\h{\grs\h{h}}\) is surjective.
+	\end{proposition}
+	This class of Lie groupoid morphisms is related to a so-called cleavage of a Lie groupoid morphism, which is understood as a subset \(C\subset \grG\) such that \(\grs\times\phi\colon C\mapsto \grG_0\fp{\phi_0}{\grs}\grH\) is a bijection, cf.\ \cite{delHoyo2025}. These objects then coincide with right inverses of \(\grs\times\phi\colon\grG\to\grG_0\fp{\phi_0}{\grs}\grH\) and thus their existence is equivalent to the surjectivity of this map, i.e\ the fibred Lie groupoid being arrow complete.
+
+	Under this additional assumption, we obtain a converse to Corollary~\ref{cor: cmplt implies cmplt}.
+	\begin{theorem}\label{thm: dit is epic, cleavage}
+		If \(\phi\colon\grG\to\grH\) is a fibred Lie groupoid that is arrow complete and a connection \(\Hor\) such that \(\Hor^{\grK}\) is complete, then \(\Hor\) is complete.
+	\end{theorem}
+	The idea of the proof is as follows: Pick a curve and lift it maximally, and suppose that this is not defined on the whole domain. To extend it further, we remark that the source of our lift can be lifted to the kernel bundle instead, on which we know our connection is complete. Therefore, we can find a suitable extension of the source of the lift. Due to the surjectivity of the source map, we can then find a lift of this source to a suitable fibre, to which we can again find a horizontal lift. As this is redefined on some open neighbourhood, the original lift and this new lift must be defined on some common open interval. Here, they are related by a curve lying in the kernel, and therefore, this relation can be extended to the full interval. We can then extend the original lift using this new lift and this extended relation. A schematic drawing can be found in Figure~\ref{fig: lifting}.
+	\begin{figure}
+		\centering
+		\includegraphics[width = 0.6\textwidth]{img/PathLiftings.pdf}
+		\caption{The map \(\phi\colon \grG\to\grH\) is a fibred Lie groupoid and the red curves are all horizontal lifts of \(\gamma\), which is a curve in \(\grH\). We can then notice that by suitable choice of \(g'\), the curves \(\tilde{\gamma}_g\) and \(\tilde{\gamma}_{g'}\) have the same source and therefore they are related by some curve \(\eta\) in the kernel. This curve is a lift of \(\grs\h{\gamma}\) and therefore it extends. An extension of \(\tilde{\gamma}_g\) is then obtain by the multiplication of \(\eta\) and \(\tilde{\gamma}_{g'}\).}
+		\label{fig: lifting}
+	\end{figure}
+	\begin{proof}
+		Suppose that \(\phi\) is a fibred Lie groupoid which is arrow complete with a multiplicative connection \(\Hor\) such that \(\Hor^{\grK}\) is complete. Let \(\gamma\colon \ha{0,1}\to\grH\) be some curve starting at \(h_0\) and take \(g\in\phi^{-1}\h{h_0}\) with \(\grs\h{g} = x\). Then there exists some \(\epsilon > 0\) such that \(\tilde{\gamma}^{\Hor}_{g}\) is defined on \([0,\epsilon)\). We remark that \(\grs\h{\tilde{\gamma}_g} = \tilde{\grs\h{\gamma}}_x\colon [0,\epsilon)\to\grG_0\), see Corollary~\ref{cor: source of lift}. As \(\grs\h{\gamma}\) maps into the units, we find that \(\tilde{\grs\h{\gamma}}_x = \tilde{\grs\h{\gamma}}_x\), such that this lift is actually defined on \(\ha{0,1}\).
+
+		Set \(1_y = \tilde{\grs\h{\gamma}}_x\h{\epsilon}\), and take some \(g'\in\phi^{-1}\h{\gamma\h{\epsilon}}\cap\grG_y\), which exists as we assume arrow completeness. The the lift \(\tilde{\gamma}_{g'}\) is defined on some \(\h{\epsilon - \delta,\epsilon + \delta}\). We remark that \(\grs\h{\tilde{\grs\h{\gamma}}_x}\) defines a horizontal lift of \(\grs\h{\gamma}\) by the connection \(\Hor_0\) as \(\Hor_0 = T\grs\h{\Hor}\) and the fact that \(\phi_0\circ\grs|_{\grK} = \phi|_{\grK}\). By the uniqueness of lifts, it follows that on \(\h{\epsilon - \delta,\epsilon}\) the lifts \(\grs\h{\tilde{\gamma}_g}\) and \(\grs\h{\tilde{\gamma}_{g'}}\) coincide. Consider the following:
+		\[
+			\eta\colon \h{\epsilon - \delta,\epsilon}\to\grK\colon t\mapsto \tilde{\gamma}_g\h{t}\h{\tilde{\gamma}_{g'}\h{t}}^{-1}.
+		\]
+		This is a curve in the kernel and \(\phi\circ\eta = \gru\h{\grt\h{\gamma}}\), such that this curve lifts completely to \(\ha{0,1}\), let us also denote this extension by \(\eta\). Notice that \(\grs\h{\eta} = \grt\h{\tilde{\gamma}_g}\) on \(\h{\epsilon - \delta,\epsilon}\), which are both horizontal lifts of \(\grt\h{\gamma}\) by \(\Hor_0\) as the connection is multiplicative. Therefore, it extends to \(\h{\epsilon - \delta,\epsilon + \delta}\) by Corollary~\ref{cor: source of lift}. An extension of \(\tilde{\gamma}_g\) can then be defined as
+		\[
+			\zeta\colon [0,\epsilon + \delta)\to\grG\colon t\mapsto
+			\begin{cases}
+				\tilde{\gamma}_g\h{t}        &\mbox{ if }t < \epsilon\\
+				\eta\h{t}\tilde{\gamma}_{g'}\h{t}  &\mbox{ else}
+			\end{cases}
+		\]
+		This implies that the lift of \(\gamma\) can always be extended maximally to \(\ha{0,1}\).
+	\end{proof}
+%	\begin{proof}
+%		Suppose that \(E^{\ker\phi}\) is the induced connection on \(\ker\phi\) and it is complete. Consider some \(\gamma\colon \ha{0,1}\to\grH\) and remark that locally a lift to any \(y\gto x\in \phi^{-1}\h{\gamma\h{0}}\) must exist. Say for some \(\epsilon > 0\), we know that \(\hv{g}\times [0,\epsilon)\in\scrD\h{\gamma}\), i.e. \(\tilde{\gamma}_g\colon [0,\epsilon)\to\grG\) is well-defined. Remark that \(\grs\circ\tilde{\gamma}_g\) is a lift of \(\grs\circ\gamma\colon \ha{0,1}\to\grH_0\) to \(x\). This implies that \(\tilde{\grs\h{\gamma}}_x^{\ker\phi}\colon \ha{0,1}\to\ker\phi\) is defined and \(\tilde{\grs\h{\gamma}}_x^{\ker\phi}|_{[0,\epsilon)} =\grs\circ\tilde{\gamma}_g\).
+%
+%		Next, take some element \(g'\in\grs^{-1}\h{\grs\h{\tilde{\grs\h{\gamma}}_x^{\ker\phi}\h{\epsilon}}}\cap\phi^{-1}\h{\gamma\h{\epsilon}}\). Then for some \(\delta > 0\) we know that the lift of \(\gamma\) to \(g'\) exists on \(\h{\epsilon - \delta,\epsilon + \delta}\), so \(\tilde{\gamma}_{g'}\colon \h{\epsilon - \delta,\epsilon + \delta}\to\grG\) exists. As \(\grs\circ\tilde{\gamma}_{g'}\) is again a lift of \(\grs\circ\gamma\), again starting at \(\grs\h{\tilde{\grs\h{\gamma}}_x^{\ker\phi}\h{\epsilon}}\). Therefore \(\grs\circ\tilde{\gamma}_{g'}\) and \(\grs\circ\tilde{\gamma}_g\) coincide where they are defined. Let us then consider the curve \(\eta\colon \h{\epsilon - \delta,\epsilon}\mapsto\grG\colon \tilde{\gamma}_g\tilde{\gamma^{-1}}_{{g'}^{-1}}\), and remark that this actually maps into \(\ker\phi\) and is a lift of \(\gru\circ\grs\circ\gamma\), therefore it extends to the whole of \(\ha{0,1}\).
+%
+%		Now notice that \(\grs\circ\eta\) and \(\grt\circ\tilde{\gamma}_{g'}\) are lifts of \(\grt\circ\gamma\) which agree on \((\epsilon - \delta,\epsilon)\) and thus they agree on the whole of \(\h{\epsilon - \delta,\epsilon + \delta}\). This lets us define the following
+%		\[
+%			\zeta\colon [0,\epsilon + \delta)\to\grG\colon t\mapsto
+%			\begin{cases}
+%				\tilde{\gamma}_g\h{t}      &\mbox{ if }t < \epsilon\\
+%				\eta\h{t}\tilde{\gamma}_{g'} &\mbox{ else}
+%			\end{cases}
+%		\]
+%		It is an easy check that this is a lift of \(\gamma\) which extends \(\tilde{\gamma}_g\). We can conclude that \(\tilde{\gamma}_g\) is defined on the whole of \(\ha{0,1}\).
+%	\end{proof}
+	Besides this condition being sufficient, we can also show that, in some cases, it is necessary.
+		\begin{proposition}\label{prp: complete and s conn implies sur}
+			Let \(\phi\colon\grG\to\gr\grH\) be a fibred Lie groupoid with a complete multiplicative connection and suppose that \(\grH\) is \(\grs\)-connected, then it is arrow complete.
+		\end{proposition}
+		\begin{proof}
+			Suppose that \(\Hor\) is complete and \(\grH\) is \(\grs\)-connected and fix some \(y\gto[h]x\in\grH\), \(z\in\phi^{-1}_0\h{x}\). By the \(\grs\)-connectedness, take a curve \(\gamma\colon \ha{0,1}\to\grH_x\), where \(\gamma\h{0} = 1_x\) and \(\gamma_1\h{1} = h\). The lift \(\tilde{\gamma}_{1_z}\) then satisfies \(\grs\h{\tilde{\gamma}_{1_z}} = z\) by Corollary~\ref{cor: source of lift} and the fact that \(\grs\h{\gamma}\h{t} = y\) is a constant curve. This implies that \(g = \tilde{\gamma}_{1_z}\in \grG_z\) such that \(\phi\h{g} = h\). Therefore, \(\phi\) is arrow complete.
+		\end{proof}
+	\subsection{Completeness for families of Lie groupoids}\label{sec: complete fams of Lie grpds}
+		The next step in understanding completeness is getting a grasp of complete connections on families of Lie groupoids and their relation to local triviality. Similar to the classical case, one of these directions follows easily.
+		\begin{proposition}\label{prp: compl conn loc triv fam of lie groupoid}
+			Let \(p\colon \grK\to B\) be a family of Lie groupoids. If it admits a complete multiplicative connection, then it is locally trivial as a family of Lie groupoids.
+		\end{proposition}
+		\begin{proof}
+			This proof is completely analogous to the proof in Theorem~\ref{thm: complete iff fibre bundle}, but we will comment on some details.
+
+			Given a contraction \(c\colon U\times\ha{0,1}\to U\), for \(U\subset B\) open, we can construct some trivialisation, where we define \(\gamma_b\colon \ha{0,1}\to\grK\colon t\mapsto c\h{b,t}\) and set \(\psi\h{g} = \h{p\h{g},\tilde{\gamma_{p\h{g}}}_g\h{1}}\). Fix some \(\h{g,h}\in\grK^{\h{2}}\), such that in particular \(p\h{g} = b = p\h{h}\). By Proposition~\ref{prp: mult lift}, it follows that
+			\[
+				\psi\h{gh}
+				= \h{b,\tilde{\h{\gamma_{b}}}_{gh}\h{1}}
+				= \h{b,\tilde{\h{\gamma_{b}}}_g\h{1}\tilde{\gamma_{b}}_{h}\h{1}} = \h{b,\tilde{\h{\gamma_{b}}}_g\h{1}}\h{b,\tilde{\h{\gamma_{b}}}_h\h{1}}
+				= \psi\h{g}\psi\h{h}
+			\]
+			Therefore, the trivialisation is an equivalence of families of Lie groupoids. By covering \(B\) in contractible opens, we obtain a cover of trivialisations by equivalences of families of Lie groupoids.
+		\end{proof}
+		We do not have a general converse to this statement, as multiplicative connections are, in a sense, `rarer' compared to general connections. However, we can find sufficient conditions similar to Proposition~\ref{prp: good S}, combined with some algebraic conditions, such that a multiplicative connection exists on a locally trivial family of Lie groupoids.
+		Yet, we can find additional conditions similar to that of Proposition~\ref{prp: good S}, such that we can still find a connection with similar conditions.
+		\begin{proposition}\label{prp: good S mult}
+			Let \(\grG\hookrightarrow \grK\phito B\) be a locally trivial family of Lie groupoids with trivialising cover \(\hv{\h{V_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) which is locally finite, and \(\hv{U_\alpha}_{\alpha\in\Lambda}\) an open cover of \(B\) with \(\overline{U}_\alpha\subset V_\alpha\), and suppose that \(\grK\) is proper. Suppose that for each \(\alpha\in\Lambda\) we have a closed subset \(S_\alpha\subset \grG\) which are \(\grG\)-biinvariant, such that
+			\[
+			S_\alpha\cap \psi_{\alpha\beta,b}\h{S_\beta} = \emptyset,\quad \forall \alpha\neq\beta\in\Lambda,\ b\in \overline{U_{\alpha\beta}}.
+			\]
+			Then there exists a multiplicative Ehresmann connection \(\Hor\) such that \(T\psi_\alpha\h{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}\).
+		\end{proposition}
+		The proof of this proposition is almost analogous to the proof of Proposition~\ref{prp: good S}, where we only need to check for multiplicativity at each point. One can verify the details skipped in this proof by comparing with Proposition~\ref{prp: good S}.
+		\begin{proof}[Sketch of proof]
+			Suppose that \(\grG\hookrightarrow \grK\phito B\) is a family of Lie groupoids with a trivialising cover \(\hv{\h{V_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) and let \(\hv{U_\alpha}_{\alpha\in\Lambda}\) and \(\hv{S_\alpha}_{\alpha\in\Lambda}\) be as in the statement. The canonically induced connection on \(\grK|_{U_\alpha}\), given by
+			\[
+			h_\alpha\colon \phi^*TU_\alpha\to T\grK|_{U_\alpha}\colon \h{x,v}\mapsto T_{\psi_\alpha\h{x}}\psi_\alpha^{-1}\h{v,0},
+			\]
+			defines a multiplicative connection. Additionally, the sets \(W_\alpha\), defined by
+			\[
+			W_\alpha = \phi^{-1}\h{U_\alpha}\backslash \bigcup_{\beta\neq\alpha}\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta},
+			\]
+			give an open cover of \(\grK\). Moreover, we can show that these are \(\grK\)-biinvariant sets. Remark that the action of \(\grK\) on itself can be restricted to actions on the fibred of \(\phi\). Therefore, it is enough to show that \(\phi^{-1}\h{b}\cap W_\alpha\) is \(\grK\)-biinvariant. Notice that this set can be rewritten as
+			\[
+			\phi^{-1}\h{b}\cap W_\alpha = \phi^{-1}\h{b}\backslash\bigcup_{\beta\neq\alpha}\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta} = \phi^{-1}\h{b}\backslash\bigcup_{\beta\neq\alpha}\psi_\beta^{-1}\h{\hv{b}\times S_\beta} = \bigcap_{\beta\neq\alpha}\psi_\beta^{-1}\h{\hv{b}\times \grG\backslash S_\beta}
+			\]
+			As \(S_\beta\) is \(\grG\)-biinvariant, so is \(\grG\backslash S_\beta\), and as \(\psi_\beta\) is a Lie groupoid isomorphism, the sets \(\psi_\beta^{-1}\h{\hv{b}\times \grG\backslash S_\beta}\) are \(\grK\)-biinvariant. We can conclude that their intersection, and thus \(\phi^{-1}\h{b}\cap W_\alpha\), is \(\grK\)-biinvariant as well.
+
+			Due to \(W_\alpha\) being \(\grK\)-biinvariant, we can define \(V_\alpha = q\circ\grs\h{W_\alpha} = q\circ\grt\h{W_\alpha}\subset \grK_0/\grK\). As \(\grK\) is a proper groupoid, then its orbit space \(\grK_0/\grK\) admits a smooth partition of unity \(\{\tilde{\chi}_\alpha\}_{\alpha\in\Lambda}\), where smoothness is in the sense as described after Definition~\ref{dfn: family of Lie groupoids}, subordinate to \(\hv{V_\alpha}_{\alpha\in\Lambda}\), see \cite[Prp.\ 3.9]{Crainic2017}. We then obtain a \(\grK\)-biinvariant partition of unity subordinate to \(\hv{W_\alpha}_{\alpha\in\Lambda}\), defined as \(\hv{\chi_\alpha}_{\alpha\in\Lambda} = \hv{\tilde{\chi}_\alpha\circ q\circ\grs}_{\alpha\in\Lambda}\). The glueing of the canonical multiplicative connections with respect to this partition of unity, denoted \(h = \sum_{\alpha\in\Lambda}\chi_\alpha h_\alpha\), then defines a multiplicative connection, whose Ehresmann connection satisfies
+			\[
+				T\psi_\alpha\h{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}.
+			\]
+		\end{proof}
+
+		Much like in the proof of Theorem~\ref{thm: complete iff fibre bundle}, we want to define the sets \(S_\alpha\) as the level sets of some proper function. To have such biinvariant sets, we must require our proper functions to be biinvariant as well. We remark the following proposition relating the properness of \(\grs\) to the existence of biinvariant proper maps.
+		\begin{proposition}\label{prp: wtf is happening}
+			Let \(\grG\) be a Lie groupoid, then the following are equivalent:
+			\begin{enumerate}
+				\item \(\grs\) is a proper map.
+				\item There exists a smooth function \(f\colon\grG_0\to\bbR_{\geq0}\) such that
+					\begin{itemize}
+						\item it is \(\grG\)-invariant;
+						\item \(\grs^*f\) is proper.
+					\end{itemize}
+			\end{enumerate}
+		\end{proposition}
+
+		To prove this, we will use the following lemmas.
+		\begin{lemma}\label{lem: properness implies invariance}
+			Let \(\grG\) be a Lie groupoid such that \(\grs\) is proper, then all orbits \(\scrO_x\) of \(\grG\) are compact and they admit a precompact neighbourhood which is invariant for action of \(\grG\) on \(\grG_0\).
+		\end{lemma}
+		\begin{proof}
+			Suppose that \(\grG\) is a Lie groupoid such that \(\grs\) is proper. Remark that the orbit of \(x\) in \(\grG\) is defined as \(\scrO_x = \grt\h{\grs^{-1}\h{x}}\). Therefore, they are all compact. Next, we let \(\tilde{U}\) be a precompact neighbourhood of \(\scrO_x\). The saturation \(U = \grt\h{\grs^{-1}\h{\tilde{U}}}\) is then precompact neighbourhood as well. Moreover, it is invariant for the left \(\grG\) action on \(\grG_0\) as for some \(x\in U\), there exists a \(g\in\grG\) such that \(\grt\h{g} = x\) and \(\grs\h{g}\in \tilde{U}\). If \(h\in\grG_{x}\), it follows that \(h\cdot x = \grt\h{h} = \grt\h{hg}\) and \(\grs\h{hg} = \grs\h{g} \in \tilde{U}\). Therefore, \(h\cdot x\in \grt\h{\grs^{-1}\h{\tilde{U}}} = U\).
+		\end{proof}
+		\begin{lemma}\label{lem: properness gives proper quotient}
+			Let \(\grG\) be a Lie groupoid such that \(\grs\) is proper, then \(q\colon\grG_0\to\grG_0/\grG\) is a proper map.
+		\end{lemma}
+		\begin{proof}
+			Let \(\grG\) be a Lie groupoid such that \(\grs\) is proper, and let \(q\colon\grG_0\to\grG_0/\grG\) denote the quotient map with respect to the left action of \(\grG\). Consider a compact subset \(K\subset\grG_0/\grG\). By Lemma~\ref{lem: properness implies invariance}, using the \(\grs\)-properness, any \(\calO\in K\), which is an orbit, admits a precompact neighbourhood \(U_{\calO}\) of \(\calO\subset\grG_0\) which is invariant for the left \(\grG\)-action. Therefore, \(\hv{U_{\calO}/\grG_0|\ \calO\in K}\) defines an open cover of \(K\). By the compactness of \(K\), there must exist an open subcover \(\hv{U_{\scrO_i}/\grG}_{i = 1}^n\). It follows that \(q^{-1}\h{K}\subset \bigcup_{i = 1}^nU_{\scrO_i}\). As \(\scrO_i\) is precompact, it follows that \(q^{-1}\h{K}\) is compact, such that \(q\) is a proper map.
+		\end{proof}
+		\begin{proof}[Proof of Prp.~\ref{prp: wtf is happening}]
+			Suppose that \(\grG\) is a Lie groupoid.
+
+			i)\(\implies\)ii):
+			Let \(\grs\) be a proper map and notice that this in particular implies that \(\grG\) is a proper groupoid as for a compact \(K\subset \grG_0\times\grG_0\) we find that \(\h{\grt,\grs}^{-1}\h{K}\subset \grs^{-1}\h{\pr_2\h{K}}\). Additionally, let \(q\colon\grG_0\to\grG_0/\grG\) denote the quotient map with respect to the left action of \(\grG\) on \(\grG_0\). The orbit space of \(\grG\) admits a proper map \(f_0\colon\grG_0/\grG\to\bbR_{\geq0}\) such that \(f_0\circ q\colon\grG_0\to\bbR_{\geq 0}\) is smooth, see \cite[Prp.\ 3.9]{Crainic2017}. From Lemma~\ref{lem: properness gives proper quotient}, it follows that \(f = f_0\circ q\) is a proper smooth biinvariant map, and thus \(\grs^*f = f\circ\grs\) is proper a well.
+
+			ii)\(\implies\)i):
+			Let \(f\colon\grG_0\to\bbR_{\geq 0}\) be a map such that \(\grs^*f = \grt^*f\) and \(\grs^*f\) is proper. Let \(K\subset\grG_0\) be a compact set, and notice that
+			\[
+				\grs^{-1}\h{K} = \hv{g\in\grG|\ \grs\h{g}\in K} \subset \hv{g\in\grG|\ f\circ\grs\h{g}\in f\h{K}} \subset \h{\grs^*f}^{-1}\h{f\h{K}}.
+			\]
+			As \(\grs^*f\) is proper and \(f\h{K}\) is compact, this last set is compact. Moreover, \(\grs^{-1}\h{K}\) is closed, and as it is contained in a compact set, it is compact itself. Therefore, \(\grs\) is a proper map.
+		\end{proof}
+		Combining the above results then lets us prove a multiplicative version of Theorem~\ref{thm: complete iff fibre bundle} under some additional compactness conditions.
+		\begin{theorem}
+			Let \(p\colon\grK\to B\) be a locally trivial family of Lie groupoids with typical fibre \(\grG\). Suppose that \(\grG\) is a Lie groupoid whose source map is proper, then \(p\) admits a complete multiplicative connection.
+		\end{theorem}
+		\begin{proof}[Sketch of the proof]
+			The proof of this theorem is completely analogous to that of Theorem~\ref{thm: complete iff fibre bundle}. However, we will point out some of the modifications here:
+
+			Assume that \(p\colon\grK\to B\) is a locally trivial family of Lie groupoids, with local trivialisations \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\), where we have the same restrictions on this set as in the proof of Theorem~\ref{thm: complete iff fibre bundle}, such that \(\grG\) has a proper source map.
+
+			By Proposition~\ref{prp: wtf is happening}, it follows that there exists a map \(f\colon\grG_0\to\bbR_{\geq0}\) such that \(\tilde{f} = \grs^*f\colon\grG\to\bbR_{\geq0}\) is a \(\grG\)-biinvariant proper map. Following the constructions of the proof of Theorem~\ref{thm: complete iff fibre bundle}, we can define suitable \(N_\alpha\) and \(S_\alpha = f^{-1}\h{N_\alpha}\subset\grG\). Because \(f\) is \(\grG\)-invariant, these sets are also \(\grG\)-biinvariant and thus they satisfy all the conditions of Proposition~\ref{prp: good S mult}, such that we obtain a multiplicative Ehresmann connection \(\Hor\) satisfying
+			\[
+				T\psi_\alpha\hk{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}.
+			\]
+			Moreover, the connected components of \(F\backslash S_\alpha\) will be precompact again. By Proposition~\ref{prp: sick}, this defines a complete multiplicative Ehresmann connection.
+		\end{proof}
+		This describes the analogue of Theorem~\ref{thm: complete iff fibre bundle} for the multiplicative setting. It is even a generalisation if we view a surjective submersion as a fibred Lie groupoid of the identity groupoids by remarking that the source map of the identity groupoid is proper. However, while a fibred Lie groupoid's completeness can be deduced from the kernel bundle, there is an additional, smaller surjective submersion internal to a family of Lie groupoids, namely, its base map. For a fibred Lie groupoid, we know that the completeness of a multiplicative connection implies that the connection on the base is complete, see Proposition~\ref{prp: complete mult lift}. In a particular case, the completeness of a connection on a family of Lie groupoids can be fully recovered from the completeness on the base; in other words, we then have a converse of Proposition~\ref{prp: complete mult lift}.
+		\begin{proposition}
+			Let \(p\colon \grK\to B\) be a family of Lie groupoids which is \(\grt\)-connected and suppose that \(\Hor\) is a multiplicative Ehresmann connection. If \(\Hor_0\) is a complete connection on \(p_0\), then \(\Hor\) is complete.
+		\end{proposition}
+		\begin{proof}
+			Let \(\Hor\) be a multiplicative Ehresmann connection on a \(\grt\)-connected family of Lie groupoids \(p\colon \grK\to B\), for which the induced connection \(\Hor_0\) on the base is complete. Take an arbitrary curve \(\gamma\colon \ha{0,1}\to B\) and set \(x = \gamma\h{0}\). We will denote the lift through \(\Hor\) by \(\tilde{\gamma}^{\Hor}\) and by \(\Hor_0\) by \(\tilde{\gamma}^{\Hor_0}\).
+
+			In this proof, we want to argue through Proposition~\ref{prp: t-conn is generated by open}. Hence, we want to find a neighbourhood \(U\) of \(p_0^{-1}\h{x}\subset p^{-1}\h{x}\) such that the horizontal lift \(\tilde{\gamma}_y\) is defined on the whole of \(\ha{0,1}\) for all \(y\in U\). If we then take some \(g\in p^{-1}\h{x}\), then there exist \(\hv{u_i}_{i = 1}^n\subset U\) such that \(g = u_1\cdots u_n\). To lift to \(g\), we can simply lift to each \(u_i\) and remark that as \(\gamma\) maps to only units, it is idempotent with respect to the multiplication, such that
+			\[
+				\tilde{\gamma}^{\Hor}_g = \tilde{\gamma\cdots\gamma}^{\Hor}_{u_1\cdots u_n} = \tilde{\gamma}^{\Hor}_{u_1}\cdots\tilde{\gamma}^{\Hor}_{u_n}.
+			\]
+			Therefore, the lift to \(g\) will be complete if it is complete to all \(u_i\).
+
+			For some unit \(1_y\in p^{-1}\h{x}\) we can obtain a lift by taking \(\tilde{\gamma}^{\Hor}_{1_y} = \gru\circ\tilde{\gamma}^{\Hor_0}_y\). As \(\Hor_0\) is complete, this lift will also be complete. Moreover, it is horizontal as \(T\gru\h{\Hor_0}\subset\Hor\). From the tube lemma, it follows that there exists some open neighbourhood \(U_y\) of \(1_y\) in \(p^{-1}\h{x}\) such that the horizontal lift exists on the whole of \(\ha{0,1}\) to any of the points in \(U_y\). If we set \(U = \bigcup_{y\in p^{-1}\h{x}}U_y\), this will be an open neighbourhood of \(p_0^{-1}\h{x}\subset p^{-1}\h{x}\) on which the horizontal lifts are complete.
+		\end{proof}
+		Again, we can show that we cannot fully drop this assumption by a variation on Example~\ref{ex: counter}.
+		\begin{example}
+			Consider \(\grH\) as in Example~\ref{ex: counter}, and take the family of groupoids:
+			\[\begin{tikzcd}
+				\grG = \h{\grH\backslash\hv{\h{0,\hat{1}}}}\times\bbR\arrows{d}{}{}\arrow[rd, "\pr_2"]&\\
+				\bbR\times\bbR\arrow[r,"\pr_2"]&\bbR
+			\end{tikzcd}\]
+			We remark that \(T_{\h{x,\hat{n};y}}\grG = T_{\h{x,\hat{n}}}\h{\grH\backslash\hv{\h{0,\hat{1}}}}\oplus T_y\bbR\) and \(\ker T\pr_2 = T_{\h{x,\hat{n}}}\h{\grH\backslash\hv{\h{0,\hat{1}}}}\). Consider the multiplicative connection \(\Hor_{\h{x,\hat{n};y}} = \hv{\h{\alpha\eval{\partial_x}_p,\alpha\eval{\partial_y}_p}:\alpha\in\bbR}\), where we identify \(T_{\h{x,\hat{n}}}\grH\cong T_x\bbR\) and \(T_{\h{x,\hat{n};y}}\grG = T_{\h{x,\hat{n}}}\grH\oplus T_y\bbR\). Then consider the lift of the curve \(\gamma:\ha{0,1}\to\bbR:t\mapsto 1 - t\) to the point \(\h{1,1;1}\). Then this lift clearly exists for \(t < 1\) as it is given by \(\tilde{\gamma}\h{t} = \h{1 - t,1;1 - t}\). Remark that indeed \(\grK\) is not \(\grt\)-connected.
+		\end{example}
+
+\section{Induced maps and Morita Equivalences}
+	The last section of this chapter will involve the construction of a particular functor on fibred Lie groupoids, which will also relate to the existence of a complete connection. Let us denote \(\Lgrpd_{\operatorname{weak},0}\) for the collection of Lie groupoids. Additionally, fix some fibred Lie groupoid \(\phi\colon \grG\to\grH\) for this section. Recall that the kernel of a fibred Lie groupoid defines a family of Lie groupoids. In particular, this gives us the map
+	\[
+		\calF_0\colon \grH_0\to\Lgrpd\colon x\mapsto \h{\phi^{-1}\h{1_x}\rr \phi^{-1}_0\h{x}}.
+	\]
+	By Proposition~\ref{prp: fibres of family of Lie groupoids}, this indeed maps into \(\Lgrpd\). Additionally, we can define a map from the arrows of \(\grH_0\) to bibundles as
+	\[
+		\calF\colon \grH\to\operatorname{Bibundles}\colon \ha{y\gto[h]x}\mapsto \ha{\phi^{-1}\h{1_y}\acts[\grt]\phi^{-1}\h{h}\sact[\grs]\phi^{-1}\h{1_x}}.
+	\]
+	If we view \(\grH\) as a category, we see that this almost defines a functor if we view \(\phi^{-1}\h{1_y}\acts[\grt]\phi^{-1}\h{h}\sact[\grs]\phi^{-1}\h{1_x}\) as a morphism from \(\phi^{-1}\h{1_x}\) to \(\phi^{-1}\h{1_y}\). However, the collection of bibundles does not admit a well-defined composition because the construction of Proposition~\ref{prp: tensor of pbb} works in the case where the bibundles are right principal. This was needed to solve one problem: the quotient by the middle groupoid. We can argue why this is needed by the following example:
+
+	Let \(\grG\) be a Lie groupoid, then \(\grG\) is a principal \(\grG\)-\(\grG\)-bibundle as with left and right multiplication. We can view this as the identity morphism on a Lie groupoid in \(\Lgrpd_{\operatorname{weak}}\). If we consider ``composing'' these principal bibundles, we could take the product with the naturally induced left and right action:
+	\[
+		\grG\acts[\grt\circ\pr_1]\grG\times\grG\sact[\grs\circ\pr_2]\grG.
+	\]
+	However, this will in general no longer be isomorphic to \(\grG\) as this will have twice the dimension of \(\grG\). Therefore, we want to reduce the dimension by taking a quotient by the middle action. However, this implies that the diagonal action on the middle space must exist and that the action needs to be free and proper. This is exactly what is ensured by restricting the bibundles to right principal bibundles.
+
+	Let us investigate in which manner we fail to obtain the principal bibundle in this case.
+	\begin{proposition}\label{prp: auto free and proper}
+		Given a fibred Lie groupoid \(\phi\colon\grG\to\grH\). If \(y\garrow[h]x\in\grH\) then the trivially induced actions \(\phi^{-1}\h{1_y}\acts[\grt]\phi^{-1}\h{h}\) and \(\phi^{-1}\h{h}\sact[\grs]\phi^{-1}\h{1_x}\) are free and proper.
+	\end{proposition}
+	\begin{proof}
+		Take \(y\gto[h]x\in\grH\) and consider the induced actions by multiplication. By symmetry we only have to show that \(\phi^{-1}\h{1_y}\acts[\grt]\phi^{-1}\h{h}\) free and proper action. Note that the action map is given by
+		\[
+			\alpha\colon \phi^{-1}\h{1_y}\fp{\grs}{\grt}\phi^{-1}\h{h}\to\phi^{-1}\h{h}\times\phi^{-1}\h{h} \colon \h{g_1,g_2}\mapsto \h{g_1g_2,g_2}
+		\]
+		We can restrict the image to \(\phi^{-1}\h{h}\fp{\grs}{\grs}\phi^{-1}\h{h}\), which is an embedded submanifold of the product. Here, we find an inverse given by the map
+		\[
+			\phi^{-1}\h{h}\fp{\grs}{\grs}\phi^{-1}\h{h}\to\phi^{-1}\h{1_y}\fp{\grs}{\grt}\phi^{-1}\h{h}\colon \h{g_1,g_2}\mapsto \h{g_1g_2^{-1},g_2}
+		\]
+		Remark that this defines a map of Lie groupoids between the submersion groupoid and the action groupoid, cf.\ Example~\ref{ex: trivial action}. This implies that the action is free and proper.
+	\end{proof}
+	Therefore, combined with Proposition~\ref{prp: auto sub}, the only obstruction to the bundles being principal is the bijectivity on the quotient of the moment maps. Under similar assumptions as before, when proving the completeness of connections, we can show that \(\calF\) is indeed a better-behaved map.
+	\begin{theorem}\label{thm: functor}
+		If \(\phi\colon \grG\to\grH\) is a fibred Lie groupoid that is arrow complete, then
+		\[
+			\calF\colon \grH\to\operatorname{Principal Bibundles}\subset \operatorname{Bibundles}.
+		\]
+		Moreover, this assignment preserves composition up to equivalence of bibundles.
+	\end{theorem}
+	\begin{proof}
+		From Proposition~\ref{prp: auto sub}~and~\ref{prp: auto free and proper} and the assumption that \(\grs\colon \phi^{-1}\h{h}\to\phi_0^{-1}\h{\grs\h{h}}\) is always surjective, which implies that \(\grt\colon \phi^{-1}\h{h}\to\phi_0^{-1}\h{\grt\h{h}}\) is surjective, we find that \(\calF\) maps into principal bibundles.
+
+		To see that it is functorial, we need to check that it preserves composition. In other words, we need to find an equivalence any \(\h{h_1,h_2}\in\grH^{\h{2}}\):
+		\[
+			\phi^{-1}\h{h_1}\otimes\phi^{-1}\h{h_2} \cong \phi^{-1}\h{h_1h_2}.
+		\]
+		For now, fix some \(z\gto[h_1]y\gto[h_2]x\in \grH^{\h{2}}\) and recall that this composition of bibundles was defined as:
+		\[
+			\phi^{-1}\h{h_1}\otimes\phi^{-1}\h{h_2} = \dfrac{\phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}}{\phi^{-1}\h{1_{\grs\h{h_1}}}}
+		\]
+		We will define an equivariant map on the fibred product of the two spaces and show that it descends to a diffeomorphism on the quotient. Define the map as follows:
+		\[
+			\alpha\colon \phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\to \phi^{-1}\h{h_1h_2}\colon \h{g_1,g_2}\mapsto g_1g_2.		\]
+		This is simply the restriction of the multiplication map to an embedded submanifold, and therefore it is smooth. Remark that this is also clearly equivariant for the left and right actions. To see that it descends to the quotient, we remark that
+		\[
+			\alpha\h{g\cdot\h{g_1,g_2}} = \alpha\h{g_1g^{-1},gg_2} = g_1g^{-1}gg_2 = g_1g_2 = \alpha\h{g_1,g_2}.
+		\]
+		This implies that \(\alpha\) is constant on the fibres of the quotient map, and thus it automatically descends to the quotient. Let us denote this map by \(\overline{\alpha}\).
+
+		To show that it is a diffeomorphism, we will show that it is surjective, injective and an immersion, which is enough by the global rank theorem.
+
+		\textbf{Surjective:} Suppose that \(g\in\phi^{-1}\h{h_1h_2}\), by arrows completeness we can find some \(g_1\in\phi^{-1}\h{h_1}\) such that \(\grs\h{g_1} = \grs\h{g}\). If we set \(g_2 = g_1^{-1}g\), it follows that
+		\[
+			\phi\h{g_2} = \phi\h{g_1^{-1}g} = \phi\h{g_1^{-1}}\phi\h{g} = h_1^{-1}h_1h_2 = h_2\quad\mbox{and}\quad g_1g_2 = g_1g_1^{-1}g = g.
+		\]
+		Therefore, \(\alpha\h{g_1,g_2} = g\) and \(\h{g_1,g_2}\in \phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\). The map on the quotient is therefore also surjective.
+
+		\textbf{Injective:} Suppose that \(\alpha\h{g_1,g_2} = \alpha\h{g_3,g_4}\), such that \(g_1g_2 = g_3g_4\). We can then define \(g\) as the element \(g_3^{-1}g_1 = g_4g_2^{-1}\). It then satisfies
+		\[
+			g\cdot\h{g_1,g_2} = \h{g_1g^{-1},gg_2} = \h{g_1g_1^{-2}g_3,g_4g_2^{-1}g_2} = \h{g_3,g_4}\quad\mbox{and}\quad \phi\h{g} = \phi\h{g_3^{-1}g_1} = h_1^{-1}h_1 = 1_y.
+		\]
+		We conclude that \(\overline{\alpha}\) is indeed injective.
+
+		\textbf{Immersion:} To show that \(\overline{\alpha}\) is an immersion, remark that for some \(\h{g_1,g_2}\in \phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\) we have the following short exact sequence
+		\[
+			0\to T_{\h{g_1,g_1}}\h{\phi^{-1}\h{1_y}\cdot\h{g_1,g_2}}\to T_{\h{g_1,g_2}}\h{\phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}}\to T_{\h{g_1,g_2}}\phi^{-1}\h{h_1}\otimes\phi^{-1}\h{h_2}\to0
+		\]
+		Therefore the tangent bundle \(\phi^{-1}\h{h_1}\otimes\phi^{-1}\h{h_2}\) at \(\h{g_1,g_2}\) is canonically isomorphic to
+		\[
+			T_{\h{g_1,g_2}}\phi^{-1}\h{h_1}\otimes\phi^{-1}\h{h_2}\cong T_{\h{g_1,g_2}}\phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}/T_{\h{g_1,g_2}}\h{\phi^{-1}\h{1_y}\cdot\h{g_1,g_2}}
+		\]
+		Therefore it is enough to show that \(\ker _{\h{g_1,g_2}}T\alpha\subset T_{\h{g_1,g_2}}\h{\phi^{-1}\h{1_y}\cdot\h{g_1,g_2}}\).
+
+		Set \(g = \alpha\h{g_1,g_2}\) and suppose that \(\h{u_1,u_2}\in\ker T_{\h{g_1,g_2}}\alpha\). Take \(\Gamma\colon \h{-\epsilon,\epsilon}\to\phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\) to be a curve integrating this tangent vector. We can then project this curve onto the components, denote by \(\gamma_i = \pr_i\circ\Gamma\), such that \(\gamma_1\colon \h{-\epsilon,\epsilon}\to \phi^{-1}\h{h_1}\) and \(\gamma_2\colon \h{-\epsilon,\epsilon}\to \phi^{-1}\h{h_2}\).
+
+		Notice that \(\alpha\h{\gamma_1\h{t},\gamma_2\h{t}} = g\) as \(T_{\h{g_1,g_2}}\alpha\h{u_1,u_2} = 0\). This implies that \(g_1g_2 = \gamma_1\h{t}\gamma_2\h{t}\) for all \(t\in\h{-\epsilon,\epsilon}\), and thus we can define \(h\colon \h{-\epsilon,\epsilon}\to\grG\colon t\mapsto \gamma_1\h{t}^{-1}g_1 = \gamma_2\h{t}g_2^{-1}\). The curve \(\Gamma\) can then be rewritten as \(\Gamma\h{t} = \h{g_1h\h{t}^{-1},h\h{t}g_2} = h\h{t}\cdot\h{g_1,g_2}\). Applying \(\phi\) to \(h\), we see that
+		\[
+			\phi\h{h\h{t}} = \phi\h{\gamma_2\h{t}g_2^{-1}} = \phi\h{\gamma_2\h{t}}\phi\h{g_2^{-1}} = h_2h_2^{-1} = 1_y.
+		\]
+		Therefore, \(\Gamma\) maps into \(\h{g_1,g_2}\cdot\phi^{-1}\h{1_y}\) and thus \(\ker T_{\h{g_1,g_2}}\alpha\subset T_{\h{g_1,g_2}}\h{\h{g_1,g_2}\phi^{-1}\h{1_y}}\).
+
+		We conclude that \(\overline{\alpha}\) is a bijective immersion and thus it is a diffeomorphism. In particular, we conclude that the assignment preserves the principal bibundles up to equivalence.
+	\end{proof}
+	\begin{corollary}
+		Let \(\phi\colon \grG\to\grH\) be a fibred Lie groupoid with a complete multiplicative connection such that \(\grH\) is \(\grs\)-connected, then \(\calF\) defines a functor from \(\grG\) to \(\Lgrpd_{\operatorname{weak}}\).
+	\end{corollary}
+	\begin{proof}
+		This follows from Proposition~\ref{prp: complete and s conn implies sur} and Theorem~\ref{thm: functor}.
+	\end{proof}
+	Lastly, we remark that any element in \(\grH\) is invertible and therefore if \(\calF\) is a functor to \(\Lgrpd_{\operatorname{weak}}\), then it maps into Morita equivalences. For such fibred Lie groupoids, we therefore find that the family of Lie groupoids \(\ker\phi\rr \grG_0\) canonically becomes a family of Morita equivalent Lie groupoids.
+
+	The most natural condition is the existence of a complete connection, but by Proposition~\ref{prp: compl conn loc triv fam of lie groupoid} we already know that the fibres are isomorphic as Lie groupoids. However, these isomorphisms are not canonically defined and depend on the choice.
+\end{document}

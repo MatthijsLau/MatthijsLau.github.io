@@ -1,0 +1,169 @@
+\documentclass[class = report, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+\chapter{Linear Symplectic Geometry}\label{chp: symplectic vector space}
+Let us start with a chapter on the study of symplectic geometry on vector spaces, also called linear symplectic geometry. The motivation for such a structure may not be apparent at first, but it forms the foundation of symplectic geometry in general, which finds its application in classical mechanics, see Chapter~\ref{chp: hamiltonian systems}. In this chapter, we will introduce the basic definitions surrounding linear symplectic geometry, i.e. symplectic vector spaces and linear symplectomorphisms. Along the way, we will also give some noteworthy examples. We will then show that the study of linear symplectic geometry comes down to the study of a simple model. In other words, there are no special invariants in this theory. In this chapter, we will follow the structure of \cite[Section 1.2]{CannasdaSilva2008}.
+	
+\section{Basics and Definitions}\label{sec: basics symplectic vector space}
+	As mentioned, we will start with the basic building block of linear symplectic geometry, namely symplectic vector spaces. Akin to any other geometric space, like inner product spaces and normed spaces, this is a pair consisting of a vector space with a structural function, which is called a linear symplectic form. In other words, a skew-symmetric and non-degenerate bilinear form.
+	\begin{definition}\label{def: symplectic vector space}
+		Let \(V\) be an \(n\)-dimensional real vector space over \(\R\) and let \(\Omega:V\times V\to \R\) be a bilinear map. The map \(\Omega\) is called a \textbf{linear symplectic form} if the following conditions hold:
+		\begin{itemize}
+			\item
+			\textbf{Skew-symmetric:} For all \(u,v\in V\) it holds that \(\Omega\h{u,v} = -\Omega\h{v,u}\).
+			\item
+			\textbf{Non-degenerate:} For all non-zero \(u\in V\) there exists a \(v\in V\) such that \(\Omega\h{u,v}\neq 0\).
+		\end{itemize}
+		A pair of a vector space \(V\) and linear symplectic form \(\Omega:V\times V\to\R\), denoted by \(\h{V,\Omega}\), is called a \textbf{symplectic vector space}.
+	\end{definition}
+	Notice the similarities between an inner product, symmetric and positive-definitive bilinear form, and a linear symplectic form, skew-symmetric and non-degenerate bilinear form. We see that we simply switched the symmetry and imposed a different degeneracy condition. Due to this resemblance, we will often compare symplectic vector spaces with inner product spaces. 
+	The definitions of inner product spaces and symplectic vector spaces are not that far apart. Both introduce a structural function that is a bilinear mapping with some symmetry constraint. Furthermore, the non-degeneracy of the linear symplectic forms and the positive definiteness of the inner products induce a mapping from the vector space to the dual space by \(\widehat{S}: V\to\dual{V}:v\mapsto S\h{v,\cdot}\), where \(S\) is either a symplectic form or an inner product. As the inner product and symplectic form are non-degenerate, we can deduce that the induced mapping is invertible. Before we proceed with the geometrical aspects, we will go over some examples. The first of these will be the main object of this chapter. 
+	\begin{example}\label{exp: trivial linear symplectic form}\label{exp: trivial symplectic vector space}
+		Let us define the \textbf{trivial symplectic vector space of dimension \(2n\)}, denoted by \(\h{\R[2n],\Omega_{\st,2n}}\). For this we will use the identification of \(\R[2n]\) as \(\R[n]\oplus\R[n]\), such that a vector \(u\in\R[2n]\) can be written as \(u = \h{u_1,u_2}\in\R[n]\oplus \R[n]\). If we then denote the standard inner product on \(\R[n]\) as \(\inp[n]{\cdot}{\cdot}\), we can define the mapping \(\Omega_{\st,2n}:\R[2n]\times\R[2n]\to\R\) as
+		\begin{equation*}
+		\Omega_{\st,2n}\h{\h{u_1,u_2},\h{v_1,v_2}} = \inp[n]{u_1}{v_2} - \inp[n]{u_2}{v_1}.
+		\end{equation*}
+		It should be clear from the bilinearity of the inner product that this mapping is bilinear as well and the symmetry of the inner product directly implies the skew-symmetry of \(\Omega_{\st,2n}\). Furthermore, from the positive definiteness of the inner product, the bilinear form inherits its non-degeneracy. Therefore, \(\Omega_{\st,2n}\) is a linear symplectic form, called the \textbf{linear trivial symplectic form}, and \(\h{\R[2n],\Omega_{\st,2n}}\) is a symplectic vector space called the \textbf{trivial vector space}.
+	\end{example}
+	\begin{example}\label{exp: linear canonical symplectic form}
+		Let us define another symplectic vector space, \(\h{V\oplus\dual{V},\Omega_{\can}}\), where \(V\) is some finite dimensional real vector space. Define the mapping \(\Omega_{\can}: \h{V\oplus\dual{V}}\times \h{V\oplus\dual{V}}\to\R\) as
+		\begin{equation*}
+			\Omega_{\can}\h{\h{u,\phi}, \h{v,\psi}} = \psi\h{u} - \phi\h{v}.
+		\end{equation*}
+		It should be clear that this is a bilinear mapping as the elements of \(\dual{V}\) are linear maps. Furthermore, it should be clear from the definition that this is a skew-symmetric map. The non-degeneracy can then be shown in a basis \(\beta = \hv{u_1,\ldots,u_n}\) of \(V\), which gives a dual basis \(\dual{\beta} = \hv{\xi_1,\ldots,\xi_n}\) of \(\dual{V}\), such that \(\xi_i\h{u_j} = \delta_{ij}\). We can then define an isomorphism \(\iota:V\to\dual{V}\) by its action on \(\beta\) as \(\iota\h{u_i} = \xi_i\). Now suppose that \(\h{u,\phi}\in V\times\dual{V}\) is non-zero, in other words \(u\neq 0\) or \(\phi\neq 0\). Consider the case where \(u\neq 0\), such that \(\iota\h{u}\) is also non-zero. We can then consider the action of the bilinear form on \(\h{u,\phi}\) and \(\h{0,\iota\h{u}}\), which results in
+		\begin{equation*}
+			\Omega_{\can}\h{\h{u,\phi},\h{0, \iota\h{u}}} = \iota\h{u}\h{u} \neq 0.
+		\end{equation*}
+		Using a similar argument we can deal with the case where \(\phi\neq 0\). We then consider \(\h{\iota^{-1}\h{\phi},0}\), such that
+		\begin{equation*}
+			\Omega_{\can}\h{\h{u,\phi},\h{\iota^{-1}\h{\phi},0}} = \phi\h{\iota^{-1}\h{\phi}}\neq 0.
+		\end{equation*}
+		This proves that \(\Omega_{\can}\) is a linear symplectic form on \(V\oplus\dual{V}\), we call this form the \textbf{linear canonical form of \(V\)}.
+	\end{example}
+	Even though these examples are important and show that linear symplectic forms pop up anywhere, we will now give a similar example that is not a symplectic vector space.
+	\begin{example}\label{exp: no symplectic vector space}
+		Take the vector space \(\R[2n - 1]\) which we will identify with the \(\R[2n - 1]\oplus\hv{0}\subset\R[2n]\). Then define the bilinear form \(\Omega = \eval{\Omega_{\st,2n}}_{\R[2n - 1]}\). We now want to show that this bilinear form is degenerate, implying that it is not a linear symplectic form.
+		
+		To find a vector \(u\) for which \(\Omega\h{u,\cdot} = 0\), we use the standard basis for \(\R[2n - 1]\). Then by choosing the \(n\)th basis vector as \(u\) it should be clear that \(\Omega\h{u,v} = 0\) for all \(v\in\R[2n - 1]\). Therefore, \(\Omega\) is not a linear symplectic form and \(\h{\R[2n - 1],\Omega}\) is not a symplectic vector space.
+	\end{example}
+	The definition of a symplectic vector space is not only dependent on the bilinear form but also on the vector space. As we might expect this is due to the non-degeneracy condition, which we also saw fail in Example~\ref{exp: no symplectic vector space}.
+	
+	Furthermore, notice that Examples~\ref{exp: trivial symplectic vector space} and~\ref{exp: linear canonical symplectic form} look quite similar. If we were to adopt the notation of \(\inp[e]{u}{\phi} = \phi\h{u}\) for some \(u\in V\) and \(\phi\in\dual{V}\), we notice that the canonical form can be written as
+	\begin{equation*}
+		\Omega\h{\h{u,\phi},\h{v,\psi}} = \inp[e]{u}{\psi} - \inp[e]{v}{\phi}.
+	\end{equation*} 
+	This is the same expression as that of \(\Omega_{\st,2n}\). This can be explained as \(\R[2n] \cong \R[n]\times\R[n] \cong \R[n]\times\h{\dual{\R[n]}}\). However, it is not really clear how \(\inp[e]{\cdot}{\cdot}\) and \(\inp[n]{\cdot}{\cdot}\) are related. This relation can be made more clear by the use of certain isomorphisms, which we will discuss in the next section.
+	
+\section{Symplectomorphisms}
+	The symplectic vector spaces form a new category of mathematical structures. Naturally, we want to look for the functions that preserve this structure. In this section, we will introduce such functions as linear symplectomorphisms. For these functions to be natural with respect to the structure, they should preserve both the vector space structure and the symplectic structure. Hence, it is clear that linear symplectomorphisms should be isomorphisms to preserve the vector space structure. To preserve the linear symplectic form, we would want them to satisfy the commutative diagram of Figure~\ref{comdia: linear symplectomorphism}. This commutative diagram can be written formally using the pullback of bilinear forms.
+	\begin{figure}
+		\centering
+		\includegraphics{img/CommutativeDiagram_LinearSymplectomorphism.pdf}
+		\caption{A commutative diagram where \(\h{V_1,\Omega_1}\) and \(\h{V_2,\Omega_2}\) are symplectic vector spaces and \(\phi:V_1\to V_2\) is an isomorphism. Here $\phi\times \phi$ denotes the isomorphism that maps \(\h{u,v}\in V_1\times V_1\) to \(\h{\phi\h{u},\phi\h{v}}\in V_2\times V_2\).}
+		\label{comdia: linear symplectomorphism}
+	\end{figure}
+	\begin{definition}\label{def: linear pullback}
+		Let \(\Omega_2:V_2\times V_2\to\R\) be a bilinear form and \(\phi:V_1\to V_2\) a linear map, then the \textbf{pullback of \(\Omega_2\) by \(\phi\)}, denoted by \(\pull{\phi}\Omega_2\), is defined as
+		\begin{equation*}
+			\pull{\phi}\Omega_2:V_1\times V_1\to\R:\h{u,v}\mapsto\Omega_2\h{\phi\h{u},\phi\h{v}}.
+		\end{equation*}
+		It follows that \(\pull{\phi}\Omega_2\) is a bilinear form on $V_1$, by using that \(\Omega_2\) is bilinear and \(\phi\) is linear.
+	\end{definition}
+	The pullback of a bilinear form is comparable to the pre-composition in each argument. If we compare this operation to the commutative diagram in Figure~\ref{comdia: linear symplectomorphism}, we notice that this is the exact operation for a linear symplectomorphism to make the diagram commute. This formalizes the definition of linear symplectomorphisms.
+	\begin{definition}\label{def: linear symplectomorphism}
+		Let \(\h{V_1,\Omega_1}\) and \(\h{V_2,\Omega_2}\) be symplectic vector spaces. A \textbf{linear symplectomorphism} between \(\h{V_1,\Omega_1}\) and \(\h{V_2,\Omega_2}\) is a linear isomorphism \(\phi:V_1\to V_2\) such that \(\pull{\phi}\Omega_2 = \Omega_1\). If such a linear symplectomorphism exists, then \(\h{V_1,\Omega_1}\) and \(\h{V_2,\Omega_2}\) are called \textbf{symplectomorphic}.
+	\end{definition}
+	As isomorphisms are invertible and \(\pull{\h{\phi^{-1}}}\circ\pull{\phi} = \id\), it is clear that being symplectomorphic is an equivalence relation. The study of linear symplectic geometry then concerns itself with finding invariants of such linear symplectomorphisms. In the next section, we will look for such an invariant. Firstly, let us consider the similarity we saw in the last section using the context of symplectomorphism.
+	\begin{example}
+		Take the symplectic vector spaces \(\h{\R[2n],\Omega_{\st,2n}}\) and \(\h{\R[n]\times\h{\dual{\R[n]}},\Omega_{\can}}\). Remark that there is a natural isomorphism \(\iota:\R[n]\to\dual{\h{\R[n]}}\) generated by the standard inner product, i.e. \(\iota\h{u}\h{v} = \inp[n]{u}{v}\). By again using the identification of \(\R[2n]\) as \(\R[n]\times\R[n]\), we define the mapping \(\phi\) as
+		\begin{equation*}
+			\phi:\R[2n]\to\R[n]\times\dual{\h{\R[n]}}:\h{u,v}\mapsto\h{u,\iota\h{v}}.
+		\end{equation*}
+		We can see that this is an isomorphism as \(\iota\) is an isomorphism such that \(\phi\) is linear and the inverse is given by \(\phi^{-1}:\R[n]\times\dual{\h{\R[n]}}\to\R[2n]:\h{u,\phi}\mapsto\h{u,\iota^{-1}\h{\phi}}\). Furthermore, it follows that
+		\begin{align*}
+			\pull{\phi}\Omega_{\can}\h{\h{u_1,u_2},\h{v_1,v_2}}
+			&= \Omega_{\can}\h{\phi\h{u_1,u_2},\phi\h{v_1,v_2}} = \Omega_{\can}\h{\h{u_1,\iota\h{u_2}},\h{v_1,\iota\h{v_2}}}\\
+			&= \iota\h{v_2}\h{u_1} - \iota\h{u_2}\h{v_1} = \inp[n]{v_2}{u_1} - \inp[n]{u_2}{v_1}\\
+			&= \inp[n]{u_1}{v_2} - \inp[n]{u_2}{v_1} = \Omega_{\st,2n}\h{\h{u_1,u_2},\h{v_1,v_2}}.
+		\end{align*}
+		Hence, \(\h{\R[2n],\Omega_{\st,2n}}\) and \(\h{\R[n]\times\h{\dual{\R[n]}},\Omega_{\can}}\) are symplectomorphic and \(\phi\) is a linear symplectomorphism.
+	\end{example}
+	
+\section{Standard Form}\label{sec: standard form}
+	In this section, we will search for an invariant of linear symplectomorphisms. The primary way of doing this in linear algebra is by finding a suitable basis such that the linear symplectic form is of some standard form. For example, the inner product of a real product space is symmetric and can thus be represented by a diagonal matrix, see \cite[Theorem 6.35]{Friedberg2003}. We would also like to find such a simple representation for an arbitrary symplectic form. The corollary of \cite[Theorem 6.34]{Friedberg2003} already shows that this can not be a diagonal matrix. Luckily, we can recognise that the symplectic form of Example~\ref{exp: trivial symplectic vector space}, \(\h{\R[2n],\Omega_{\st,2n}}\) has a very simple matrix representation in the standard basis.
+	\begin{align*}
+		&\Omega_{\st,2n}\h{e_i, e_j} =
+		\begin{cases}
+			1,		&j - i = n\mbox{ with }1 \leq i\leq n,\\
+			-1,		&i - j = n\mbox{ with }1 \leq j\leq n,\\
+			0		&\mbox{otherwise}.
+		\end{cases}
+		\\
+		&\ra\ \Omega_{\st,2n}\h{x,y} = x^T\mqty[0&I_n\\-I_n&0]y.
+	\end{align*}
+	This entices us to look for a basis of a symplectic vector space, such that its linear symplectic form is represented in this form.
+	\begin{theorem}\label{thm: existence symplectic basis}
+		Let \(\h{V,\Omega}\) be a symplectic vector space of dimension \(m\), then there exists an \(n\in\N\) such that \(m = 2n\) and a basis \(\beta = \symbasv{u}{v}\) such that
+		\begin{equation*}
+		\Omega\h{u_i,v_j} = \delta_{ij},\quad \Omega\h{u_i,u_j} = 0 = \Omega\h{v_i,v_j}.
+		\end{equation*}
+		In this basis, the action of the symplectic form on some \(u,v\in V\) is given by
+		\begin{equation*}
+		\Omega\h{u,v} = \ha{u}_\beta^T\mqty[0&\id\\-\id&0]\ha{v}_\beta.
+		\end{equation*}
+		Such a  basis is called the \textbf{symplectic basis} of \(\h{V,\Omega}\).
+	\end{theorem}
+	\begin{proof}
+		Let \(\h{V,\Omega}\) be a symplectic vector space of dimension \(m\). Take \(V_1 = V\). We know by the non-degeneracy of the symplectic form that for any non-zero \(u_1\in V_1\), there must exist a \(v_1\in V_1\) such that \(\Omega\h{u_1,v_1}\neq 0\). As \(\Omega\) is bilinear, we may assume that \(\Omega\h{u_1,v_1} = 1\). Then define the following sets:
+		\begin{equation*}
+		W_1 := \spn\hv{u_1,v_1},\quad W_1^\Omega := \hv{u\in V_1| \Omega\h{u,v} = 0\ \forall v\in W_1}.
+		\end{equation*}
+		As \(\Omega\) is bilinear, we can deduce that \(W_1^\Omega\) is a linear subspace of \(V\). We will show that \(V = W_1\oplus W_1^\Omega\). Take an arbitrary \(w\in W_1\cap W_1^\Omega\). Because \(w\in W_1\) we can find \(a\) and \(b\) such that \(w = au_1 + b v_1\). However, as \(w\in W_1^\Omega\), we can also deduce that
+		\begin{equation*}
+		0 = \Omega\h{w,u_1} = -b,\quad 0 = \Omega\h{w,v_1} = a.
+		\end{equation*}
+		Thus \(w = 0\) and therefore \(W_1\cap W_1^\Omega = \hv{0}\). Secondly, suppose that \(w\in V\) with \(\Omega\h{w,u_1} = \alpha\) and \(\Omega\h{w,v_1} = \beta\), then
+		\begin{equation*}
+			w = \h{-\alpha v_1 + \beta u_1} + \h{w + \alpha v_1 - \beta u_1}.
+		\end{equation*}
+		Remark that \(-\alpha v_1 + \beta u_1\in \spn\hv{v_1,u_1} = W\). Using the bilinearity and skew-symmetry of the symplectic form it follows that
+		\begin{align*}
+			\Omega\h{w + \alpha v_1 - \beta u_1,u_1} &= \Omega\h{w,u_1} + \alpha \omega\h{v_1,u_1} - \beta \Omega\h{u_1,u_1} = \alpha - \alpha = 0,\\
+			\Omega\h{w + \alpha v_1 - \beta u_1,v_1} &= \Omega\h{w,v_1} + \alpha \omega\h{v_1,v_1} - \beta \Omega\h{u_1,v_1} = \beta - \beta = 0.
+		\end{align*}
+		Hence, it follows that \(w + \alpha v_1 - \beta u_1\in W^\Omega\) and thus \(w\in W_1 + W_1^\Omega\). This shows that \(V_1 = W_1\oplus W_1^\Omega\).
+		
+		Now by choosing \(V_2 = W_1^\Omega\), we want to prove that \(\h{V_2,\Omega|_{V_2}}\) is a symplectic vector space, such that we can finish the proof using induction. It should be clear that \(\Omega_{V_2}\) is still skew-symmetric. The non-degeneracy can be checked for an arbitrary element \(u\in V_2\). As \(V_2\subset V\) and the fact that \(\Omega\) is non-degenerate, it follows that there exists a \(v\in V\) such that \(\Omega\h{u,v} \neq 0\). We will now show that we can choose \(v\in V_2\). We have already shown that \(v = \tilde{v} + \overline{v}\), where \(\tilde{v}\in W_1\) and \(\overline{v}\in V_2 = W^\Omega_1\). We can then deduce that
+		\begin{equation*}
+			0 \neq \omega\h{u,v} = \Omega\h{u,\tilde{v} + \overline{v}} = \Omega\h{u,\tilde{v}} + \Omega\h{u,\overline{v}} = \Omega\h{u,\overline{v}}
+		\end{equation*}
+		Hence, there is some vector \(\overline{v}\) such that \(\Omega|_{V_2}\h{u,\overline{v}} = 0\). This proves that \(\Omega|_{V_2}\) is non-degenerate and a symplectic form.
+		
+		As we mentioned, we can then iterate this process and create a chain of \(\hv{W_i}_{i = 1}^k\) such that
+		\begin{equation*}
+			V = W_1\oplus W_2\oplus \cdots\oplus W_k\oplus W_k^\Omega.
+		\end{equation*}
+		As the dimension of \(W_i\) is two for all \(i\) and the dimension of \(V\) is finite, it follows that there is some \(n\) such that \(W_n^\Omega = \hv{0}\), implying that \(V = W_1\oplus \cdots \oplus W_n\). If we join all the bases for each \(W_i\), we then get a basis for \(V\), which is then given by \(\symbasv{u}{v}\). The action of the bilinear form on this basis is given by
+		\begin{equation*}
+		\Omega\h{u_i,v_j} = \delta_{ij},\quad \Omega\h{u_i,u_j} = 0 = \Omega\h{v_i,v_j},\quad V = W_1\oplus\cdots\oplus W_n.
+		\end{equation*}
+		Therefore, the bilinear form takes the following matrix form in this basis:
+		\begin{equation*}
+		\Omega\h{u,v} = \ha{u}_\beta^T\mqty[0&\id\\-\id&0]\ha{v}_\beta.
+		\end{equation*}
+		From this basis, it is also clear that \(\dim V = 2n\).
+	\end{proof}
+	As we saw above, the symplectic basis for the trivial symplectic vector space of dimension \(2n\) is the standard basis on \(\R[2n]\). However, the symplectic basis tells us much more.
+	\begin{theorem}\label{thm: linear darboux}
+		A \(2n\)-dimensional symplectic vector space is symplectomorphic to \(\h{\R[2n],\Omega_{\st,2n}}\).
+	\end{theorem}
+	\begin{proof}
+		Let \(\h{V,\Omega}\) be a \(2n\)-dimensional symplectic vector space. By Theorem~\ref{thm: existence symplectic basis} there exists a symplectic basis of \(\R[2n]\), call this basis \(\beta\). We now construct the function, which is our linear symplectomorphism
+		\begin{equation*}
+			\phi_\beta:V\to\R[2n]:v\mapsto \ha{v}_\beta.
+		\end{equation*}
+		As \(\phi_\beta\) is the standard representation of \(V\) with respect to \(\beta\), in other words, it constitutes the choice of a basis, it is an isomorphism. Furthermore, from the definition of a symplectic basis, it follows that \(\Omega = \pull{\phi_\beta}\Omega_{\st,2n}\). Thus \(\phi_\beta\) is a linear symplectomorphism and therefore \(\h{V,\Omega}\) is symplectomorphic to \(\h{\R[2n],\Omega_{\st,2n}}\).
+	\end{proof}
+	Theorem~\ref{thm: linear darboux} means that we can classify each symplectic vector space by its dimension. The existence of such a simple invariant makes linear symplectic geometry quite straightforward as it can be reduced to the study of the spaces \(\h{\R[2n],\omega_{\st}}\). Furthermore, we can use this theorem to easily prove that some vector spaces do not admit a linear symplectic form, as their dimension should be even. This then immediately implies that \(\R[2n - 1]\) can not be a symplectic vector space and that the bilinear form in Example~\ref{exp: no symplectic vector space} is not a linear symplectic form.
+\end{document}

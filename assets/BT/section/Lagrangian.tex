@@ -1,0 +1,177 @@
+\documentclass[class = article, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+\section{Lagrangian Formalism}\label{sec: lagrangian}
+In the last section, we discussed Newton's formulation of classical mechanics. Here, we also went over its application to two rather simple examples, Examples~\ref{exp: projectile}~and~\ref{exp: atwood newton}. We saw that it can be quite cumbersome to work with the geometry of vectors and constraints. Hence, people started developing scalar theories of classical mechanics. Lagrangian formalism is an example of such a scalar approach to classical mechanics. Where Newton focussed on force and momentum, Lagrange only need to account for the energies in a system. He can connect the motion of the objects with the energies in the system through Hamilton's principle, more accurately called the principle of stationary action. From this principle, we are then able to extract the Euler-Lagrange equations which form the equations of motion in this formalism. These Euler-Lagrange equations are even stronger as they let us use generalised coordinates which cover the space of configurations of the system. Before we go into the methodology of Lagrangian formalism, we will shortly discuss the scalar quantity of energy.
+
+\subsection{Energy}
+	Let us for now assume that we are still working on Euclidean space in Cartesian coordinates like in Newtonian mechanics. We distinguish two categories of energy: kinetic energy and potential energy. The first one is tied to the motion of an object while the second one results from the different interactions between objects and the system. We will introduce both of these objects through their interaction mechanism: work done by forces.
+	\begin{definition}\label{def: work done by force}
+		Let \(F\) be a force acting on an object which is moving along a curve \(\mathcal{C}\), we define the \textbf{work done by \(F\) on the object along \(\mathcal{C}\)} as
+		\begin{equation*}
+			W = \int_{\mathcal{C}}F\vdot ds = \int_{t_i}^{t_f}F\h{r\h{t},\dot{r}\h{t},t}\vdot\dot{r}\h{t}dt,
+		\end{equation*}
+		where \(r:\ha{t_i,t_f}\to\mathcal{C}\) is some parametrisation of the curve.
+	\end{definition}
+	Let us consider the work done by the net force acting on an object along the physical path it follows using Newton's equation of motion, we can then rewrite this integral
+	\begin{equation*}
+		W = \int_{t_i}^{t_f}F\h{r\h{t},\dot{r}\h{t},t}\vdot\dot{r}\h{t}dt = \int_{t_i}^{t_f}m\ddot{r}\h{t}\vdot\dot{r}\h{t}dt = \int_{t_i}^{t_f}d\h{\dfrac{1}{2}m\norm{\dot{r}\h{t}}^2}.
+	\end{equation*}
+	If we then define the quantity \(T\h{\dot{r}} = {m\norm{\dot{r}}^2}/{2}\), called the \textbf{kinetic energy}, we can express the work done on the object to be the change in kinetic energy of the object. If we add up the kinetic energy of all objects in a system, we get the \textbf{total kinetic energy} \(T_{\footm{tot}}\), which we often denote with just \(T\).
+	
+	Meanwhile, we could also try to integrate the work done by a single force. In very few cases is this of a neat form, hence, we will consider forces that lend themselves to an interpretation much like the kinetic energy.
+	\begin{definition}
+		A force \(F:\R[3]\times\R[3]\times\R\to\R[3]\) is called a \textbf{general conservative force} if there exists some \(U:\R[3]\times\R[3]\times\R\to\R\) such that given some path \(r:\R\to\R[3]\) we have
+		\begin{equation}\label{eq: general potential}
+			F_i\h{r\h{t},\dot{r}\h{t},t} = \dv{t}\h{\pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t},t}} - \pdv{U}{r_i}\h{r\h{t},\dot{r}\h{t},t}.
+		\end{equation}
+		Here, the subscript \(i\) denotes the \(i\)th component of the force, position and velocity vector. The function \(U\) is called the \textbf{general potential energy} of \(F\).
+	\end{definition}
+	\begin{example}\label{exp: potential of lorentz force}
+		Take the Lorentz force acting on a particle with charge \(q\) moving along a path \(r:\R\to\R[3]\), i.e. the position is time-dependent, in an electric field \(E\) and magnetic field \(B\). The Lorentz force is then given by
+		\begin{equation*}
+			F_{\footm{Lorentz}}\h{r,\dot{r},t} = q\h{E\h{r,t} + \dot{r}\cross B\h{r,t}}.
+		\end{equation*}
+		Assume we have a scalar potential \(V\h{r,t}\) and vector potential \(A\h{r,t}\) that satisfy the following
+		\begin{equation*}
+			B\h{r,t} = \nabla\cross A\h{r,t},\qquad E\h{r,t} = -\nabla V\h{r,t} - \pdv{A}{t}\h{r,t}.
+		\end{equation*}
+		We can show that the potential of \(F\) in the sense of Equation~\ref{eq: general potential} is given by
+		\begin{equation*}
+			U\h{r,\dot{r},t} = q\h{V\h{r,t} - \dot{r}\cdot A\h{r,t}}.
+		\end{equation*}
+		We can check that this satisfies Equation \ref{eq: general potential} for the Lorentz force. The first component of the Lorentz force is given by
+		\begin{equation*}
+			F_{\footm{Lorentz},1} = q\h{-\pdv{V}{r_1} - \pdv{A_1}{t} + \dot{r}_2\h{\pdv{A_1}{r_2} - \pdv{A_2}{r_1}} - \dot{r}_3\h{\pdv{A_1}{r_3} - \pdv{A_3}{r_1}}}.
+		\end{equation*}
+		Meanwhile, the first component of the right-hand side of Equation \ref{eq: general potential} can be expressed as
+		\begin{align*}
+			\dv{t}\pdv{U}{\dot{r}_1} - \pdv{U}{r_1}
+			&= q\h{-\dv{A_1}{t} - \pdv{V}{r_1} + \sum_i\dot{r}_i\pdv{A_i}{r_1}}\\
+			&= q\h{-\pdv{A_1}{t} - \sum_i\dot{r}_i\pdv{A_1}{r_i} - \pdv{V}{r_1} + \sum_i\dot{r}_i\pdv{A_i}{r_1}}\\
+			&= q\h{-\pdv{A_1}{t} - \pdv{V}{r_1} + \dot{r}_2\h{\pdv{A_2}{r_1} - \pdv{A_1}{r_2}} - \dot{r}_3\h{\pdv{A_1}{r_3} - \pdv{A_3}{r_1}}}.
+		\end{align*}
+		It follows from similar calculations that the other components are equal as well. Hence, \(U\) is indeed the general potential energy of the Lorentz force.
+	\end{example}
+	In the Lagrangian formalism, we do allow for generalised conservative forces. However, in the case that the potential does not explicitly depend on time, even the work simplifies as follows.
+	\begin{align*}
+		W
+		&= \int_{t_i}^{t_f}F\h{r\h{t},\dot{r}\h{t},t}\vdot\dot{r}\h{t}dt\\
+		&= \sum_{i = 1}^3\ha{\int_{t_i}^{t_f}\ha{\dv{t}\h{\pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t}}} - \pdv{U}{r_i}\h{r\h{t},\dot{r}\h{t}}}\cdot\dot{r}_i\h{t}dt}\\
+		&= \sum_{i = 1}^3\Bigg[\int_{t_i}^{t_f}\Bigg[\dv{t}\h{\pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t}}\cdot\dot{r}_i\h{t}} - \pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t}}\cdot\ddot{r}_i\h{t}\\
+		&\qquad - \pdv{U}{r_i}\h{r\h{t},\dot{r}\h{t}}\cdot\dot{r}_i\h{t}\Bigg]dt\Bigg]\\
+		&= \sum_{i = 1}^3\Bigg[\eval{\pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t}}\cdot\dot{r}_i\h{t}}_{t_i}^{t_f} - \int_{t_i}^{t_f}\dv{t}\h{U\h{r\h{t},\dot{r}\h{t}}}dt\Bigg]\\
+		&= \sum_{i = 1}^3\ha{\eval{\pdv{U}{\dot{r}_i}\h{r\h{t},\dot{r}\h{t}\cdot\dot{r}_i\h{t}}}_{t_i}^{t_f} - \eval{U\h{r\h{t},\dot{r}\h{t}}}_{t_i}^{t_f}}.
+	\end{align*}
+	Even though such a force does lead to a closed form for the work done by it, it can still be quite messy to work with. Therefore, we introduce the more simplistic \textbf{conservative force}, which is a force \(F:\R[3]\times\R\to\R[3]\) such there exists a \textbf{potential energy} \(U:\R[3]\times\R\to\R\) which satisfies \(F = -\nabla U\). In this case, the work simplifies to \(W = -\Delta U\).
+	\begin{proposition}\label{prp: central force}
+		A force, \(F:\R[3]\times\R\to\R[3]\), is called conservative if it can be written as
+		\begin{equation}\label{eq: central force}
+			F\h{r,t} = f\h{\norm{r},t}\dfrac{r}{\norm{r}},
+		\end{equation}
+		where \(f:\R\times\R\to\R\).
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(F\h{r,t}\) is as in Equation~\ref{eq: central force} and \(r_0\in\R[3]\). Define \(U:\R[3]\times\R\to\R\) as
+		\begin{equation*}
+			U\h{r,t} = \int_{\norm{r}}^\infty f\h{s,t}ds.
+		\end{equation*}
+		We assume that this integral exists, however, as a potential is defined up to a constant the upper limit can be chosen arbitrarily such that the integral does exist. We can deduce that
+		\begin{equation*}
+			\pdv{U}{r_i}\h{r,t} = \dv{r_i}\int_{\norm{r}}^\infty f\h{s,t}ds = -\pdv{\norm{r}}{r_i}f\h{\norm{r},t} = -f\h{\norm{r},t}\dfrac{r_i}{\norm{r}}.
+		\end{equation*}
+		Hence, we can deduce that \(U\) is indeed the potential of \(F\).
+	\end{proof}		
+	\begin{example}\label{exp: gravitational potential}
+		Consider the force of gravity acting on an object placed at \(r_1\) and exerted by an object at \(r_2\), the force can be expressed as
+		\begin{equation*}
+			F\h{r_1} = \dfrac{Gm_1m_2}{\norm{r_1 - r_2}^2}\dfrac{r_2 - r_1}{\norm{r_1 - r_2}}.
+		\end{equation*}
+		We can define the potential energy \(U\h{r_1}\) as
+		\begin{equation*}
+			U\h{r_1} = \dfrac{Gm_1m_2}{\norm{r_2 - r_1}}.
+		\end{equation*}
+		Let us check that this is indeed the correct potential,
+		\begin{equation*}
+			-\nabla U\h{r_1} = \dfrac{Gm_1m_2}{\norm{r_1 - r_2}^2}\dfrac{r_2 - r_1}{\norm{r_1 - r_2}}.
+		\end{equation*}
+		Thus the force of gravity is conservative. See that it can indeed be written in terms of \(r = r_2 - r_1\), i.e. \(F\h{r} = \flatfrac{Gm_1m_2r}{\norm{r}^3}\). Furthermore, remark that the gravitational force on the second body exerted by the first can be obtained by taking the gradient with respect to \(r_2\), i.e. if we fix \(r_1\) and make \(r_2\) a variable, we obtain
+		\begin{equation*}
+			F\h{r_2} = -\nabla U\h{r_2} = \dfrac{Gm_1m_2}{\norm{r_1 - r_2}^2}\dfrac{r_1 - r_2}{\norm{r_1 - r_2}} = -F\h{r_1}.
+		\end{equation*}
+		This is exactly Newton's third law.
+	\end{example}
+	Example \ref{exp: gravitational potential} shows us that a potential is much more of a measure of the interaction rather than a quantity tied to a body. We would like to define the total potential energy, \(U_{\st[tot]}\) in such a way that \(\pdv*{U_{\st[tot]}}{r_i}\) is the net force on the \(i\)-th particle. Hence, the \textbf{total potential energy} of a system is given by \(U_{\st[tot]} = \sum_iU_i\), where the sum runs over all the interactions.
+	
+\subsection{Euler-Lagrange Equations}
+	With the concepts of energy at hand, we can dive into Lagrangian formalism. This formalism lends itself to working with constrained systems in a more natural manner. In Newtonian mechanics, constraints led to imposing constraint forces, like the tension in Example~\ref{exp: atwood newton}. In Lagrangian formalism, we work around these constraints by choosing suitable coordinates which span all the possible configurations of the system. By choosing our coordinates wisely, we can often reduce the apparent dimensionality of the system. Such a system of coordinates is often denoted with \(q = \h{q_1,\ldots,q_n}\) instead of \(r = \h{r_1,\ldots,r_n}\). In such general coordinates, we can state the basic principle of Lagrangian formalism: Hamilton's principle.
+	\begin{principle}
+		The actual motion of a physical system, \(q:\ha{t_i,t_f}\to\R[3]\), is a stationary point of the \textbf{action integral} defined as
+		\begin{equation*}
+			S\h{q} = \int_{t_i}^{t_f}\lag\h{q\h{t},\dot{q}\h{t},t}dt.
+		\end{equation*}
+		Where \(\lag\h{q,\dot{q},t} = T\h{q,\dot{q},t} - U\h{q,\dot{q},t}\) is called the \textbf{Lagrangian} of the system.
+	\end{principle}
+	\begin{remark}
+		Remark that in the previous section, the kinetic energy was only a function of \(\dot{r}\), but in general coordinates, we can have some dependence on the position. For example, if we use cylindrical coordinates, \(\h{x,y,z} = \h{r\sin\theta, r\sin\theta, z}\) one can deduce that \(T = \frac{1}{2}m\h{\dot{r}^2 + r^2\dot{\theta} + \dot{z}^2}\). Hence, it is dependent on both the velocities and the position. Furthermore, \(U\) can be considered in the sense of a general potential and can therefore be dependent on the velocity.
+	\end{remark}
+	\begin{remark}
+		Remark that a Lagrangian only results in a well-posed mechanical situation if the stationary point of the action integral is uniquely for some boundary conditions. One can deduce that this implies that the Lagrangian must be a convex function in \(\dot{q}\), see \cite[p. 57]{Bolza1909} or \cite[Section 1.4]{Kielhoefer2018}.
+	\end{remark}
+	This principle is equivalent to the second law of motion posed by Newton. Finding the stationary points of an integral may seem like a convoluted way of finding the motions, and it is not even clear how this is equivalent to Newton's formalism. Luckily, both these problems are solved using the \textbf{Euler-Lagrange equations}.
+	\begin{proposition}\label{prp: euler lagrange equations}
+		For a Lagrangian \(\lag\), any stationary point \(q:\ha{t_i,t_f}\to\R\) of the action integral satisfies the following
+		\begin{equation}\label{eq: el-equation one dimensional}
+			\pdv{\lag}{q}=\dv{t}\pdv{\lag}{\dot{q}}.
+		\end{equation}
+		Moreover, any path that satisfies this condition is a stationary point.
+	\end{proposition}
+	\begin{proof}
+		Suppose we are given a Lagrangian \(\lag = \lag\h{q,\dot{q},t}\). Let us define a stationary point of the action integral. First, we define the notion of a variation of a path \(q:\ha{t_i,t_f}\to\R\) as a path \(\eta:\ha{t_i,t_f}\to\R\) with \(\eta\h{t_i} = 0 = \eta\h{t_f}\). We can then vary the path \(q\) smoothly in the direction of \(\eta\) as \(\rho_{\alpha,\eta}:\ha{t_i,t_f}\to\R:t\mapsto q\h{t} + \alpha\eta\h{t}\). For each variation \(\eta\), we can express \(S\) as a function of \(\alpha\), 
+		\begin{equation*}
+			S_{\eta}\h{\alpha} = S\h{\rho_{\alpha,\eta}} = \int_{t_i}^{t_f}\lag\h{\rho_{\alpha,\eta}\h{t},\dot{\rho}_{\alpha,\eta}\h{t},t}dt.
+		\end{equation*}
+		We then call \(q\) a stationary point of \(S\) if for every variation \(\eta\) we have \(\dv*{S_{\eta}}{\alpha}|_{\alpha = 0} = 0\). Now suppose that \(q:\ha{t_i,t_f}\to\R\) is a stationary point of \(S\) and \(\eta\) is some variation. Using the Leibniz and product rule, we can deduce that
+		\begin{align*}
+			0
+			&= \eval{\dv{S_\eta}{\alpha}}_{\alpha = 0} = \int_{t_i}^{t_f}\eval{\dv{\alpha}}_{\alpha = 0}\h{\lag\h{\rho_{\alpha,\eta}\h{t},\dot{\rho}_{\alpha,\eta}\h{t},\h{t}}}dt\\
+			&= \int_{t_i}^{t_f}\h{\pdv{\lag}{q}\h{\rho_{0,\eta}\h{t},\dot{\rho}_{0,\eta},t}\eta\h{t} + \pdv{\lag}{\dot{q}}\h{\rho_{0,\eta}\h{t},\dot{\rho}_{0,\eta}\h{t},t}\dot{\eta}\h{t}}dt.
+			\intertext{By rewriting \(\rho_{0,\eta}\h{t}\)  as \(q\h{t}\) and using partial integration on the second term in combination that \(n\h{t_i} = 0 = n\h{t_f}\) we get the following.}
+			0 &= \int_{t_i}^{t_f}\eta\h{t}\h{\pdv{\lag}{q}\h{q\h{t},\dot{q}\h{t},t} - \dv{t}\pdv{\lag}{\dot{q}}\h{q\h{t},\dot{q}\h{t},t}}dt.
+		\end{align*}
+		As we have chosen our variation \(\eta\) arbitrarily, this is enough to conclude that
+		\begin{equation*}
+			\pdv{\lag}{q}\h{q\h{t},\dot{q}\h{t},t} - \dv{t}\pdv{\lag}{\dot{q}}\h{q\h{t},\dot{q}\h{t},t} = 0.
+		\end{equation*}
+		Hence, any path \(q\) that is a stationary point of the action integral satisfies Equation~\ref{eq: el-equation one dimensional}. Moreover, any path that satisfies this equation is a stationary point of the action integral by the same logic.
+	\end{proof}
+	If we generalise this to a higher dimensional system with some general coordinates \(q=\h{q_1,\ldots,q_n}\), we conclude that the physical path satisfies
+	\begin{equation*}
+		\pdv{\lag}{q_i}=\dv{t}\pdv{\lag}{\dot{q}_i},\ \forall 1\leq i\leq n.
+	\end{equation*}
+	See \cite[Proposition 1.4.1]{Kielhoefer2018} for a formal proof of this statement. The Euler-Lagrange equations show that given \(n\) generalised coordinates, we end up with \(n\) second-order differential equations we need to solve in order to recover the physical motions of the bodies.
+	\begin{remark}
+		In Cartesian coordinates, the Euler-Lagrange equations are equivalent to Newton's second law.
+		\begin{align*}
+			\pdv{\lag}{q} = \dv{t}\pdv{\lag}{\dot{q}}\Longleftrightarrow
+			-\pdv{U}{q} = \dv{t}\h{m\dot{q} - \pdv{U}{\dot{q}}}\Longleftrightarrow
+			\dot{p} = \dv{t}\pdv{U}{\dot{q}} - \pdv{U}{q} = F.
+		\end{align*}
+		Here we used that \(U\) is the general potential of the force acting on the body.
+	\end{remark}
+	Solving problems with this formalism is often seen as more straightforward and less error-prone. In practice we need to go through the following steps:
+	\begin{enumerate}[label = {\alph*)}]
+		\item Determine the kinetic and potential energies in an inertial frame.
+		\item Determine the Lagrangian and translate it to some general coordinates for the system.
+		\item Solve the Euler-Lagrange equation.
+	\end{enumerate}
+	We will now showcase the power of Lagrangian formalism using two examples.
+	\begin{example}\label{exp: atwood lagrangian}
+		\input{example/atwood_lag.tex}
+	\end{example}
+	\begin{example}\label{exp: sliding block lagrangian}
+		\input{example/sliding_block.tex}
+	\end{example}
+	
+\end{document}

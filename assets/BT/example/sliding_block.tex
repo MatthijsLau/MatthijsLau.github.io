@@ -1,0 +1,35 @@
+\documentclass[class = article, crop = false]{standalone}
+\usepackage{standalone}
+\begin{document}
+	\begin{figure}
+		\centering
+		\includegraphics{img/Sliding_Slope.pdf}
+		\caption{Sketch of a mass \(m_1\) on a wedge of mass \(m_2\) at an angle \(\theta\). Here, we allow the mass to slide along the wedge, and the wedge to slide horizontally. The origin is placed such that the right angle of the wedge coincides with it at \(t = 0\), and the associated \(x\) and \(y\)-axis are also given. The coordinates \(q_1\) and \(q_2\) are also drawn.}
+		\label{fig: sliding block}
+	\end{figure}
+	Consider the case of a block of mass \(m_1\) sliding on a wedge of mass \(m_2\) that can move horizontally as sketched in Figure~\ref{fig: sliding block}, where we assume everything to be frictionless. If we were to solve this problem in Newtonian mechanics, we would have to deal with the awkward constraint force of the wedge acting on the mass and work out a lot of geometry. Luckily, we can circumvent this problem by using the energy methods of Lagrange and imposing the constraints through the coordinates we choose, as depicted with \(q_1\) and \(q_2\) in Figure~\ref{fig: sliding block}.
+	
+	We can set up the Lagrangian in the inertial frame, depicted by the \(x\) and \(y\) axes in Figure~\ref{fig: sliding block}. As these are Cartesian coordinates, this is quite simple.
+	\begin{equation*}
+		\lag\h{x_1,y_1,x_2,y_2,\dot{x}_1,\dot{y}_1,\dot{x}_2,\dot{y}_2} = \dfrac{1}{2}m_1\h{\dot{x}_1^2 + \dot{y}_1^2} + \dfrac{1}{2}m_2\h{\dot{x}_2^2 + \dot{y}_2^2} + m_1gy_1.
+	\end{equation*}
+	Next, we need to translate the Lagrangian to the general coordinates \(q_1\) and \(q_2\), this is given by the following, notice that these are defined up to some constant.
+	\begin{alignat*}{3}
+		&x_1 &&= -q_2 + q_1\cos\alpha,\qquad	&&y_1 = q_1\sin\alpha,\\
+		&x_2 &&= -q_2,					&&y_2 = 0.
+	\end{alignat*}
+	With these coordinate transformations, we can translate our Lagrangian to the general coordinates, resulting in 
+	\begin{equation*}
+		\lag\h{q_1,q_2,\dot{q}_1,\dot{q}_2} = \dfrac{1}{2}\h{m_1 + m_2}\dot{q}_2^2 + \dfrac{1}{2}m_1\h{\dot{q}_1^2 - 2\dot{q}_1\dot{q}_2\cos\alpha} + m_1gq_1\sin\alpha.
+	\end{equation*}
+	The equations of motion are then given by the Euler-Lagrange equations,
+	\begin{align}
+		\label{eq: el equation wedge 1}m_1g\sin\alpha &= m_1\ddot{q}_1 - m_1\ddot{q}_2\cos\alpha,\\
+		\label{eq: el equation wedge 2}0 &= \h{m_1 + m_2}\ddot{q}_2 - m_1\ddot{q}_1\cos\alpha.
+	\end{align}
+	We can express \(\ddot{q}_2\) as an equation of \(\ddot{q}_1\) using Equation~\ref{eq: el equation wedge 2} and entering this into Equation~\ref{eq: el equation wedge 1} we can recover a closed form for both \(\ddot{q}_1\) and \(\ddot{q}_2\)
+	\begin{equation*}
+		\ddot{q}_1 = \dfrac{g\sin\alpha}{1 - \dfrac{m_1\cos^2\alpha}{m_1 + m_2}}\quad\mbox{and}\quad\ddot{q}_2 = \dfrac{m_1g\sin\alpha\cos\alpha}{m_1\sin^2\alpha + m_2}.
+	\end{equation*}
+	Notice that both of these are constant, and one can thus easily solve these equations. We can check that these satisfy our intuition in the cases that \(m_2\to\infty\), \(m_2 = 0\), \(\alpha = 0\) or \(\alpha = \flatfrac{\pi}{2}\).
+\end{document}

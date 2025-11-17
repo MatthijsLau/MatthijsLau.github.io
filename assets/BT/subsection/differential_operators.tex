@@ -1,0 +1,515 @@
+\documentclass[class = report, crop = false]{standalone}
+\usepackage{standalone}
+
+
+\begin{document}	
+\subsection{Operators on Differential Forms}
+	Before we can prove Darboux's theorem, we will delve a bit deeper into the structure of differential forms and operators on them. In this section we will prove general results for \(k\)-forms, which are of course all applicable to symplectic forms as they are a special case with \(k = 2\). We will apply much of this theory in the proof of Darboux's theorem. Specifically, we will first discuss three operators: interior multiplication, exterior derivative and Lie derivative. Afterwards, we look into their connection in the form of Cartan's magic formula and prove Poincaré's lemma, which gives information on the local structure of closed differential forms. The definition and proofs will mainly be taken from \cite{Lee2013}, but the proof of Cartan's magic formula takes some insights from \cite{Marcut2017} and the proof of Poincaré's lemma is an adaptation of the proof of Corollary 13.2.14 in \cite{Marcut2017}.
+	
+	Firstly, we remind ourselves of the definition of \(k\)-forms. These stem from linear algebra, namely the exterior algebra. A \(k\)-form on a manifold can be interpreted as putting an alternating covariant \(k\)-tensor at each point in a smooth manner.
+	\begin{definition}\label{def: linear alternating k-form}
+		For a real vector space \(V\), we call a map \(\omega:\underbrace{V\times\cdots\times V}_{k \st[-times]}\to\R\) an \textbf{alternating \(k\)-form} if it is multilinear,
+		\begin{equation*}
+			\omega\h{v_1,\cdots,av_i + \tilde{a}\tilde{v}_i,\ldots,v_k} = a\omega\h{v_1,\cdots,v_i,\ldots,v_k} + \tilde{a}\omega\h{v_1,\cdots,\tilde{v}_i,\ldots,v_k}
+		\end{equation*}
+		and it is alternating
+		\begin{equation*}
+			\omega\h{v_{\sigma\h{1}},\ldots,v_{\sigma\h{k}}} = \sgn\h{\sigma}\omega\h{v_1,\ldots,v_k}.
+		\end{equation*}
+		We denote the space of alternating \(k\)-forms on \(V\) as \(\bigwedge^k\dual{V}\).
+		
+		On this space we define the\textbf{ wedge product} \(\wedge:\bigwedge^k\dual{V}\times\bigwedge^l\dual{V}\to\bigwedge^{k + l}\dual{V}\) as
+		\begin{equation*}
+			\h{\alpha\wedge\beta}\h{v_1,\ldots,v_{k + l}} = \dfrac{1}{k!l!}\sum_{\sigma\in S\h{k+l}}\sgn\h{\sigma}\alpha\h{v_{\sigma\h{1}}\ldots,v_{\sigma\h{k}}}\beta\h{v_{\sigma\h{k + 1}},\ldots,v_{\sigma\h{k + l}}},
+		\end{equation*}
+		where \(S\h{n}\) is the permutation group on \(n\) elements.
+	\end{definition}
+	\begin{example}\label{exp: wedge product}
+		Suppose that \(V\) is a real vector space and \(\alpha,\beta\in\bigwedge^1\dual{V}\). The action of \(\alpha\wedge\beta\) on \(v_1,v_2\in V\) is then given by
+		\begin{align*}
+			\h{\alpha\wedge\beta}\h{v_1,v_2}
+			&= \dfrac{1}{1!1!}\sum_{\sigma\in S\h{2}}\sgn\h{\sigma}\alpha\h{v_{\sigma\h{1}}}\beta\h{v_{\sigma\h{2}}}\\
+			&= \alpha\h{v_1}\beta\h{v_2} - \alpha\h{v_2}\beta\h{v_1} = \h{\alpha\otimes\beta - \beta\otimes\alpha}\h{v_1,v_2}.
+		\end{align*}
+		Hence, the wedge product of two \(1\)-forms is given by \(\alpha\wedge\beta = \alpha\otimes\beta - \beta\otimes\alpha\).
+	\end{example}
+	As we can generate \(\h{k + l}\)-forms from a \(k\)-form and an \(l\)-form, we would want this operator to be one of a single space. To do this we define a more general algebraic structure.
+	\begin{definition}\label{def: exterior algebra}
+		The \textbf{exterior algebra of \(\dual{V}\)} is defined as 
+		\begin{equation*}
+			\bigwedge\dual{V} = \bigoplus_{k = 0}^n\bigwedge^k\dual{V}.
+		\end{equation*}
+		Furthermore, we extend the wedge product to a binary operation \(\wedge:\bigwedge\dual{V}\times\bigwedge\dual{V}\to\bigwedge\dual{V}\) using a bilinear extension of \(\wedge:\bigwedge^k\dual{V}\times\bigwedge^l\dual{V}\to\bigwedge^{k + l}\dual{V}\). In other words, we decompose  \(\alpha,\beta\in\bigwedge\dual{V}\) as
+		\begin{equation*}
+			\alpha = \alpha_0 + \cdots + \alpha_k,\qquad \alpha_i\in\bigwedge^i\dual{V},\qquad \beta = \beta_0 + \cdots + \beta_l,\qquad \beta_i\in\bigwedge^i\dual{V}.
+		\end{equation*}
+		Such that \(\alpha\wedge\beta\) is then given by
+		\begin{equation}\label{eq: wedge product}
+			\alpha\wedge\beta = \sum_{n = 0}^{k + l}\sum_{i + j = n}\alpha_i\wedge\beta_j.
+		\end{equation}
+		This defines the exterior algebra \(\h{\bigwedge\dual{V},+,\wedge}\).
+	\end{definition}
+	\begin{proposition}\label{prp: linear graded algebra}
+		The triplet \(\h{\bigwedge\dual{V},+,\wedge}\) is an graded-commutative graded associative unital algebra. Meaning that \(\bigwedge^k\dual{V}\wedge\bigwedge^l\dual{V}\subset\bigwedge^{k + l}\dual{V}\) and for \(\alpha\in\bigwedge^k\dual{V},\beta\in\bigwedge^l\dual{V}\) the wedge product satisfies \(\alpha\wedge\beta = \h{-1}^{kl}\beta\wedge\alpha\).
+	\end{proposition}
+	\begin{proof}
+		The fact that it is graded-commutative, and associative is a direct consequence of the definition of the wedge product as in Equation~\ref{eq: wedge product}. The unit is \(1\in\R\), hence, it is unital.
+	\end{proof}
+	We can extend these alternating \(k\)-forms on real vector spaces to differential forms on manifolds by defining them pointwise.
+	\begin{definition}\label{def: alternating k-form}
+		An \textbf{alternating \(k\)-tensor} is an element of the set
+		\begin{equation*}
+			\bigwedge^k\cotang = \coprod_{p\in\m}\bigwedge^k\loccotang{p}.
+		\end{equation*}
+		A \textbf{differential \(k\)-form}, or simply\textbf{ \(k\)-form}, is then a smooth section of \(\bigwedge^k\cotang\), where we denote the set of \(k\)-forms by	
+		\begin{equation*}
+			\Omega^k\h{\m} = \Gamma\h{\bigwedge^k\cotang}.
+		\end{equation*}
+		This naturally forms a real vector space with pointwise addition and scalar multiplication. We define the \textbf{wedge product} \(\wedge:\Omega^k\h{\m}\times\Omega^l\h{\m}\to\Omega^{k + l}\h{\m}\) pointwise by \(\h{\omega\wedge\eta}_p = \omega_p\wedge\eta_p\). Leading to the definition of the algebra
+		\begin{equation*}
+			\Omega\h{\m} = \bigoplus_{k = 0}^n\Omega^k\h{\m}.
+		\end{equation*}
+		This gives us the algebra \(\h{\Omega\h{\m},+,\wedge}\), where \(\wedge\) is the bilinear extension of the wedge product above as in Definition \ref{def: exterior algebra}
+	\end{definition}
+	\begin{proposition}\label{prp: graded algebra}
+		The algebra \(\h{\Omega\h{\m},+,\wedge}\) is a graded-commutative graded associative unital algebra.
+	\end{proposition}
+	\begin{proof}
+		This is a direct consequence of Proposition~\ref{prp: linear graded algebra}. In this case, the unit is given by the function\(f:\m\to1\in\sff\), hence, it is a unital algebra.
+	\end{proof}
+	In any smooth chart \(\h{U,\h{x^i}}\) we can write an \(\omega\in\Omega^k\h{\m}\) as
+	\begin{equation*}
+		\omega = \sum_{i_1<\cdots<i_k}\omega_{i_1\ldots i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k},
+	\end{equation*}
+	where \(\omega_{i_1,\ldots i_k}\in\sff\). This notation is called ordered indices, but there are more possible notations. Most importantly
+	\begin{equation*}
+		\omega = \sum_{i_1\ldots i_k}\dfrac{1}{k!}\omega_{i_1\ldots i_k}dx^i\wedge\cdots\wedge dx^{i_k},\qquad \omega_{\sigma\h{i_1}\ldots\sigma\h{i_k}} = \sgn\h{\sigma}\omega_{i_1\ldots i_k}\in\sff.
+	\end{equation*}
+	This is with unordered indices, which can be useful sometimes. Lastly, we may abbreviate our notation for conciseness to
+	\begin{equation*}
+		\omega = \sum_I\omega_Idx^I.
+	\end{equation*}
+	Here \(\omega_I\in\sff\) and \(dx^I\) is an abbreviation for \(dx^{i_1}\wedge\cdots\wedge dx^{i_k}\). All of these forms are equivalent, but some may be more convenient to use. They can always be identified by how the indices in the sum are written.
+	
+	With the construction of the differential forms and structure of \(\Omega\h{\m}\) more clear, we will now look at some different operators.
+	
+	\subsubsection{Interior multiplication}
+		The first operation we are interested in is interior multiplication. We will define this on the exterior algebra of a real vector space, which is then naturally extended to differential forms. The interior multiplication is defined such that it fixes the first argument of a \(k\)-form.
+		\begin{definition}\label{def: linear interior multiplication}
+			For an \(\omega\in\bigwedge^k\dual{V}\) and \(v\in V\) we define the \textbf{interior multiplication of \(\omega\) by \(v\)}, denoted as \(\iota_v\omega\), by fixing the first argument in \(\omega\). This is more clear by considering its action on some \(v_1,\ldots,v_{k - 1}\in V\), then
+			\begin{equation*}
+				\iota_v\omega\h{v_1,\ldots,v_{k - 1}} = \omega\h{v,v_1,\ldots,v_{k - 1}},
+			\end{equation*}
+			and \(\iota_v\omega = 0\) if \(k = 0\). The associated operator \(\iota_v:\bigwedge^\star\dual{V}\to\bigwedge^{\star - 1}\dual{V}\) is called the \textbf{interior multiplication by \(v\)} or \textbf{contraction by \(v\)}.
+		\end{definition}
+		The most important property of this operator is that it respects the structure of the exterior algebra and vector space.
+		\begin{proposition}\label{prp: linear contraction linearity}
+			The interior multiplication is \(\R\)-linear in \(v\) and \(\omega\), i.e. \(\iota:V\times\bigwedge^k\dual{V}\to\bigwedge^{k - 1}\dual{V}:\h{v,\omega}\mapsto\iota_v\omega\) is bilinear.
+		\end{proposition}
+		\begin{proof}
+			The linearity in \(v\) follows from the definition, combined with the multilinearity of \(k\)-forms. Suppose that \(\omega\in\bigwedge^k\dual{V}\), \(v,\tilde{v},v_1,\ldots,v_{k - 1}\in V\) and \(a,\tilde{a}\in\R\), then
+			\begin{align*}
+				\iota_{av + \tilde{a}\tilde{v}}\h{\omega}\h{v_1,\ldots,v_{k - 1}}
+				&= \omega\h{av + \tilde{a}\tilde{v},v_1,\ldots,v_{k - 1}}\\
+				&= a\omega\h{v,v_1,\ldots,v_{k - 1}} + \tilde{a}\omega\h{\tilde{v},v_1,\ldots,v_{k - 1}}\\
+				&= a\iota_v\h{\omega}\h{v_1,\ldots,v_{k - 1}} + \tilde{a}\iota_{\tilde{v}}\h{\omega}\h{v_1,\ldots,v_{k - 1}}.
+			\end{align*}
+			Thus, \(\iota\) is linear in its first component. For the second component, we use the definition of addition and scalar multiplication of tensor fields. Hence, for \(\omega,\tilde{\omega}\in\bigwedge^k\dual{V}\), \(v,v_1,\ldots,v_{k - 1}\in V\) and \(a,\tilde{a}\in\R\) we have
+			\begin{align*}
+				\iota_v\h{a\omega + \tilde{a}\tilde{\omega}}\h{v_1,\ldots,v_{k - 1}}
+				&= \h{a\omega + \tilde{a}\tilde{\omega}}\h{v,v_1,\ldots,v_{k - 1}}\\
+				&= a\omega\h{v,v_1,\ldots,v_{k - 1}} + \tilde{a}\tilde{\omega}\h{v,v_1,\ldots,v_{k - 1}}\\
+				&= a\iota_v\h{\omega}\h{v_1,\ldots,v_{k - 1}} + \tilde{a}\iota_v\h{\tilde{\omega}}\h{v_1,\ldots,v_{k - 1}}.
+			\end{align*}
+			Hence, \(\iota\) is also linear in its second component.
+		\end{proof}
+		Besides respecting the vector space structure, it also works with the graded-commutative graded algebra structure of \(\bigwedge\dual{V}\).
+		\begin{proposition}\label{prp: linear contraction anti-derivation}
+			The interior multiplication is a graded derivation of degree \(-1\). In other words, \(\iota_v:\bigwedge^{\star}\dual{V}\to\bigwedge^{\star-1}\dual{V}\) satisfies
+			\begin{equation}\label{eq: interior multiplication product rule}
+				\iota_v\h{\omega\wedge\eta} = \iota_v\omega\wedge\eta + \h{-1}^k\omega\wedge\iota_v\eta,
+			\end{equation}
+			where \(\omega\in\bigwedge^k\dual{V}\) and \(\eta\in\bigwedge^l\dual{V}\).
+		\end{proposition}
+		\begin{proof}
+			Take some \(v\) from a vector space \(V\). As \(\iota_v\) is \(\R\)-linear as a mapping \(\iota_v:\bigwedge^{\star}\dual{V}\to\bigwedge^{\star - 1}\dual{V}\), see Proposition~\ref{prp: linear contraction linearity}, we may assume \(\omega = \alpha^1\wedge\cdots\wedge\alpha^k\) and \(\eta = \alpha^{k + 1}\wedge\cdots\wedge\alpha^{k + l}\), where \(\alpha^i\in\bigwedge^1\dual{V}\). We can then prove Equation \ref{eq: interior multiplication product rule} by evaluating it in some vectors \(v_1\ldots,v_{k + l}\in V\) and using the inductive definition of the determinant, see \cite[Proposition 14.11 (e)]{Lee2013}, and splitting the sum,
+			\begin{align*}
+				\iota_v\h{\omega\wedge\eta}
+				&= \iota_v\h{\alpha^1\wedge\cdots\wedge\alpha^{k + l}} = \sum_{i = 1}^{k + l}\h{-1}^{i - 1}\alpha^i\h{v}\alpha^1\wedge\cdots\wedge\widehat{\alpha}^i\wedge\cdots\wedge\alpha^{k + l}\\
+				&= \h{\sum_{i = 1}^k\h{-1}^{i - 1}\alpha^i\h{v}\alpha^1\wedge\cdots\wedge\widehat{\alpha}^i\wedge\cdots\wedge\alpha^{k}}\wedge\alpha^{k + 1}\wedge\cdots\wedge\alpha^{k + l}\\
+				&\qquad + \h{-1}^k\alpha^1\wedge\cdots\wedge\alpha^{k}\h{\sum_{i = 1}^{l}\h{-1}^{i - 1}\alpha^{k + i}\h{v}\alpha^{k + 1}\wedge\cdots\wedge\widehat{\alpha}^{k + i}\wedge\cdots\wedge\alpha^{k + l}}\\
+				&= \iota_v\omega\wedge\eta + \h{-1}^k\omega\wedge\iota_v\eta.
+			\end{align*}
+			As we mentioned, this is enough to prove that \(\iota_v\) is an anti-derivation of degree \(-1\).
+		\end{proof}
+		We can quite naturally extend the interior multiplication by recognising that a differential form is an element of the exterior algebra of the tangent spaces at each point. Hence, the interior multiplication can be implemented locally. To do this we should remark that we will need a vector at each point to contract with, enticing us to make use of a vector field instead of a single vector.
+		\begin{definition}\label{def: interior multiplication}
+			Let \(\omega\) be a \(k\)-form and \(X\) a vector field, both on a manifold \(\m\). We denote the \textbf{interior multiplication of \(\omega\) by \(X\)} as \(\iota_X\omega\) and define it for a point \(p\in\m\) as
+			\begin{equation*}
+				\h{\iota_X\omega}_p = \iota_{X_p}\omega_p.
+			\end{equation*}
+			Here the right-hand side is the interior multiplication on the exterior algebra as in Definition~\ref{def: linear interior multiplication}. Similar to the linear case, we call \(\iota_X:\Omega^\star\h{\m}\to\Omega^{\star - 1}\h{\m}\) the \textbf{interior multiplication with \(X\)} or \textbf{contraction by \(X\)}.
+		\end{definition}
+		As this extension is done pointwise, it still holds the same properties as the interior multiplication on the exterior algebra.
+		\begin{proposition}\label{prp: contraction linearity}
+			The mapping \(\iota:\vf\times\Omega^k\h{\m}\to\Omega^{k - 1}\h{\m}:\h{X,\omega}\mapsto\iota_X\omega\) is \(\R\)-linear in both components.
+		\end{proposition}
+		\begin{proof}
+			This is a direct consequence of the definition of the interior multiplication, see Definition~\ref{def: interior multiplication}, and Proposition~\ref{prp: linear contraction linearity}. We should check that for a \(k\)-form \(\omega\) the form \(\iota_X\omega\) is indeed a smooth section.
+			
+			Suppose that \(\m\) is a manifold and \(X\in\vf\). Take some \(\omega\in\Omega^k\h{\m}\) and a chart \(\h{U,\h{x^i}}\). We can then write \(\omega\) locally as
+			\begin{equation*}
+				\omega|_U = \sum_{i_1\ldots i_k}\dfrac{1}{k!}\omega_{i_1\ldots i_k}dx^i\wedge\cdots\wedge dx^{i_k},\quad \omega_{\sigma\h{i_1}\ldots\sigma\h{i_k}} = \sgn\h{\sigma}\omega_{i_1\ldots i_k}.
+			\end{equation*}
+			As the interior multiplication is defined pointwise, it follows that \(\h{\iota_X\omega}|_U = \iota_X\h{\omega|_U}\). Hence, we can express \(\h{\iota_X\omega}|_U\) as
+			\begin{equation}\label{eq: action of interior}
+				\h{\iota_X\omega}|_U = \sum_{i_1\ldots i_k}\dfrac{1}{\h{k - 1}!}X^{i_1}\omega_{i_1\ldots i_k}dx^{i_2}\wedge\cdots\wedge dx^{i_k},\quad \omega_{\sigma\h{i_1}\ldots \sigma\h{i_k}} = \sgn\h{\sigma}\omega_{i_1\ldots i_k}.
+			\end{equation}
+			As \(X\in\vf\) and \(\omega\in\Omega^k\h{\m}\), it follows that \(X^{i_1}\) and \(\omega_{i_1\ldots i_k}\) are both smooth functions. Therefore \(\iota_X\omega\) has smooth coordinate functions, implying it is a smooth section of \(\bigwedge^{k - 1}\cotang\), i.e. it is a \(\h{k - 1}\)-form.
+		\end{proof}
+		\begin{proposition}\label{prp: contraction anti-derivation}
+			The interior multiplication is a graded-derivation of degree \(-1\). In other words, it is a mapping \(\iota_X:\Omega^{\star}\h{\m}\to\Omega^{\star - 1}\h{\m}\) such that 
+			\[
+				\iota_X\h{\omega\wedge\eta} = \iota_X\omega\wedge\eta + \h{-1}^k\omega\wedge\iota_X\eta,
+			\]
+			where \(\omega\in\Omega^k\h{\m}\) and \(\eta\in\omega^l\h{\m}\).
+		\end{proposition}
+		\begin{proof}
+			This all follows from the fact that the interior multiplication is defined pointwise in combination with Proposition~\ref{prp: linear contraction anti-derivation}.
+		\end{proof}
+		
+	\subsubsection{Exterior derivative}\label{sec: exterior derivative}
+		The second operator we introduce is the exterior derivative. This forms the extension of the differential on a function. The definition follows from the fact that a \(1\)-form that is exact, meaning there exists an \(f\in\sff\) such that \(\omega = df\), necessarily is closed, meaning \(\pdv*{\omega_j}{x^i} - \pdv*{\omega_i}{x^j} = 0\) in any chart. We will first introduce the exterior derivative on a Euclidean space, after which it can easily be generalised to a manifold.
+		\begin{definition}\label{def: linear exterior derivative}
+			For a \(k\)-form \(\omega = \sum_I\omega_Idx^I\) on \(\R[n]\) we define \textbf{the exterior derivative of \(\omega\)}, denoted as \(d\omega\), using the formula
+			\begin{equation*}
+				d\omega = d\h{\sum_I\omega_Idx^I} = \sum_Id\omega_I\wedge dx^I,
+			\end{equation*}
+			where \(d\omega_I\) is defined as the differential of a function. The associated operator \(d:\Omega^\star\h{\m}\to\Omega^{\star + 1}\h{\m}\) is called the \textbf{exterior derivative on \(\R[n]\)}.
+		\end{definition}
+		In the definition, we used the shorthand notation as it gives a clean formula. For calculations, the ordered notation will prove more useful. Translating the exterior derivative to this notation, we get the expression
+		\begin{equation*}
+			d\omega = \sum_{i_1<\cdots<i_k}\sum_i\pdv{\omega_{i_1\ldots i_k}}{x^i}dx^i\wedge dx^{i_1}\wedge\cdots\wedge dx^{i_k}.
+		\end{equation*}
+		Again this operator acts as a form of derivation on \(\Omega^\star\h{\R[n]}\).
+		\begin{proposition}\label{prp: linear exterior derivative properties}
+			The exterior derivative on \(\R[n]\) has the following properties:
+			\begin{enumerate}[label = ({\arabic*)}, ref={\theproposition(\arabic*)}]
+				\item\label{part: linear exterior derivative linearity} \(d\) is linear over \(\R\).
+				\item\label{part: linear exterior derivative differential}For an \(f\in C^\infty\h{\R[n]}\) and \(X\in\vf[{\R[n]}]\) is satisfies \(df\h{X} = Xf\).
+				\item\label{part: linear exterior derivative anti-derivation} It is a graded derivation, i.e. for any \(\omega\in\Omega^k\h{\R[n]}\) and \(\eta\in\Omega^l\h{\R[n]}\) we have
+				\begin{equation*}
+					d\h{\omega\wedge\eta} = d\omega\wedge\eta + \h{-1}^k\omega\wedge d\eta.
+				\end{equation*}
+				\item\label{part: linear exterior derivative square} Its square is zero, i.e. \(d\circ d\h{\omega} = 0\) for any \(\omega\in\Omega^k\h{\R[n]}\).
+			\end{enumerate}
+			More concisely, we might call it a graded derivation of the graded algebra \(\Omega\h{\R[n]}\) of degree \(+1\) with a vanishing square, which coincides with the differential on functions.
+		\end{proposition}
+		\begin{proof}
+			The linearity of \(d\) follows from the definition, the fact that \(d\) is linear on smooth functions and that \(\wedge\) is distributive over addition.
+			
+			The second property follows directly from the definition. Take an arbitrary \(f\in C^\infty\h{\R[n]}\) and \(X\in\vf[{\R[n]}]\), a straightforward calculation of the action of \(df\) on \(X\) shows the second property.
+			\begin{equation*}
+				df\h{X} = \pdv{f}{x^i}dx^i\h{X} = X^i\pdv{f}{x^i} = Xf.
+			\end{equation*}
+			
+			To prove the third property, we will use the first property much like we did in the proof of Proposition~\ref{prp: contraction linearity}. Therefore, we only consider terms of the form \(\omega = \omega_Idx^I\in\Omega^k\h{\R[n]}\) and \(\eta = \eta_Jdx^J\in\Omega^l\h{\R[n]}\). By the fact that the exterior derivative is the differential on functions and therefore satisfies the Leibniz rule, it follows that,
+			\begin{align*}
+				d\h{\omega\wedge\eta}
+				&= d\h{\omega_I\eta_J dx^{IJ}} = d\h{\omega_I\eta_J}dx^{IJ} = \h{\h{d\omega_I}\eta_J + \omega_I\h{d\eta_J}}\wedge dx^{IJ},\\
+				&= \h{d\omega_I\wedge dx^I}\wedge\eta_Jdx^J - \h{-1}^k\omega_Idx^I\wedge\h{d\eta_J\wedge dx^J} = d\omega\wedge\eta + \h{-1}^k\omega\wedge d\eta.
+			\end{align*}
+			As we mentioned, by the \(\R\)-linearity of \(d\) this implies that \(d\) satisfies the product rule with respect to \(\wedge\).
+			
+			To prove the last property, we will first consider the action of the exterior derivative on a function. For an arbitrary \(f\in\Omega^0\h{\R[n]} = C^\infty\h{\R[n]}\) we use the fact that the second order partial differential is symmetric such that
+			\begin{align*}
+				d\h{df}
+				&= d\h{\pdv{f}{x^i}dx^i} = d\h{\pdv{f}{x^i}}\wedge dx^i = \pdv{f}{x^i}{x^j}dx^j\wedge dx^i,\\
+				&= \sum_{i < j}\h{\pdv{f}{x^i}{x^j} - \pdv{f}{x^j}{x^i}}dx^i\wedge dx^j = 0.
+			\end{align*}
+			Hence \(d\circ d = 0\) on functions, luckily we can reduce the case on arbitrary \(k\)-forms to that of functions as follows using
+			\begin{align*}
+				d\h{d\omega}
+				&= d\h{d\omega_{i_1\ldots i_k}\wedge dx^{i_1}\wedge\cdots\wedge dx^{i_k}},\\
+				&= d\h{d\omega_{i_1\ldots i_k}}\wedge dx^{i_1}\wedge\cdots\wedge dx^{i_k} + d\omega_{i_1\ldots i_k}\wedge d\h{dx^{i_1}\wedge\cdots\wedge dx^{i_k}}.
+			\end{align*}
+			The first term is zero as we showed that \(d\circ d\) is zero on functions. The second term can also be shown to be zero by using the following inductive argument
+			\begin{equation*}
+				d\h{dx^{i_1}\wedge\cdots\wedge dx^{i_k}} = d\h{dx^{i_1}}\wedge\cdots\wedge dx^{i_k} - dx^{i_1}\wedge d\h{dx^{i_2}\wedge\cdots\wedge dx^{i_k}}.
+			\end{equation*}
+			The first term is zero by the same argument as before, the second term is zero due to the inductive argument. Hence, we have shown that \(d\h{d\omega} = 0\) for an arbitrary \(\omega\).
+		\end{proof}
+		Besides these algebraic properties, the exterior derivative also works naturally with smooth functions between open subsets.
+		\begin{proposition}\label{prp: linear exterior derivative pullback}
+			For any \(U\subset \R[n]\), \(V\subset\R[m]\) both open and function \(F:V\to U\) we have
+			\begin{equation*}
+				\pull{F}\h{d\omega} = d\h{\pull{F}\omega},
+			\end{equation*}
+			where \(\omega\) is an arbitrary \(k\)-form on \(V\).
+		\end{proposition}
+		\begin{proof}
+			We can use the linearity of the exterior derivative, see Proposition~\ref{part: linear exterior derivative linearity}, such that it suffices to show this for \(\omega = \omega_{i_1\ldots i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k}\). Suppose that \(F:V\to U\), where \(U\subset\R[n]\) and \(V\subset\R[m]\) and \(\omega\in\Omega^k\h{U}\), then
+			\begin{align*}
+				\pull{F}\h{d\omega}
+				&=  d\h{\omega_{i_1\ldots i_k}\circ F}\wedge d\h{x^{i_1}\circ F}\wedge \cdots \wedge d\h{x^{i_k}\circ F},\\
+				&= d\h{\h{\omega_{i_1\ldots i_k}\circ F}\wedge d\h{x^{i_1}\circ F}\wedge \cdots \wedge d\h{x^{i_k}\circ F}} = d\h{\pull{F}\omega}.
+			\end{align*}
+			This proves our result.
+		\end{proof}
+		We can use the properties of the exterior derivative on \(\R[n]\), see Propositions~\ref{prp: linear exterior derivative properties}~and~\ref{prp: linear exterior derivative pullback}, to extend our definition to an arbitrary manifold.
+		\begin{proposition}\label{prp: existence exterior derivative manifold}
+			For a manifold \(\m\), there exists a unique \(\R\)-linear operator \(d:\Omega^k\h{\m}\to\Omega^{k + 1}\h{\m}\) for any \(k\) which satisfies the following:
+			\begin{enumerate}[ref = \theproposition.(\arabic*)]
+				\item\label{part: exterior derivative differential} For a function \(f\in \sff\) it is defined as the differential.
+				\item\label{part: exterior derivative anti-derivation} It is a graded derivation, i.e. for any \(\omega\in\Omega^k\h{\m}\) and \(\eta\in\omega^l\h{\m}\) we have
+				\begin{equation*}
+					d\h{\omega\wedge\eta} = d\omega\wedge\eta + \h{-1}^k\omega\wedge d\eta.
+				\end{equation*}
+				\item\label{part: exterior derivative square} Its square is zero, i.e. \(d\circ d\h{\omega} = 0\) for any \(\omega\in\Omega^k\h{\m}\).
+			\end{enumerate}
+		\end{proposition}
+		\begin{proof}
+			Much like any unique existence theorem, we will first prove the existence and then prove that this is also unique. The existence can be derived locally from the definition of the exterior derivative on \(\R[n]\). The uniqueness is a consequence of the product rule.
+			
+			Suppose that \(\m\) is a manifold and \(\omega\in\Omega^k\h{\m}\) for some arbitrary \(k\), then let \(\h{U,\phi}\) be a chart on \(\m\). We define \(d\omega\) locally on \(U\) as
+			\begin{equation*}
+				\h{d\omega}|_U = \h{\pull{\phi}\circ d\circ\pull{\h{\phi^{-1}}}}\h{\omega|_U}.
+			\end{equation*}
+			Remark that the \(d\) on the right-hand side is the exterior derivative on \(\R[n]\).
+			
+			As this defines the exterior derivative in a specific chart, we should now check the value does not depend on our choice of chart. Let \(\h{V,\psi}\) be another chart on \(\m\), we will then calculate \(d\omega|_{U\cap V}\) and show that it is invariant under coordinate transformations by using Proposition~\ref{prp: linear exterior derivative pullback} on \(\phi\circ\psi^{-1}:\psi\h{U\cap V}\to \phi\h{U\cap V}\),
+			\begin{align*}
+				\h{\pull{\phi}\circ d\circ\pull{\h{\phi^{-1}}}}\h{\omega|_{U\cap V}}
+				&= \h{\pull{\psi}\circ\pull{\h{\psi^{-1}}}\circ\pull{\phi}\circ d\circ\pull{\h{\phi^{-1}}}}\h{\omega|_{U\cap V}},\\
+				&= \h{\pull{\psi}\circ d\circ\pull{\h{\psi^{-1}}}\circ\pull{\phi}\circ\pull{\h{\phi^{-1}}}}\h{\omega|_{U\cap V}},\\
+				&= \h{\pull{\psi}\circ d\circ\pull{\h{\psi^{-1}}}}\h{\omega|_{U\cap V}}.
+			\end{align*}
+			Thus we have shown that the exterior derivative is independent of the choice of a coordinate chart, which implies that it is well-defined globally. It is then clear from Proposition~\ref{prp: linear exterior derivative properties} that it satisfies the properties mentioned locally and by construction everywhere.
+			
+			For uniqueness, we will first show that any operator which is a graded derivation is a local operator, i.e. if \(\eta\in\Omega^k\h{\m}\) satisfy \(\eta|_U = 0\) for some open \(U\subset\m\), then \(d\eta|_U = 0\). This then lets us prove the uniqueness locally.
+			
+			Suppose that \(D\) is a graded derivation on \(\Omega^k\h{\m}\), and let \(\eta\) be some \(k\)-form for which there exists an open \(U\subset \m\) such that \(\eta|_U = 0\). Take a \(p\in U\) and take a bump function \(\psi\) such that there exists an open neighbourhood \(V\) of \(p\) for which \(\psi|_V = 1\) and \(\supp\h{\psi}\subset U\). We can then conclude from the fact that \(\eta|_{\supp\h{\psi}} = 0\) that \(\psi\eta = 0\). Hence, it follows with \(\eta_p = 0\) and \(\psi\h{p} = 1\) that 
+			\begin{equation*}
+				0 = D\h{\psi\eta}_p = \h{D\psi}_p\wedge\eta_p + \psi\h{p}\wedge \h{D\eta} = \h{D\eta}_p.
+			\end{equation*}
+			This shows that \(D\eta|_U = 0\) if \(\eta|_U = 0\), and hence \(D\) is a local operator. Remark that this specifically applies to the exterior derivative.
+			
+			Now suppose that \(D:\Omega^k\h{\m} \to\Omega^{k + 1}\h{\m}\) is an operator which satisfies the properties of the proposition. We will then show that \(D\) coincides with \(d\) by first proving this for smooth functions, and then showing that \(D\) vanishes on products of differentials. It should be clear that for any \(f\in\sff\) we have \(Df = df\) as they are both equal to the differential of \(f\). Suppose that \(f^1,\ldots,f^k\in\sff\), it follows from the properties of the proposition that
+			\begin{equation*}
+				D\h{df^1\wedge \cdots \wedge df^k} = D\h{Df^1\wedge \cdots \wedge Df^k} = \sum_{i = 1}^k\h{-1}^{i - 1}Df^1\wedge\cdots\wedge D^2f^{i}\wedge\cdots\wedge Df^k = 0.
+			\end{equation*}
+			Take some arbitrary \(\eta\in\Omega^k\h{\m}\) and \(p\in\m\), and let \(\h{U,\h{x^i}}\) be some coordinates around \(p\). Construct some smooth bump function \(\psi\) such that there exists an open neighbourhood \(V\) of \(p\) such that \(\psi|_V = 1\) and \(\supp\h{\psi}\subset U\). Furthermore, in these coordinates we can write \(\eta\) as \(\eta|_U = \sum_I\eta_I dx^I\). Extend the functions \(x^i\) and \(\eta_I\) smoothly using the smooth bump function to functions \(\tilde{x}^i\) and \(\tilde{\eta}_I\) such that \(\tilde{x}^i|_V = x^i|_V\) and \(\tilde{\eta}_I|_V = \eta_I|_V\). We can then define an extension of \(\eta\) as \(\tilde{\eta} = \sum_I\tilde{\eta}_Id\tilde{x}^I\) such that it is defined on the whole of \(\m\) and satisfies \(\tilde{\eta}|_V = \eta|_V\). By the locality of \(D\) and \(d\) it follows that \(\h{D\eta}|_V = \h{D\tilde{\eta}}|_V\) and \(\h{d\eta}|_V = \h{d\tilde{\eta}}|_V\). As \(p\in V\), we can conclude from the discussion above that
+			\begin{align*}
+				\h{D\eta}_p
+				&= \h{D\tilde{\eta}}_p = \h{D\sum_I\tilde{\eta}_Id\tilde{x}^I}_p = \h{\sum_ID\tilde{\eta}_I\wedge d\tilde{x}^I + \tilde{\omega}_I\wedge Dd\tilde{x}^I}_p\\
+				&= \h{\sum_id\tilde{\eta}_I\wedge d\tilde{x}^I}_p = \h{d\tilde{\eta}}_p = \h{d\eta}_p.
+			\end{align*}
+ 		As our choice of \(p\) is arbitrary, it follows that \(D = d\) on the whole manifold and thus that \(d\) is uniquely defined.
+		\end{proof}
+		\begin{definition}\label{def: exterior derivative}
+			The unique operator \(d\) defined in Proposition~\ref{prp: existence exterior derivative manifold} is called the \textbf{exterior derivative on \(\m\)}. It is the unique linear operator that is a graded derivation on \(\Omega\h{\m}\) of degree \(+1\) with a vanishing square that coincides with the differential on smooth functions.
+		\end{definition}
+		The exterior derivative lets us define special classes of differential forms, namely closed and exact differential forms. These play a much bigger role in the study of the de Rham cohomology groups.
+		\begin{definition}
+			A differential form \(\omega\in\Omega^k\h{\m}\) is called \textbf{closed} if \(d\omega = 0\), and \textbf{exact} if there exists an \(\alpha\in\Omega^{k - 1}\h{\m}\) such that \(\eta = d\alpha\). Let \(Z^k\h{\m}\) denoted the set of closed \(k\)-forms on \(\m\) and \(B^k\h{\m}\) the set of exact \(k\)-forms, remark that \(Z^k\h{\m} = \ker\h{d:\Omega^k\h{\m}\to\Omega^{k + 1}\h{\m}}\) and \(B^k\h{\m} = \Im\h{d:\Omega^{k - 1}\h{\m}\to\Omega^k\h{\m}}\).
+		\end{definition}
+		We will now show a similar statement to Proposition~\ref{prp: linear exterior derivative pullback}, proving that the exterior derivative on an arbitrary manifold is natural in the sense that it commutes with the pullback.
+		\begin{proposition}\label{prp: exterior derivative pullback}
+			For a smooth function \(F:\m\to\m[N]\) and an arbitrary \(\omega\in\Omega^k\h{\m[N]}\), we have that
+			\begin{equation*}
+				\pull{F}\h{d\omega} = d\h{\pull{F}\omega}.
+			\end{equation*}
+			In other words, the exterior derivative commutes with the pullback.
+		\end{proposition}
+		\begin{proof}
+			This follows directly from applying Proposition~\ref{prp: linear exterior derivative pullback} to the coordinate representations of \(F\) and \(\omega\).
+		\end{proof}
+		A last important property of the differential is the fact that it can commute with integrals in a special manner that is reminiscent of the Leibniz integral rule.
+		\begin{proposition}\label{prp: exterior derivative integral}
+			Given a smooth family of differential forms \(\omega_t\in\Omega^k\h{\m}\), with \(t\in\ha{0,1}\), it satisfies the following
+			\begin{equation*}
+				\int_0^1\h{d\omega_t}dt = d\h{\int_0^1\omega_tdt}.
+			\end{equation*}
+			where \(d\) is the exterior derivative on \(\m\).
+		\end{proposition}
+		\begin{proof}
+			We can assume that \(\m\) has some global coordinates \(\h{x^i}\). Next up, suppose that \(\omega_t\in\Omega^k\h{\m}\) is a smooth family of \(k\)-forms with \(t\in\ha{0,1}\). We can then use the fact that partial derivatives commute with integrals of constant boundaries.
+			\begin{align*}
+				\int_0^1\h{d\omega_t}dt
+				&= \int_0^1\h{d\h{\h{\omega_t}_Idx^I}}dt = \int_0^1\h{\pdv{\h{\omega_t}_I}{x^i}dx^i\wedge dx^I}dt,\\
+				&= \h{\int_0^1\pdv{\h{\omega_t}_I}{x^i}dt}dx^i\wedge dx^I =  \pdv{x^i}\h{\int_0^1\h{\omega_t}_Idt}dx^i\wedge dx^I,\\
+				&= d\h{\int_0^1\h{\omega_t}_I dt\wedge dx^I} = d\h{\int_0^1\omega_t dt}.
+			\end{align*}
+			Which was what we wanted.
+		\end{proof}
+		
+	\subsubsection{Lie derivative}\label{sec: lie derivative}
+		The last operator we will introduce in this section is the Lie derivative of a differential form. This forms a natural extension of the Lie derivative on functions and vector fields, see Definitions~\ref{def: lie derivative function} and~\ref{def: lie derivative vector field}.
+		\begin{definition}
+			The \textbf{Lie derivative} of a differential form \(\omega\in\Omega^k\h{\m}\) along some \(X\in\vf\) is defined as
+			\begin{equation*}
+				\ld[X]\omega = \dtnull \pulltimeflow{t}\omega.
+			\end{equation*}
+			The existence of the derivative is ensured by Theorem~\ref{thm: flow domain}. We call the operator \(\ld[X]:\Omega^\star\h{\m}\to\Omega^\star\h{\m}\) the \textbf{Lie derivative along \(X\)}.
+ 		\end{definition}
+ 		As the name implies, this operator is a derivation on \(\Omega\h{\m}\).
+ 		\begin{proposition}\label{prp: lie derivative derivation}
+ 			The Lie derivative is a derivation of degree \(0\). In other words, for any \(X\in\vf\) it is a mapping \(\ld[X]:\Omega^{\star}\h{\m}\to\Omega^{\star}\h{\m}\) such that
+ 			\begin{equation*}
+ 				\ld[X]\h{\omega\wedge\eta} = \ld[X]\omega\wedge\eta + \omega\wedge\ld[X]\eta,
+ 			\end{equation*}
+ 			where \(\omega\in\Omega^k\h{\m}\) and \(\eta\in\Omega^l\h{\m}\).
+ 		\end{proposition}
+ 		\begin{proof}
+			Let \(X\) be a vector field on \(\m\), \(\omega\) a \(k\)-form and \(\eta\) an \(l\)-form. Remark that the pullback distributes over the wedge product, see \cite[Lemma 14.16 (b)]{Lee2013}, i.e.
+			\begin{equation*}
+				\pull{\timeflow{t}}\h{\omega\wedge\eta} = \h{\pull{\timeflow{t}}\omega}\wedge\h{\pull{\timeflow{t}}\eta}.
+			\end{equation*}
+			Hence, we get
+			\begin{align*}
+				\ld[X]\h{\omega\wedge\eta}
+				&= \dtnull\ha{\pulltimeflow{t}\h{\omega\wedge\eta}} = \dtnull\ha{\pulltimeflow{t}\omega\wedge\pulltimeflow{t}\eta},\\
+				&= \ha{\dtnull\pulltimeflow{t}\omega}\wedge\eta + \omega\wedge\ha{\dtnull\pulltimeflow{t}\eta} = \ld[X]\omega\wedge\eta + \omega\wedge\ld[X]\eta.
+			\end{align*}
+			This proves the proposition.
+ 		\end{proof}
+ 		Now we can already make a simple connection between the Lie derivative and the exterior derivative.
+ 		\begin{proposition}\label{prp: exterior derivative and lie derivative commute}
+ 			The exterior derivative commutes with the Lie derivative.
+ 		\end{proposition}
+ 		\begin{proof}
+ 			Suppose \(X\) is some vector field on \(\m\) and \(\omega\in\Omega^k\h{\m}\). Using Proposition~\ref{prp: exterior derivative pullback}, we obtain our result
+ 			\begin{equation*}
+ 				\h{\ld[X]\circ d}\omega = \dtnull\pulltimeflow{t}\h{d\omega} = \dtnull d\h{\pulltimeflow{t}\omega} = \h{d\circ\ld[X]}\omega.
+ 			\end{equation*}
+ 			As \(\omega\) is arbitrary, we get \(\ld[X]\circ d = d\circ\ld[X]\).
+ 		\end{proof}
+ 		Besides this connection to the exterior derivative, the Lie derivative lets us have a natural connection with the flow along a vector field.
+ 		\begin{proposition}\label{prp: lie derivative flow commute}
+ 			Let \(X\) be a vector field on a manifold \(\m\). If \(\phi_X^t\) denotes the flow of \(X\) at time \(t\), then for any \(\alpha\in\Omega\h{\m}\)
+ 			\begin{equation*}
+ 				\eval{\dv{t}}_{t = t_0}\pulltimeflow{t}\alpha = \pulltimeflow{t_0}\h{\ld[X]\alpha}.
+ 			\end{equation*}
+ 		\end{proposition}
+ 		\begin{proof}
+ 			Let \(X\) be a vector field on a manifold \(\m\) and \(\alpha\in\Omega\h{\m}\), we can write out the definitions above for a point \(p\in\m\), where we need to ensure that \(\h{t_0,p}\in\mathcal{D}\h{X}\). It then follows by substituting \(t = s + t_0\) and using Proposition~\ref{prp: flow one-parameter group} and Proposition 12.25 (e) in \cite{Lee2013},
+ 			\begin{align*}
+ 				\eval{\dv{t}}_{t = t_0}\pulltimeflow{t}\alpha
+ 				&= \eval{\dv{s}}_{s = 0}\pulltimeflow{s + t_0}\alpha = \eval{\dv{s}}_{s = 0}\pulltimeflow{t_0}\pulltimeflow{s}\alpha,\\
+ 				&= \pull{\h{\pulltimeflow{t_0}}}\eval{\dv{s}}_{s = 0}\pulltimeflow{s}\alpha = \pulltimeflow{t_0}\ld[X]\alpha.
+ 			\end{align*}
+ 			Which was what we wanted.
+ 		\end{proof}
+	
+	\subsubsection{Cartan's magic formula}
+		The combination of these three operators comes in the form of Cartan's magic formula. It tells us that the Lie derivative can be expressed in terms of the interior multiplication and exterior derivative. Concretely this is stated as follows.
+		\begin{proposition}\label{prp: cartan magic formula}
+			The Lie derivative of along a vector field \(X\) is given by
+			\begin{equation*}
+				\ld[X] = d\circ\iota_X + \iota_X\circ d.
+			\end{equation*}
+		\end{proposition}
+		Before we prove this statement, we will go into some properties of the \textbf{commutator of \(d\) and \(\iota_X\)}, given by \(D_X = d\circ\iota_X + \iota_X\circ d\).
+		\begin{lemma}\label{lem: action commutator}
+			For a vector field \(X\in\vf\) and function \(f\in \sff\), the action of \(D_X\) is equal to the Lie derivative.
+		\end{lemma}
+		\begin{proof}
+			Let \(X\) be a vector field on \(\m\) and \(f\) a function. By using the definition of the interior multiplication, Proposition~\ref{part: exterior derivative differential}, and Corollary~\ref{cor: lie derivative is action}, it follows that 
+			\begin{equation*}
+				D_Xf = \h{d\circ\iota_X + \iota_X\circ d}f = d\h{\iota_Xf} + \iota_X\h{df} = df\h{X} = Xf = \ld[X]f.
+			\end{equation*}
+			Hence, this shows that \(D_Xf = \ld[X]f\).
+		\end{proof}
+		\begin{lemma}\label{lem: commutator commutes}
+			The operator \(D_X\) commutes with \(d\), i.e. \(D_X\circ d = d\circ D_X\).
+		\end{lemma}
+		\begin{proof}
+			This proof simply follows from the fact that the exterior derivative's square is zero, see Proposition~\ref{part: exterior derivative square}. We can see that
+			\begin{equation*}
+				D_X\circ d = \h{d\circ\iota_X + \iota_X\circ d}\circ d = d\circ\iota_X\circ d = d\circ\h{d\circ\iota_X + \iota_X\circ d} = d\circ D_X.
+			\end{equation*}
+			Therefore, \(d\) and \(D_X\) commute.
+		\end{proof}
+		\begin{lemma}\label{lem: commutator derivative}
+			For a vector field \(X\in\vf\), the operator \(D_X\) is a derivation on \(\Omega\h{\m}\) of degree \(0\).
+		\end{lemma}
+		\begin{proof}
+			Suppose that \(\m\) is a manifold, \(X\in\vf\). We can easily verify that \(D_X:\Omega^k\h{\m}\to\Omega^k\h{\m}\) which implies it has degree \(0\).
+			
+			To prove that it is a derivation, we will make use of Propositions~\ref{prp: linear contraction anti-derivation} and~\ref{part: exterior derivative anti-derivation}. Suppose that \(\omega\in\Omega^k\h{\m}\) and \(\eta\in\Omega^l\h{\m}\), then
+			\begin{align*}
+				D_X\h{\omega\wedge\eta}
+				&= \h{d\circ\iota_X + \iota_X\circ d}\h{\omega\wedge\eta}\\
+				&= d\h{\iota_X\omega\wedge\eta + \h{-1}^k\omega\wedge\iota_X\eta} + \iota_X\h{d\omega\wedge\eta + \h{-1}^k\omega\wedge d\eta}\\
+				\notag&= d\iota_X\omega\wedge\eta + \h{-1}^{k - 1}\iota_X\omega\wedge d\eta + \h{-1}^kd\omega\wedge\iota_X\eta + \h{-1}^{2k}\omega\wedge d\iota_X\eta\\
+				&\qquad + \iota_Xd\omega\wedge\eta + \h{-1}^{k + 1}d\omega\wedge\iota_X\eta + \h{-1}^k\iota_X\omega\wedge d\eta + \h{-1}^{2k}\omega\wedge\iota_Xd\eta\\
+				&= \h{d\circ\iota_X + \iota_X\circ d}\omega\wedge\eta + \omega\wedge\h{d\circ\iota_X + \iota_X\circ d}\eta = D_X\omega\wedge\eta + \omega\wedge D_X\eta.
+			\end{align*}
+			This shows that, \(D_X\h{\omega\wedge\eta} = D_X\omega\wedge\eta + \omega\wedge D_X\eta\) and it is therefore a derivation of degree \(0\).
+		\end{proof}
+		We will now apply Lemmas~\ref{lem: action commutator} and~\ref{lem: commutator derivative} to prove Proposition~\ref{prp: cartan magic formula}.
+		\begin{proof}[Proof of Proposition~\ref{prp: cartan magic formula}]
+			As all the operators satisfy the product rule, we can deduce that they are local, see the proof of Proposition~\ref{prp: existence exterior derivative manifold}. If we combine this with the linearity of the operators, we remark that we only need to consider a \(k\)-form \(\omega\) which we can write in a coordinate chart \(\h{U,\h{x^i}}\) as \(\omega|_U = \omega_{i_1,\ldots, i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k}\). Then we can split this \(k\)-form into two parts \(\omega|_U = \alpha\wedge\eta\) with \(\alpha = dx^{i_1}\) and \(\beta = \omega_{i_1\ldots i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k}\). Then remark that \(\omega\) is some wedge product of an exact \(1\)-form and a \(k - 1\)-form. By using the derivation properties of the commutator and the Lie derivative, see Lemma~\ref{lem: commutator derivative} and Proposition~\ref{prp: lie derivative derivation}, we can show the equivalence on a \(k\)-form by proving the equivalence on exact \(1\)-forms and using induction. To prove the equivalence on exact \(1\)-form, we will use Lemmas~\ref{lem: action commutator} and~\ref{lem: commutator commutes} and Proposition~\ref{prp: exterior derivative and lie derivative commute}.
+			\begin{equation*}
+				D_X\h{df} = d\h{D_Xf} = d\h{\ld[X]f} = \ld[X]\h{df}.
+			\end{equation*}
+			This is then enough to prove Cartan's magic formula as we know that they coincide on \(0\)-forms, see Lemma~\ref{lem: action commutator}.
+		\end{proof}
+	
+	\subsubsection{Poincaré's lemma}
+		Let us now apply Cartan's magic formula to prove a basic statement on differential forms called Poincaré's lemma. This tells us that any closed differential form is locally also exact. We will first prove this for differential forms on open subsets of \(\R[n]\), which naturally extends to the mentioned statement. Our proof consists of defining an operator that almost inverts the exterior derivative, called a homotopy operator.
+		\begin{lemma}
+			Every closed \(k\)-form with \(k\geq 1\) on a star-shaped domain of \(\R[n]\) is exact.
+		\end{lemma}
+		\begin{proof}
+			Suppose that \(V\) is a star-shaped domain of \(\R[n]\) and let \(\omega\)	be a \(k\)-form on \(V\) with \(k \geq 1\). Without loss of generality, we can	assume that \(V\) is star-shaped around \(0\). We want to construct an operator \(h:\Omega^k\h{V}\to\Omega^{k - 1}\h{V}\) such that \(d\circ h = \id\). This is impossible in general as it would imply that every differential form is exact. Therefore we generalize our formula to \(d\circ h + h\circ d = \id\), such that it is equivalent to \(d\circ h = \id\) for closed forms.
+			
+			This operator \(h\) is defined using the contraction mapping \(m_t:V\to V:x\mapsto tx\), which is a well-defined function as long as \(t\in\ha{0,1}\) due to the star-shapedness of \(V\). Remark that \(m_0 = 0\) and \(m_1 = \id_V\), therefore \(\pull{m_0} = 0\) and \(\pull{m_1} = \id_{\Omega\h{V}}\) as well. Define \(h:\Omega^k\h{V}\to\Omega^{k - 1}\h{V}\) as follows
+			\begin{equation*}
+				h\h{\omega} = \int_{0}^1\dfrac{1}{t}\pull{m_t}\h{\iota_X\omega}dt.
+			\end{equation*}
+			where \(X = x^i\pdv*{x^i}\) such that \(m_t = \phi_X^{\ln\h{t}}\). Remark that this integral is well-defined even though we divide by \(t\). This can be seen by writing the integrand out in coordinates, where we assume \(\omega = \omega_{i_1\ldots i_k} dx^{i_1}\wedge\cdots\wedge dx^{i_k}\) in this calculation as every operation is linear. By noticing that \(m_t\) is simply the multiplication by \(t\) in each coordinate and the fact that \(d\) is \(\R\) linear, we can calculate the action of the pullback in coordinates, see Lemma 14.16 (c) in \cite{Lee2013}, we see
+			\begin{align*}
+				&\hspace{-1mm}\dfrac{1}{t}{\pull{m_t}\h{\iota_X\omega}}\\
+				&= \dfrac{1}{t}\pull{m_t}\h{\iota_X\omega_{i_1\ldots i_k}\ dx^{i_1}\wedge\cdots\wedge dx^{i_k}}\\
+				&= \dfrac{1}{t}\pull{m_t}\h{\sum_{j = 1}^k\h{-1}^{j - 1}dx^{i_j}\h{X}\omega_{i_1\ldots i_k} dx^{i_1}\wedge\cdots\wedge dx^{i_{j - 1}}\wedge dx^{i_{j + }}\wedge\cdots\wedge dx^{i_k}}\\
+				&= \dfrac{1}{t}\sum_{j = 1}^k\h{-1}^{j - 1}X\h{tx^{i_j}}\h{\omega_{i_1\ldots i_k}\circ m_t}d\h{tx^{i_1}}\wedge\cdots\wedge d\h{tx^{i_{j- 1}}}\wedge d\h{tx^{i_{j + 1}}}\wedge\cdots\wedge d\h{tx^{i_k}}\\
+				&= t^{k - 1}\sum_{j = 1}^k\h{-1}^{j - 1}X\h{x^{i_j}}\h{\omega_{i_1\ldots i_k}\circ m_t}dx^{i_1}\wedge\cdots\wedge dx^{i_{j - 1}}\wedge dx^{i_{j + 1}}\wedge\cdots\wedge dx^{i_k}.\\
+			\end{align*}
+			This shows that the integrand is well-defined for \(t\in\ha{0,1}\) if \(k \geq 1\).
+			
+			All that is left to show, is that this operator satisfies the equation
+			\begin{equation*}
+				d\circ h + h\circ d = \id.
+			\end{equation*}
+			We can prove this by working out the calculation for some \(\omega\). In this calculation, we will use the fact that the integral is a linear operator and that the exterior derivative commutes with the integral and the pullback, see Propositions~\ref{prp: exterior derivative integral} and~\ref{prp: exterior derivative pullback}
+			\begin{align*}
+				\h{d\circ h + h\circ d}\omega
+				&= d\int_{0}^1\dfrac{1}{t}\pull{m_t}\h{\iota_X\omega}dt + h\h{d\omega},\\
+				&= \int_{0}^1\dfrac{1}{t}\pull{m_t}\h{d\h{\iota_X\omega}}dt + \int_{0}^1\dfrac{1}{t}\pull{m_t}\h{\iota_X\h{d\omega}}dt,\\
+				&= \int_{0}^1\dfrac{1}{t}\pull{m_t}\h{\h{d\circ\iota_X + \iota_X\circ d}\omega}dt.\\
+				\intertext{
+					Now we use Cartan's magic formula to rewrite this in terms of the Lie derivative. Furthermore, we recognise \(m_t\) as the flow of \(X\) and use the commutation property of the Lie derivative. Then we obtain our results from the chain rule.
+				}
+				\h{d\circ h + h\circ d}\omega
+				&= \int_{0}^1\dfrac{1}{t}\pull{m_t}\h{\ld[X]\omega}dt = \int_{0}^1\dfrac{1}{t}\pull{\h{\phi_X^{\ln\h{t}}}}\h{\ld[X]\omega}dt,\\
+				&= \int_{0}^1\dfrac{1}{t}\eval{\dv{s}}_{s = \ln\h{t}}\h{\pull{\h{\phi_X^s}}\omega}dt,\\
+				&= \int_0^1\dv{t}\h{\pull{\h{\phi_X^{\ln\h{t}}}}\omega}dt = \int_0^1\dv{t}\h{\pull{m_t}\omega}dt = \pull{m_1}\omega - \pull{m_0}\omega = \omega.
+			\end{align*}
+			Hence, the operator \(h\) as defined above is exactly the operator we were looking for. By using the fact that \(\omega\) is closed, we can deduce that \(d\h{h\h{\omega}} = \omega\) and thus \(\omega\) is exact on \(V\).
+		\end{proof}
+		\begin{corollary}\label{cor: closed is exact}
+			For every closed differential form \(\omega\) and point \(p\) on the manifold, there exists a neighbourhood of \(p\) on which \(\omega\) is exact.
+		\end{corollary}
+		\begin{proof}
+			Let \(\m\) be a \(n\)-manifold and suppose that \(\omega\) is a closed \(k\)-form on \(\m\) and let \(p\) be a point in \(\m\). Take a chart \(\h{U,\phi}\), such that \(\phi:U\to V\subset\R[n]\) is a diffeomorphism. We can assume that \(V\) is star-shaped because if it is not we can take an open sphere \(\tilde{V}\) contained in \(V\) as \(V\) is open, the diffeomorphism \(\phi|_{\phi^{-1}\h{\tilde{V}}}\) then gives a new chart.
+			
+			We would like to use Poincaré's lemma now, however, this lemma only considers differential forms on \(\R[n]\). Therefore, we want to use the diffeomorphism of the chart to pullback the differential form to a differential form on \(V\).
+			
+			To be able to do this use that the exterior derivative commutes with the pullback such that \(\pull{\h{\phi^{-1}}}\eval{\omega}_U\) a closed \(k\)-form on \(V\). As we assumed that \(V\) is star-shaped we can use Poincaré's lemma implying the existence of a \(\h{k - 1}\)-form \(\eta\) on \(V\) with the property that \(\pull{\h{\phi^{-1}}}\eval{\omega}_U = d\eta\). By again taking the pullback by \(\phi\), and using the fact that \(\pull{\h{\phi^{-1}\circ\phi}} = \id_U\), it follows that
+			\begin{equation*}
+				\omega\big|_U = \pull{\h{\phi^{-1}\circ\phi}}\omega\big|_U = \pull{\phi}\h{\pull{\h{\phi^{-1}}}\omega\big|_U} = \pull{\phi}\h{d\eta} = d\h{\pull{\phi}\eta}.
+			\end{equation*}
+			This implies that \(\omega\) is exact on \(U\).
+		\end{proof}
+\end{document}

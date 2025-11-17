@@ -1,0 +1,76 @@
+\documentclass{standalone}
+\begin{document}
+Let us consider the Kepler problem which consists of two bodies with masses \(m_1\) and \(m_2\) with an attractive gravitational interaction and a stationary centre of mass. We have seen in Example~\ref{exp: gravitational potential} that the potential for such a gravitational interaction is given by
+\begin{equation*}
+	U\h{r_1,r_2} = \dfrac{Gm_1m_2}{\norm{r_2 - r_1}}.
+\end{equation*}
+Here, we will assume that \(G = 1\) for ease of notation. The Lagrangian in Cartesian coordinates is then simply the kinetic energy minus this potential energy
+\begin{equation*}
+	\lag\h{r_1,r_2,\dot{r}_1,\dot{r}_2} = \dfrac{1}{2}\h{m_1\norm{\dot{r}_1}^2 + m_2\norm{\dot{r}_2}^2} - \dfrac{m_1m_2}{\norm{r_2 - r_1}}.
+\end{equation*}
+Let us consider the coordinate transformation to the centre of mass system, defined by
+\begin{equation*}
+	R = \dfrac{m_1r_1 + m_2r_2}{m_1 + m_2},\quad r = r_2 - r_1.
+\end{equation*}
+Inverting this transformation leads to the following expressions for \(r_1\) and \(r_2\)
+\begin{alignat*}{2}
+	&r_1 = R - \dfrac{m_2}{m_1 + m_2}r,\quad &&\dot{r}_1 = \dot{R} - \dfrac{m_2}{m_1 + m_2}\dot{r}\\
+	&r_2 = R + \dfrac{m_1}{m_1 + m_2}r,\quad &&\dot{r}_2 = \dot{R} + \dfrac{m_1}{m_1 + m_2}\dot{r}.
+\end{alignat*}
+Using this coordinate transformation we find that the Lagrangian in these coordinates can be expressed as
+\begin{align*}
+	\lag\h{R,r,\dot{R},\dot{r}}
+	&= \dfrac{1}{2}\h{m_1\norm{\dot{R} - \dfrac{m_2}{m_1 + m_2}\dot{r}}^2 + m_2\norm{\dot{R} + \dfrac{m_1}{m_1 + m_2}\dot{r}}^2} - \dfrac{m_1m_2}{\norm{r}}\\
+	&= \dfrac{1}{2}\Bigg(m_1\norm{\dot{R}}^2 + m_1\norm{\dfrac{m_2}{m_1 + m_2}\dot{r}}^2 - \dfrac{2m_1m_2}{m_1 + m_2}\dot{R}\vdot\dot{r}\\
+	&\qquad + m_2\norm{\dot{R}}^2 + m_2\norm{\dfrac{m_1}{m_1 + m_2}\dot{r}}^2 + \dfrac{2m_1m_2}{m_1 + m_2}\dot{R}\vdot\dot{r}\Bigg) - \dfrac{m_1m_2}{\norm{r}}\\
+	&= \dfrac{1}{2}\h{\h{m_1 + m_2}\norm{\dot{R}}^2 + \dfrac{m_1m_2}{m_1 + m_2}\norm{\dot{r}}^2} - \dfrac{m_1m_2}{\norm{r}}.
+\end{align*}
+Now define \(M = m_1 + m_2\) and \(\mu = \flatfrac{m_1m_2}{\h{m_1 + m_2}}\) and remark that \(\dot{R} = 0\) as the centre of mass is stationary. It then follows that the Lagrangian reduces to
+\begin{equation*}
+	\lag\h{R,r,\dot{R},\dot{r}} = \lag\h{r,\dot{r}} = \dfrac{1}{2}\mu\norm{\dot{r}}^2 - \dfrac{\mu M}{\norm{r}}.
+\end{equation*}
+We can see that we can model our configuration space with \(\R[3]\backslash\hv{0}\), as we divide by the norm of \(r\), and hence the phase space as \(\h{\cotang[\h{\R[3]\backslash\hv{0}}],\omega_{\can}}\). The Hamiltonian can be obtained by calculating the generalised momentum.
+\begin{equation*}
+	p = \pdv{\lag}{\dot{r}} = \mu \dot{r}.
+\end{equation*}
+Hence, the Hamiltonian is given by
+\begin{equation*}
+	\ham\h{r,p} = p\vdot\dot{r} - \lag = \dfrac{\norm{p}^2}{\mu} - \dfrac{1}{2}\dfrac{\norm{p}^2}{\mu} + \dfrac{\mu M}{\norm{r}} = \frac{\norm{p}^2}{2\mu} + \dfrac{\mu M}{\norm{r}}.
+\end{equation*}
+Now let us define some function \(L\) on \(\rcotang[3]\) which represents the angular momentum
+\begin{equation*}
+	L = r\cross p = \mqty(x\\y\\z)\cross\mqty(p_x\\p_y\\p_z) = \mqty(yp_z - zp_y\\zp_x - xp_z\\xp_y - yp_x) = \mqty(L_x\\L_y\\L_z).
+\end{equation*}
+We will now show that \(f = \h{\ham,\norm{L}^2,L_z}\) gives an integrable system \(\h{\m,\omega,f}\). Let us first check the commutation relations between the functions, which also shows that the \(L_z\) and \(\norm{L}^2\) are first integrals. We will start by reducing \(\acomm{\ham}{\norm{L}^2}\) to simpler cases,
+\begin{equation*}
+	\acomm{\ham}{\norm{L}^2} =  \acomm{\ham}{L_x^2 + L_y^2 + L_z^2} = \acomm{\ham}{L_x^2} + \acomm{\ham}{L_y^2} + \acomm{\ham}{L_z^2}.
+\end{equation*}
+Remark that \(\acomm{\ham}{L_i^2} = 2\acomm{\ham}{L_i}L_i\) for \(i\in\hv{x,y,z}\), hence, it is enough to determine \(\acomm{\ham}{L_i}\). Let us do this for \(i = z\) as we have to determine this commutation relation directly as well,
+\begin{align*}
+	\acomm{\ham}{L_z}
+	&= \pdv{\ham}{x}\pdv{L_z}{p_x} - \pdv{\ham}{p_x}\pdv{L_z}{x} + \pdv{\ham}{y}\pdv{L_z}{p_y} - \pdv{\ham}{p_y}\pdv{L_z}{y}\\
+	&= -\dfrac{\mu Mxy}{\norm{r}^3} - \dfrac{p_xp_y}{\mu} + \dfrac{\mu Mxy}{\norm{r}^3} + \dfrac{p_xp_y}{\mu} = 0.
+\end{align*}
+It follows that \(\acomm{\ham}{L_z} = 0\), and thus \(\acomm{\ham}{L_z^2} = 0\) as well. This follows similarly for \(i\in\hv{x,y}\). As the above calculation proves that \(\acomm{\ham}{\norm{L}^2} = 0\) and \(\acomm{\ham}{L_z} = 0\), we only have to check \(\acomm{\norm{L}^2}{L_z}\).
+\begin{equation}\label{eq: comm L2 and Lz}
+	\acomm{\norm{L}^2}{L_z} = \acomm{L_x^2 + L_y^2 + L_z^2}{L_z} = 2\ha{\acomm{L_x}{L_z}L_x + \acomm{L_y}{L_z}L_y + \acomm{L_z}{L_z}L_z}.
+\end{equation}
+Remark that \(\acomm{L_z}{L_z} = 0\) by the skew-symmetry of the Poisson bracket. Hence, we only need to calculate \(\acomm{L_z}{L_x}\) and \(\acomm{L_z}{L_x}\)
+\begin{align*}
+	\acomm{L_x}{L_z} &= \pdv{L_x}{y}\pdv{L_z}{p_y} - \pdv{L_x}{p_y}\pdv{L_z}{y} = xp_z - p_xz = -L_y\\
+	\acomm{L_y}{L_z} &= \pdv{L_y}{x}\pdv{L_z}{p_x} - \pdv{L_y}{p_x}\pdv{L_z}{x} = yp_z - p_yz = L_x.
+\end{align*}
+Combining these with Equation~\ref{eq: comm L2 and Lz} gives us the result
+\begin{equation*}
+	\acomm{\norm{L}^2}{L_z} = 2\ha{-L_yL_x + L_xL_y} = 0.
+\end{equation*}
+So indeed \(\hv{\ham,\norm{L}^2,L_z}\) is a set of commuting function. Let us consider the Jacobian of \(f = \h{\ham,\norm{L}^2,L_z}\), which at a point \(\h{r,p} = \h{x,y,z,p_x,p_y,p_z}\) is given by
+\begin{equation*}
+	dF_{\h{r,p}} = \mqty(
+		-\dfrac{\mu Mx}{\norm{r}^3}&-\dfrac{\mu My}{\norm{r}^3}&-\dfrac{\mu Mz}{\norm{r}^3}&\dfrac{p_x}{\mu}&\dfrac{p_y}{\mu}&\dfrac{p_z}{\mu}\\
+		2\ha{p\cross L}_1&2\ha{p\cross L}_2&2\ha{p\cross L}_3&2\ha{L\cross r}_1&2\ha{L\cross r}_2&2\ha{L\cross r}_3\\
+		0&p_z&-p_y&0&-z&y
+	),
+\end{equation*}
+where the subscript of \(\ha{p\cross L}\) and \(\ha{L\cross r}\) denote the \(i\)-th component. We can recognise that this Jacobian has full rank on at least a dense subset of \(\cotang[\h{\R[3]\backslash\hv{0}}]\), as we mentioned one can show that this is enough for the system to be integrable by quadratures, see \cite[Section 18.4]{CannasdaSilva2008}. Please refer to \cite[Section 4.4]{Heckman2014} for more details on this problem.
+\end{document}

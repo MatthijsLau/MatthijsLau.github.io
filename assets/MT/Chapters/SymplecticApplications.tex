@@ -1,0 +1,256 @@
+\documentclass{standalone}
+
+\begin{document}
+\chapter{Symplectic applications}
+	In this last chapter, we will discuss some of the applications of (multiplicative) connections to (multiplicative) symplectic fibrations. While the study of symplectic geometry is relatively old, more recent research in Poisson geometry has led to a specific interest in symplectic Lie groupoids, which integrate Poisson structures, see \cite{Mackenzie2000}. In a recent paper, \cite{Fernandes2024}, there was a construction of a normal form around Poisson submanifolds, which led to a fibred Lie groupoid construction where the Lie groupoids were symplectic as well. This has sparked a new interest in these specific objects.
+
+	We will start with a retelling of the classical theory of symplectic fibrations as can be found in \cite{Guillemin1996} or \cite{McDuff2017}, where the relation between the existence of symplectic connections and the existence of globally integrating forms is essential. We will then define a context of multiplicative symplectic fibrations and showcase how multiplicative connections may play a similar role as they do in the classical theory.
+
+\section{Symplectic fibrations}
+	To introduce symplectic fibrations, we will work similarly to our treatment of fibre bundles in Chapter~\ref{ch: surjective submersions}.  To add structure to our surjective submersions, but not on the total or base space, we turn to its fibres. Naively, we can define a \df{family of symplectic forms} on \(\pi\colon M\to B\) as a collection \(\hv{\sigma_b}_{b\in B}\) such that \(\sigma_b\in\Omega^2\h{M_b}\) is a symplectic form. However, as our indexing set is a manifold, we would like to incorporate some smoothness conditions here.
+	\begin{definition}
+		A family of symplectic forms \(\hv{\sigma_b}_{b\in B}\) on \(\pi\colon M\to B\) is called \df{smooth}\index{Smooth family of forms} if the glueing to a single vector bundle morphism is smooth, i.e.\ the following map is smooth:
+		\[
+			\sigma\colon\bigwedge^2\Ver\to\bbR\colon u\wedge v\in\bigwedge^2\Ver_{x}\mapsto \sigma_{\pi\h{x}}\h{u,v}.
+		\]
+	\end{definition}
+	\begin{notation}
+		We will always denote the ``glueing'' of a family of forms by dropping the subscript of the basepoint.
+	\end{notation}
+	We remark that the construction of smooth families of forms is natural in the theory of foliations, in the sense that a family of symplectic forms defines a foliated form on the associated simple foliation. In this setting, we also have an idea of closed forms, which then coincides with forms which are closed when restricted to each fibre. This, in particular, implies that this is a good notion of a smooth family of forms on a surjective submersion. More details on these objects can be found in \cite[App. C]{Crainic2021}.
+	\begin{definition}\label{def: sympl fibr manifold}
+		A \df{symplectically fibred manifold}\index{Symplectically fibred manifold} is a surjective submersion \(\pi\colon M\to B\) with a smooth family of symplectic forms \(\hv{\sigma_b}_{b\in B}\).
+	\end{definition}
+	Additionally, we have a notion of isomorphism for such structures. This not only preserves the fibred structure of the surjective submersion, but also the symplectic structure on each fibre.
+	\begin{definition}
+		Let \(\pi_i\colon M_i\to B\) be symplectically fibred manifolds, with  \(i = 1,2\), where the families are denoted by \(\hv{\sigma_{i,b}}_{b\in B}\). An isomorphism between them is a fibred diffeomorphism \(\phi\colon M_1\to M_2\) such that for each \(b\in B\) it pulls back the forms on the fibres, i.e.\ \(\phi^*\sigma_{2,b} = \sigma_{1,b}\).
+	\end{definition}
+	Just like the case of families of Lie groupoids and surjective submersions, we have a trivial notion of symplectically fibred manifolds.
+	\begin{example}\label{ex: trivial sfb}
+		Given a manifold \(B\) and symplectic manifold \(\h{F,\sigma}\), then \(\pr_1\colon B\times F\to F\) is symplectically fibred by \(\hv{\sigma_b\colon \h{u,v}\mapsto\sigma\h{u,v}}_{b\in B}\). Clearly this is a smooth as \(\overline{\sigma} = \pr_2^*\sigma\).
+
+		We call a symplectically fibred manifold \df{trivial}\index{Trivial! symplectically fibred manifold} if it is isomorphic to such a trivial example.
+	\end{example}
+	Using the above notion of triviality, we can then again consider a local version of it as well.
+	\begin{definition}
+		A \df{symplectic fibre bundle}\index{Symplectic fibre bundle} is a symplectically fibred manifold \(\pi\colon M\to B\) with typical fibre \(\h{F,\sigma}\), a symplectic manifold, such that it admits a trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) consisting of isomorphisms of symplectically fibred manifolds.
+
+		If all the fibres are symplectomorphic to \(\h{F,\sigma}\), we will also denote this by \(\h{F,\sigma}\hookrightarrow M\pito B\).
+	\end{definition}
+
+	We remark that, as the name suggests, a symplectic fibre bundle is indeed a fibre bundle. Recall that a fibre bundle is fully characterised, up to isomorphism, by its transition data. Therefore, we would also like to incorporate the geometrical data of a symplectic fibre bundle into this data.
+	\begin{definition}
+		A fibre bundle \(F\hookrightarrow M\overset{\pi}{\to}B\) has \df{structure group}\index{Structure group} \(G\subset\Diff\h{F}\) if there exists a trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) whose transition data has values in \(G\).
+	\end{definition}
+	To translate this back to Definition~\ref{def: sympl fibr manifold}, given a fibre bundle with structure group \(\Symp\h{F,\sigma}\), we construct forms on the fibres. Let \(F\hookrightarrow M\pito B\) be a fibre bundle, with \(\h{F,\sigma}\) a symplectic manifold, and \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) a trivialising cover with transition data in \(\Symp\h{F,\sigma}\). Due to the transition data mapping into \(\Symp\h{F,\sigma}\) we remark that the following holds:
+	\[
+	\psi_{\alpha,b}^*\sigma = \h{\psi_{\beta,b}}^*\h{\h{\psi_{\beta,b}}^*}^{-1}\psi_{\alpha,b}^*\sigma = \h{\psi_{\beta,b}}^*\h{\psi_{\beta\alpha,b}}^*\sigma = \h{\psi_{\beta,b}}^*\sigma.
+	\]
+	Therefore, we can define a symplectic form on \(M_b\) as \(\sigma_b = \psi_{\alpha,b}^*\sigma\), for \(b\in U_\alpha\), and note that it is independent of the choice of \(\alpha\).
+
+	Remark that these forms may not be dependent on the choice of local trivialisation within a symplectic trivialising cover, but they do depend on the symplectic trivialising cover itself. In practice, we almost always implicitly choose a symplectic trivialising cover and directly work with the family of forms \(\hv{\sigma_b}_{b\in B}\) without mention of the cover.
+	\begin{proposition}\label{prp: smooooth}
+		Let \(F\hookrightarrow M\pito B\) be a fibre bundle, then it is a symplectic fibre bundle if and only if it has structure group \(\Symp\h{F,\sigma}\).
+	\end{proposition}
+	\begin{proof}
+		Let \(\h{F,\sigma}\hookrightarrow M\pito B\) be a symplectic fibre bundle, then its transition functions have transition data in \(\Symp\h{F,\sigma}\) as they are by isomorphism of trivial symplectically fibred manifolds.
+
+		Conversely, suppose that the transition data is in \(\Symp\h{F,\sigma}\) and let \(\hv{\sigma_b}_{b\in B}\) be the induced family of forms on the fibres, obtained from a symplectic trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\). These are symplectic forms as \(\psi_{\alpha,b}\) is a diffeomorphism. To show that \(\sigma\) is smooth, we will show that it is locally isomorphic to the trivial model of Example~\ref{ex: trivial sfb}. Consider the restriction of \(\sigma\) to \(\pi^{-1}\h{U_\alpha}\). Here we find that
+		\[
+		\sigma\h{u\wedge v} = \sigma_{\pi\h{x}}\h{u\wedge v} = \h{\psi_{\alpha,b}^*\sigma}\h{u\wedge v} = \psi_\alpha\pr_2^*\sigma\h{u\wedge v}.
+		\]
+		This latter expression is smoothly defined and therefore \(\overline{\sigma}\) is a smooth vector bundle map. This, in particular, implies that it is a symplectic fibre bundle.
+	\end{proof}
+
+	\subsection{Fibre-compatible forms}
+		We remark that the vertical bundle of a surjective submersion is included in \(TM\), the tangent space of the total space, and thus, we obtain a pullback map \(\iota^*\colon \Omega^k\h{TM}\to\Omega^k\h{\Ver}\) by precomposition in each component. To define an inverse to this map, one can choose a connection and use the splitting of forms as described in Section~\ref{sec: splitting of forms}. In particular, this means that global form \(\omega\in\Omega^2\h{M}\) might define a symplectically fibred manifold structure on \(\pi\colon M\to B\) if and only if the fibres are symplectic submanifolds. If we start with a symplectically fibred manifold, we may wonder whether we can find such a global extension.
+		\begin{definition}
+			On a symplectically fibred manifold \(\pi\colon M\to B\) with family of symplectic forms \(\hv{\sigma_b}_{b\in B}\), a \df{fibre-compatible form} is a form \(\omega\in\Omega^2\h{M}\) such that \(\iota^*\omega = \sigma\).
+		\end{definition}
+		There is a direct relation between the existence of connections and the existence of fibre-compatible forms, which is why connections are particularly important for the theory of symplectically fibred manifolds.
+		\begin{proposition}\label{ikk ben er klaar mee}
+			Let \(\pi\colon M\to B\) be a symplectically fibred manifold, then a fibre-compatible form \(\omega\) uniquely defines a connection \(\Hor_\omega\) such that they are compatible.
+
+			Conversely, a connection \(\Hor\) defines a fibre- and \(\Hor\)-compatible form \(\omega_{\Hor}\).
+		\end{proposition}
+		\begin{proof}
+			Suppose that \(\pi\colon M\to B\) is a symplectically fibres manifold with family of forms \(\hv{\sigma_b}_{b\in B}\).
+
+			Given a fibre-compatible form \(\omega\), we can define an Ehresmann connection
+			\[
+			\Hor_\omega = \Ver^\omega = \hv{u\in TM\colon \omega\h{u,v} = 0\mbox{ for all }v\in\Ver}.
+			\]
+			It is a standard result in linear algebra and differential geometry to check that this is a complementary subbundle to \(\Ver\). Clearly, then \(\omega_{\h{1,1}} = 0\) under the induced splitting of forms. Moreover, we can see that this is the only connection for which this holds.
+
+			Conversely, if we are given a connection, we obtain a canonical splitting of \(\Omega^2\h{M}\), with an inclusion of \(\Gamma\h{\bigwedge^2\Ver^*}\). Under this inclusion, we obtain a connection- and fibre-compatible form.
+		\end{proof}
+		We remark that there may be multiple fibre-compatible forms corresponding to a single connection, and that this freedom is described exactly by a choice in \(\Omega^2\h{\Hor}\). Therefore, the map \(\Hor\mapsto \omega_{\Hor}\) is only a right inverse to \(\omega\mapsto \Ver^{\omega}\).
+
+\section{Comments on the existence of complete symplectic connections}
+	In this next section, we want to make a digression on a version of Theorem~\ref{thm: complete iff fibre bundle} in the symplectic case, and most importantly, why the proof of this fails. Recall that there is a geometric notion of a symplectic connection in terms of the holonomy maps.
+	\begin{definition}
+		A connection on a symplectically fibred manifold is called \df{symplectic} if the holonomy maps are by symplectic maps.
+	\end{definition}
+	Clearly, given a symplectic connection which is complete on a symplectically fibred manifold, we immediately obtain local trivialisations with transition data in \(\Symp\h{F,\sigma}\). We also remark that on a symplectic fibre bundle, there always exists a symplectic connection by simply glueing together closed fibre-compatible forms on each locally trivial part by some partition of unity on the base space, see \cite{Guillemin1996}. However, we remark that this is fundamentally different from our proof of Theorem~\ref{thm: complete iff fibre bundle}, where we let the form vary over the fibres. Let us therefore discuss why the converse is not necessarily true, and our methods do not apply. First, we will go into some of the properties of symplectic connections, to get a better grip on how to possibly apply the proof of Theorem~\ref{thm: complete iff fibre bundle}.
+
+	While being symplectic is a statement on the induced parallel transport of the connection, we can translate this to the associated fibre-compatible forms instead. To do this, we need the following standard lemma on the flows of time-dependent vector fields.
+	\begin{lemma}[{\cite[Prp~22.14]{Lee2013}}]\label{lem: dikke afgeleide}
+		Let \(M\) be a manifold, \(X\colon I\times M\to TM\) a time-dependent vector field and \(\omega\in\Omega^k\h{M}\), then
+		\[
+		\eval{\dv{t}}_{t = t_1}\ha{\h{\phi^{t,t_0}_X}^*\omega}_p = \ha{\h{\phi^{t_1,t_0}_X}^*\calL_{X_{t_1}}\omega}_p
+		\]
+	\end{lemma}
+	\begin{theorem}\label{thm: blugh proof}
+		Let \(\pi\colon M\to B\) be a symplectically fibred manifold and \(\omega\) a fibre-compatible form, the following are equivalent:
+		\begin{enumerate}
+			\item The induced connection, \(\Hor = \Ver^{\omega}\) is symplectic.
+			\item For all \(X\in\frkX\h{B}\) and \(v_1,v_2\in\Ver_x\), ranging over all \(x\in M\), we have \(\calL_{h\h{X}}\omega\h{v_1,v_2} = 0\).
+			\item For all \(v_1,v_2\in\Ver_x\) we have \(\iota_{v_1\wedge v_2}d\omega = 0\), ranging over all \(x\in M\).
+		\end{enumerate}
+	\end{theorem}
+	\begin{proof}
+		Suppose that \(\pi\colon M\to B\) is a symplectically fibred manifold and \(\omega\) a compatible form. We will denote \(\Hor = \Ver^\omega\) and \(h\colon\frkX\h{B}\to\frkX\h{M}\) as the induced horizontal lift.
+
+		%		Firstly, we make the following observation: If \(X\in\frkX\h{B}\) has integral curve \(\gamma\colon I\to B\), and we pick some \(t_0,s\in I\) and \(v_1,v_2\in\Ver_{x}\) with \(x\in\pi^{-1}\h{\gamma\h{t_0}}\), then we find that
+		%		\begin{align*}
+			%			\eval{\dv{t}}_{t = s}\hk{\phi_{h\h{X}}^{t - t_0}}^*\omega\h{v_1,v_2}
+			%			&= \eval{\dv{t}}_{t = s}\hk{\phi_{h\h{X}}^{-t_0}}^*\hk{\phi_{h\h{X}}^t}^*\omega\h{v_1,v_2}
+			%			 = \hk{\phi_{h\h{X}}^{-t_0}}^*\eval{\dv{t}}_{t = s}\hk{\phi_{h\h{X}}^t}^*\omega\h{v_1,v_2},\\
+			%			&= \hk{\phi_{h\h{X}}^{-t_0}}^*\hk{\phi_{h\h{X}}^s}^*\calL_{h\h{X}}\omega\h{v_1,v_2}
+			%			 = \hk{\phi_{h\h{X}}^{s - t_0}}^*\calL_{h\h{X}}\omega\h{v_1,v_2}.
+			%		\end{align*}
+
+		{i)\(\implies\)ii)}
+		Suppose that the connection is symplectic, i.e.\ \(\h{\tau_\gamma^{s,t}}^*\sigma_{\gamma\h{t}} = \sigma_{\gamma\h{s}}\) for all curves \(\gamma\colon I\to B\). Fix a \(X\in\frkX\h{B}\) and let \(\gamma\colon I\to B\) be its integral curve starting at \(b\). By setting \(s = 0 = t_0\) in Lemma~\ref{lem: dikke afgeleide}, we can deduce that on some \(v_1,v_2\in\Ver_x\), wih \(x\in M_{\gamma\h{t_0}}\), the Lie derivative satisfies
+		\begin{align*}
+			\calL_{h\h{X}}\omega\h{v_1,v_2}
+			&= \hk{\eval{\dv{t}}_{t = 0}\hk{\phi_{h\h{X}}^t}^*\omega}\h{v_1,v_2}
+			= \hk{\eval{\dv{t}}_{t = 0}\hk{\tau_\gamma^{0,t}}^*\sigma_{\gamma\h{t}}}\h{v_1,v_2},\\
+			&= \hk{\eval{\dv{t}}_{t = 0}\sigma_{\gamma\h{0}}}\h{v_1,v_2} = 0.
+		\end{align*}
+		Here, we used that \(\tau_\gamma^{0,t}\) maps between fibres and thus \(T\tau_\gamma^{0,t}\) maps a vertical vector to a vertical vector. Therefore, we can restrict \(\omega\) to the vertical bundle, where it is given by \(\sigma_b\).
+
+		{ii)\(\implies\)i)}
+		Suppose that for all \(X\in\frkX\h{B}\) and \(v_1,v_2\in\Ver_x\), ranging over all \(x\in M\), we have \(\calL_{h\h{X}}\omega\h{v_1,v_2} = 0\). Let \(\gamma\colon I\to B\) be some regular curve and fix some \(a\in I\). Notice that we can assume regularity as the holonomy, which we consider for symplectic connections, is invariant under reparametrisation. For any \(b\in I\), we can find an \(\epsilon > 0\) such that \(\gamma|_{\ha{b - \epsilon,b + \epsilon}}\) is an embedding. In particular, the tangent of \(\gamma|_{\ha{b - \epsilon,b + \epsilon}}\) extends to a vector field \(X\in \frkX\h{B}\), such that \(X_{\gamma\h{t}} = \dot{\gamma}\h{t}\) for \(t\in \ha{b - \epsilon,b + \epsilon}\). It follows that for some vertical vectors \(v_1,v_2\in\Ver_{\gamma\h{a}}\) we have:
+		\begin{align*}
+			\hk{\eval{\dv{t}}_{t = b}\hk{\tau_\gamma^{a,t}}^*\sigma_{\gamma\h{t}}}\h{v_1,v_2}
+			&= \hk{\eval{\dv{t}}_{t = b}\h{\tau_\gamma^{a,b}}^*\h{\tau_\gamma^{b,t}}^*\sigma_{\gamma\h{t}}}\h{v_1,v_2},\\
+			&= \hk{\h{\tau_\gamma^{a,b}}^*\eval{\dv{t}}_{t = b}\h{\phi_{h\h{X}}^{t - b}}^*\sigma_{\gamma\h{t}}}\h{v_1,v_2},\\
+			&= \h{\tau_\gamma^{a,b}}^*\h{\phi_{h\h{X}}^{0}}^*\calL_{h\h{X}}\omega\h{v_1,v_2},\\
+			&= \calL_{h\h{X}}\omega\h{T\tau_\gamma^{a,b}v_1,T\tau_\gamma^{a,b}v_2} = 0.
+		\end{align*}
+		Here, we again used the fact that \(T\tau_\gamma^{a,b}\) sends vertical vectors to vertical vectors. This implies that \(\h{\tau_\gamma^{a,t}}^*\sigma_{\gamma\h{t}}\) is constant and thus the holonomy is by symplectic maps.
+
+		{ii)\(\iff\)iii)}
+		Using Cartan's magic formula we have for any \(X\in\frkX\h{B}\), we have
+		\[
+			\iota_b^*\calL_{h\h{X}}\omega = \iota_b^*d\h{\iota_{h\h{X}}\omega} + \iota_b^*\iota_{h\h{X}}\h{d\omega}.
+		\]
+		Remark that \(\iota_b\colon F\to M\) denotes the fibre inclusion and \(\iota_{h\h{X}}\) the interior multiplication. Due to \(\omega\) being compatible with the connection, it follows that the restriction of \(\iota_{h\h{X}}\omega\) to \(\Ver\) vanishes. Therefore, the pullback along \(\iota_b\), which corresponds to the restriction to \(\Ver|_{M_b}\), vanishes as well.
+		Using the fact that \(d\) commutes with pullbacks, we find that for each \(v_1,v_2\in\Ver_x\) we have
+		\[
+			d\h{\iota_{h\h{X}}\omega}\h{v_1,v_2} = \iota_{\pi\h{x}}^*d\h{\iota_{h\h{X}}\omega}\h{v_1,v_2} = d\h{\iota_{\pi\h{x}}^*\iota_{h\h{X}}\omega}\h{v_1,v_2} = 0.
+		\]
+		We conclude that \(\iota_b^*\calL_{h\h{X}}\omega = \iota_b^*\iota_{h\h{X}}\h{d\omega}\). It is clear that if \(\iota_{v_1\wedge v_2}d\omega = 0\), then \(\calL_{h\h{X}}\omega\h{v_1,v_2} = 0\). Conversely if \(\calL_{h\h{X}}\omega\h{v_1,v_2} = 0\), we notice that in general
+		\[
+		d\omega\h{w,v_1,v_2} = d\omega\h{w^\top,v_1,v_2} + d\omega\h{w^\bot,v_1,v_2},
+		\]
+		where \(w^\top\in\Hor\) and \(w^\bot\in\Ver\). It follows that \(d\omega\h{w^\bot,v_1,v_2} = d\sigma_{\pi\h{x}}\h{w^\bot,v_1,v_2} = 0\) as \(\sigma_{\pi\h{x}}\) is symplectic. The other term vanishes as \(w^\top\) extends to a horizontal vector field of the form \(h\h{X}\), such that per our assumption, it holds.
+	\end{proof}
+	Hence, we can capture whether a connection is symplectic completely in terms of the fibre-compatible form it generates. Additionally, the previous description of symplectic connections in terms of the Lie derivatives lets us deduce that on a trivial symplectically fibred manifold, we obtain a description in terms of the fibrewise horizontal lifts. Where these normally map into symplectic vector fields, we can require them to instead preserve the symplectic structure as well, by mapping into the Lie algebra associated to \(\Symp\h{F,\sigma}\).
+	\begin{corollary}\label{cor: vet cool}
+		Let \(h\) be a connection on \(\h{F,\sigma}\hookrightarrow B\times F\overset{\pr_1}{\to}B\). It is symplectic if and only if \(h_b\colon T_bB\to\frkX\h{F}\) maps into \(\sympfrk\h{F,\sigma}\).
+	\end{corollary}
+%	\begin{proof}
+%		Let \(h\) be a connection on \(\h{F,\sigma}\hookrightarrow B\times F\overset{\pr_1}{\to}B\). We then remark that the following holds:
+%		\begin{align*}
+%			\edv{t}{t_1}\ha{\h{\tau^{t_0,t}_\gamma}^*\sigma}_p
+%			&= \edv{t}{t_1}\ha{\h{\pr_2\circ\phi_{X_\gamma}^{t,t_0}}^*\sigma}_p = \edv{t}{t_1}\ha{\h{\phi_{X_\gamma}^{t,t_0}}^*\pr_2^*\sigma}_p,\\
+%			&= \edv{t}{t_1}\ha{\h{\phi_{X_\gamma}^{t,t_0}}^*\omega}_p = \ha{\h{\phi_{X_\gamma}^{t_1,t_0}}^*\calL_{X_{\gamma,t_1}}\omega}_p\\
+%			&= \ha{\h{\phi_{X_\gamma}^{t_1,t_0}}^*\calL_{h_{\gamma\h{t_1}}\h{\dot{\gamma}\h{t_1}}}\omega}_p\\
+%		\end{align*}
+%		where we denote \(X_\gamma\colon I\times F\to TF\colon \h{t,f}\mapsto h_{\gamma\h{t}}\h{\dot{\gamma}\h{t}}\h{f} = h\h{\h{\gamma\h{t},f},\dot{\gamma}\h{t}}\). Using Theorem~\ref{thm: blugh proof}, we can conclude that this indeed defines a symplectic connection if and only if
+%	\end{proof}
+	Lastly, we remark that being a symplectic connection is a local condition on a symplectic fibre bundle.
+	\begin{proposition}\label{prp: holo is loco}
+		Let \(M\pito B\) be a symplectic fibre bundle and \(\Hor\) is a connection, then the following are equivalent:
+		\begin{enumerate}
+			\item The connection \(\Hor\) is symplectic.
+			\item There exists a symplectic trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) such that \(\Hor|_{M|_{U_\alpha}}\) is symplectic on \(M|_{U_\alpha}\pito U_\alpha\).
+		\end{enumerate}
+	\end{proposition}
+	\begin{proof}
+		Suppose \(M\pito B\) be a symplectic fibre bundle and \(\Hor\) is a connection.
+
+		{i)\(\implies\)ii)}
+		If \(\Hor\) is symplectic, and \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) is a symplectic trivialising cover, the lift of \(\gamma\colon I\to U_\alpha\) through \(\Hor|_{M|_{U_\alpha}}\) is the same as the lift through \(\Hor\). In particular, this implies that their holonomies coincide and therefore they are always symplectic.
+
+		{ii)\(\implies\)i)}
+		Suppose now we have a symplectic trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) such that \(\Hor|_{M|_{U_\alpha}}\) is symplectic. Let \(\gamma\colon I\to B\) be a curve and fix some \(s,t\in I\). Pick a finite partition \(s = t_0 < t_1 < \cdots < t_n = t\) and a sequence \(\hv{\h{U_i,\psi_i}}_{i = 1}^n\subset\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) such that \(\gamma\ha{t_i,t_{i+1}}\subset U_i\). As the holonomy of \(\gamma|_{\ha{t_i,t_{i+1}}}\) is always symplectic, it follows that:
+		\[
+		\hk{\tau_\gamma^{s,t}}^*\sigma_{\gamma\h{t}} = \hk{\tau_\gamma^{t_{n-1},t}}^*\hk{\tau_\gamma^{t_{n-2},t_{n-1}}}^*\cdots\hk{\tau_\gamma^{s,t_1}}^*\sigma_{\gamma\h{t}} = \sigma_{\gamma\h{s}}.
+		\]
+		Here, we again used that the holonomy of paths mapping within \(U_\alpha\) is given by the holonomy along the restricted connection. This implies that \(\Hor\) is also symplectic.
+	\end{proof}
+	Let us now discuss why the proof of Theorem~\ref{thm: complete iff fibre bundle} does not extend to the symplectic case. Here, we will assume that we have constructed the sets \(S_\alpha\) and the associated cover \(W_\alpha\) with a partition of unity \(\phi_\alpha\) subordinate to it. We can then consider the glueing of the canonically induced connections \(h_\alpha\), let us denote this glueing by \(h\), and remark that it is complete by construction. To check whether this is a symplectic connection, we need only focus on the local properties of the connection, by Proposition~\ref{prp: holo is loco}. As this is a trivial symplectically fibred manifold, we can thus check only the maps \(h_b\), as seen from Corollary~\ref{cor: vet cool}. However, the image of \(h_b\h{v}\), for some \(v\in T_bB\), will be a \(C^\infty\h{F}\)-linear combination of symplectic vector fields. However, as symplectic vector fields are defined to be such that \(\calL_X\omega = 0\), they are not closed under \(C^\infty\h{F}\)-linear combinations.
+
+\section{Symplectic Lie groupoid fibrations}
+	In this last section, we will give a new notion of a symplectic Lie groupoid fibration which incorporates both the symplectic structure of a symplectically fibred manifold and the multiplicative structure of a fibred Lie groupoid, such that it generalises objects like symplectic Lie groupoids. Then, we finish off with a result which is the multiplicative analogue to Proposition~\ref{ikk ben er klaar mee}. In particular, we remark that for \(\h{h_1,h_2}\in\grH^{\h{2}}\) we obtain some maps which encode the multiplicative data of the total groupoid \(\grG\):
+	\[
+		\grm\colon \phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\to \phi^{-1}\h{h_1h_2}, \quad \pr_i\colon \phi^{-1}\h{h_1}\fp{\grs}{\grt}\phi^{-1}\h{h_2}\to \phi^{-1}\h{h_i}
+	\]
+	These are simply the restrictions of \(\grm,\pr_1,\pr_2\) on \(\grG^{\h{2}}\). This then lets us intertwine the multiplicative data between the fibres of the fibred Lie groupoid.
+	\begin{definition}
+		A \df{symplectic Lie groupoid fibration} is a Lie groupoid fibration \(\phi\colon\grG\to\grH\) such that it is a symplectic fibration and the induced symplectic forms on the fibres, \(\hv{\sigma_h}_{h\in\grH}\), satisfy
+		\[
+		\grm^*\sigma_{hh'} = \pr_1^*\sigma_h + \pr_2^*\sigma_{h'}
+		\]
+	\end{definition}
+	\begin{example}
+		Let \(\h{\grG,\Omega}\) be a symplectic Lie groupoid, i.e.\ \(\Omega\) is a symplectic form on \(\grG\) which is multiplicative, then it is a symplectic Lie groupoid fibration over a point.
+	\end{example}
+	\begin{example}
+		Let \(\pi\colon M\to B\) be a symplectically fibred manifold, then it defines a symplectic Lie groupoid fibration when considered as the identity groupoids.
+	\end{example}
+	\begin{proposition}
+		Let \(\phi\colon\grG\to\grH\) be a symplectic Lie groupoid fibrations, with family of forms \(\hv{\sigma_h}_{h\in\grH}\). For any unit \(1_x\in\grH\), the fibre \(\h{\phi^{-1}\h{1_x},\sigma_{1_x}}\) is a symplectic groupoid.
+	\end{proposition}
+	We then show the equivalent of Proposition~\ref{ikk ben er klaar mee} in the two directions separately.
+	\begin{proposition}
+		Let \(\omega\) be a multiplicative fibre-compatible form on a symplectic Lie groupoid fibration, then \(\Ver^\omega\) is a multiplicative Ehresmann connection.
+	\end{proposition}
+	\begin{proof}
+		Let \(\phi\colon\grG\to\grH\) be a symplectic Lie groupoid fibration. Suppose \(\omega\in\Omega^2_{\mult}\h{\grG}\) is fibre-compatible, we know that \(\Hor = \Ver^\omega\) is the unique Ehresmann connection such that \(\omega\) is compatible by Proposition~\ref{ikk ben er klaar mee}. To check that \(\Hor\) is a multiplicative Ehresmann connection, we need to check that it is closed under the multiplication and inversion maps, induced on \(T\grG\rr TM\) as the maps \(T\grm\colon T\h{\grG^{\h{2}}}\to T\grG\) and \(T\gri\colon T\grG\to T\grG\).\\
+		Consider some \(\h{u,v}\in T_{\h{g,h}}\grG^{\h{2}}\cap \Hor_{\h{g,h}}^2\) and \(w\in \Ver_{gh}\), we then find that
+		\begin{align*}
+			\omega\h{T\grm\h{u,v},w}
+			&= \omega\h{T\grm\h{u,v},T\grm\h{T\gru\circ T\grt \h{w},w}} = \grm^*\omega\h{\h{u,v},\h{T\gru\circ T\grt \h{w},w}}\\
+			&= \omega\h{u,T\gru\circ T\grt \h{w}} + \omega\h{v,w} = \omega\h{u,T\gru\circ T\grt \h{w}}
+		\end{align*}
+		We remark that the following holds by the groupoid properties of \(\Phi\):
+		\[
+		T\Phi\circ T\gru\circ T\grt = T\h{\Phi\circ \gru\circ\grt} = T\h{\gru\circ \phi_0\circ\grt} = T\h{\gru\circ\grt\circ\Phi} = T\gru\circ T\grt\circ T\Phi
+		\]
+		This shows that \(w\in\ker T\Phi\) implies that \(T\gru\circ T\grt \h{w}\in \ker T\Phi\), and thus \(\omega\h{u,T\gru\circ T\grt \h{w}} = 0\). This implies that \(T\grm\h{u,v}\in\Hor\) for \(\h{u,v}\in T\grG^{\h{2}}\).\\
+		To show that the inversion, \(T\gri\), maps horizontal vectors to horizontal vectors, we remark that \(\gri\) is a diffeomorphism (as it is its own inverse) and thus \(T\gri\colon T\grG = \Hor\oplus\Ver \to T\grG = \Hor\oplus\Ver\) is an isomorphism. As \(\Phi\) is a groupoid map, we see that
+		\[
+		T\phi\circ T\gri = T\h{\phi\circ\gri} = T\h{\gri\circ\phi} = T\gri\circ T\phi
+		\]
+		This implies that \(T\gri\h{\Ver} = T\gri\h{\ker T\phi}\subset\ker T\phi = \Ver\). This implies that \(\Hor\) is closed under inversions and therefore \(\Hor\subset T\grG\rr TM\) is a subgroupoid. Therefore, \(\Hor = \Ver^\omega\) is a multiplicative Ehresmann connection on \(\phi\colon\grG\to\grH\).
+	\end{proof}
+	\begin{proposition}
+		Let \(\phi\colon\grG\to\grH\) be a symplectic Lie groupoid fibration with family of forms \(\hv{\sigma_h}_{h\in\grH}\) and \(\Hor\subset T\grG\) be a multiplicative Ehresmann connection, then there exists some fibre-compatible form \(\omega\in\Omega^2_{\mult}\h{\grG}\) such that \(\Hor = \Ver^{\omega}\).
+	\end{proposition}
+	\begin{proof}
+            Let \(\phi\colon\grG\to\grH\) be a symplectic Lie groupoid fibration with family of forms \(\hv{\sigma_h}_{h\in\grH}\) and \(\Hor\subset T\grG\) be a multiplicative Ehresmann connection. Then there exists a fibre-compatible form, as seen in Proposition~\ref{ikk ben er klaar mee}. To see that it is multiplicative, we remark that the induced map \(\omega\colon \bigoplus^2T\grG\to\mathbb{R}\) factors as follows:
+		\[
+		\begin{tikzcd}[sep = huge]
+			\bigoplus^2T\grG\arrow[r,"\pr\oplus\pr"]\arrow[rr,bend left,"\omega"]
+			&\bigoplus^2\Ver\arrow[r,"\sigma"]
+			&\mathbb{R}
+		\end{tikzcd}
+		\]
+		As \(\Hor\) is a multiplicative connection, the map \(\pr\colon T\grG\to \Ver\) is a \VB-groupoid morphism, and thus its direct sum \(\pr\oplus\pr\colon \bigoplus^2T\grG\to\bigoplus^2\Ver\) is a \VB-groupoid morphism as well. The conditions on \(\hv{\sigma_h}_{h\in\grH}\) result in the fact that \(\sigma\colon\bigoplus^2\Ver\to\bbR\) is a \VB-groupoid morphism and therefore so is \(\omega\).
+	\end{proof}
+	These propositions indicate that the defined notion of a symplectic Lie groupoid fibrations is indeed the multiplicative equivalent of a symplectically fibred manifold, as we obtain an equivalent of Proposition~\ref{ikk ben er klaar mee}. Other interesting results would be the extensions of theorems like minimal coupling and Thurston's trick to the multiplicative setting.
+\end{document}

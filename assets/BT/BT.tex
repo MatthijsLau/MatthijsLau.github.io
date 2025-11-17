@@ -1,0 +1,228 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+
+\usepackage{standalone}
+
+\usepackage[a4paper, margin = 1.25in]{geometry}
+\usepackage{caption, subcaption}
+\usepackage{graphicx}
+
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm, amsrefs}
+\usepackage{mathrsfs}
+\usepackage{physics}
+\usepackage{mathtools, thmtools}
+\usepackage{bm}
+
+\usepackage{enumitem}
+\usepackage{listings}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+
+
+\usepackage{verbatim}
+
+\usepackage[hidelinks]{hyperref}
+
+\author{Matthijs Lau}
+\title{Bachelor Thesis on Symplectic Geometry}
+\date{\today}
+
+\def\thesistitle{Symplectic geometry}
+\def\thesissubtitle{Darboux's theorem and Hamiltonian systems}
+\def\thesisauthorfirst{Matthijs}
+\def\thesisauthorsecond{Lau}
+\def\thesissupervisorfirst{dr. Ioan}
+\def\thesissupervisorsecond{M\u{a}rcu\textcommabelow{t}}
+\def\thesissecondreaderfirst{prof. Klaas}
+\def\thesissecondreadersecond{Landsman}
+\def\thesisdate{\today}
+
+\title{\thesistitle}
+\author{\thesisauthorfirst\space\thesisauthorsecond}
+\date{\thesisdate}
+
+%% THEOREM STYLES
+%% Theorem-like environments
+\declaretheorem[numberwithin=chapter]{theorem}
+\newtheorem{lawofmotion}{Law of motion}
+\newtheorem*{principle}{Hamilton's principle}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\numberwithin{equation}{chapter}
+
+\theoremstyle{definition}
+\newtheorem{definitionx}[theorem]{Definition}
+\newenvironment{definition}[1]{\begin{definitionx} #1}{\null\hfill$//$\end{definitionx}}
+\newtheorem{examplex}[theorem]{Example}
+\newenvironment{example}[1]{\begin{examplex}#1}{\null\hfill$//$\end{examplex}}
+
+\theoremstyle{remark}
+\newtheorem*{remarkx}{Remark}
+\newenvironment{remark}[1]{\begin{remarkx} #1}{\null\hfill$//$\end{remarkx}}
+
+
+%% Environments
+\newcommand{\lh}[1]{\left(#1\right.}
+\newcommand{\rh}[1]{\left.#1\right)}
+\newcommand{\h}[1]{\left(#1\right)}
+\newcommand{\hs}[1]{(#1)}
+\newcommand{\lha}[1]{\left[#1\right.}
+\newcommand{\rha}[1]{\left.#1\right]}
+\newcommand{\ha}[1]{\left[#1\right]}
+\newcommand{\hv}[1]{\left\{#1\right\}}
+
+\newcommand{\pull}[2][]{{{#2}_{#1}^*}}
+\newcommand{\push}[1]{{{#1}_*}}
+\newcommand{\dual}[2][]{{{#2}_{#1}^*}}
+
+\newcommand{\inp}[3][]{\left\langle#2,#3\right\rangle_{#1}}
+\newcommand{\pois}[3][]{\left\{#2,#3\right\}_{#1}}
+
+%% Shorthands
+\newcommand{\R}[1][]{{\mathbb{R}^{#1}}}
+\newcommand{\N}[1][]{{\mathbb{N}^{#1}}}
+
+\newcommand{\ld}[1][]{{\mathcal{L}_{#1}}}
+
+\newcommand{\ra}{\Longrightarrow}
+
+\newcommand{\m}[1][M]{{\mathcal{#1}}}
+\newcommand{\x}{\m[X]}
+
+\newcommand{\xf}[1][X]{\mathfrak{#1}}
+\newcommand{\vf}[1][\m]{\xf\h{#1}}
+\newcommand{\kf}[1]{C^{#1}}
+\newcommand{\sff}[1][\m]{\kf{\infty}\h{#1}}
+\newcommand{\hvf}[1][M]{\xf_{\st[Ham]}\h{\m[#1]}}
+
+\newcommand{\flow}[1][X]{\phi_{#1}}
+\newcommand{\dtflow}[1][X]{\dot{\phi}_{#1}}
+\newcommand{\posflow}[2][X]{\flow[#1]^{\h{#2}}}
+\newcommand{\dtposflow}[2][X]{\dtflow[#1]^{\h{#2}}}
+\newcommand{\timeflow}[2][X]{\flow[#1]^{#2}}
+\newcommand{\pulltimeflow}[2][X]{\pull{\h{\timeflow[#1]{#2}}}}
+\newcommand{\flowdomain}[1][X]{\mathcal{D}\h{#1}}
+\newcommand{\timedomain}[1][X]{\mathscr{D}\h{#1}}
+
+\newcommand{\gflow}[1][f]{g_{#1}}
+\newcommand{\gposflow}[2][f]{\gflow[#1]^{\h{#2}}}
+\newcommand{\gtimeflow}[2][f]{\gflow[#1]^{#2}}
+
+\newcommand{\dtnull}[1][0]{\eval{\dv{t}}_{t = #1}}
+
+\renewcommand{\lg}[1][g]{\mf{g}}
+
+\newcommand{\liealg}{\mathfrak{L}}
+\newcommand{\poialg}{\mathcal{P}}
+
+\newcommand{\lag}{\mathscr{L}}
+\newcommand{\ham}{\mathscr{H}}
+
+\newcommand{\isoto}{\overset{\cong}{\to}}
+
+\newcommand{\loctang}[2][\m]{\mbox{\textnormal{T}}_{#2}#1}
+\newcommand{\loccotang}[2][\m]{\dual[#2]{\mbox{\textnormal{T}}}#1}
+\newcommand{\rloctang}[2][n]{\loctang[{\R[#1]}]{#2}}
+\newcommand{\rloccotang}[2][n]{\loccotang[{\R[#1]}]{#2}}
+
+\newcommand{\tang}[1][\m]{\loctang[#1]{}}
+\newcommand{\cotang}[1][\m]{\loccotang[#1]{}}
+\newcommand{\rtang}[1][n]{\rloctang[n]{}}
+\newcommand{\rcotang}[1][n]{\rloccotang[n]{}}
+
+\newcommand{\footm}[1]{\mbox{\footnotesize{#1}}}
+
+\newcommand{\st}[1][st]{\footm{#1}}
+\newcommand{\can}{\st[can]}
+\newcommand{\taut}{\st[tau]}
+\newcommand{\net}{\footm{net}}
+\newcommand{\RN}[1]{%
+	\textup{\uppercase\expandafter{\romannumeral#1}}%
+}
+
+
+
+\newcommand{\symcor}[3][]{\h  {{#2}^1_{#1},\ldots,{#2}^n_{#1},{#3}^1_{#1},\ldots,{#3}^n_{#1}}}
+\newcommand{\symcorv}[3][]{\hv{{#2}^1_{#1},\ldots,{#2}^n_{#1},{#3}^1_{#1},\ldots,{#3}^n_{#1}}}
+\newcommand{\symbas}[3][]{\h  {{{#2}_1}_{#1},\ldots,{{#2}_n}_{#1},{{#3}_1}_{#1},\ldots,{{#3}_n}_{#1}}}
+\newcommand{\symbasv}[3][]{\hv{{{#2}_1}_{#1},\ldots,{{#2}_n}_{#1},{{#3}_1}_{#1},\ldots,{{#3}_n}_{#1}}}
+%% Operators
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\grd}{grad}
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diag}{diag}
+
+
+\begin{document}
+\begin{titlepage}
+	\thispagestyle{empty}
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+	\centering
+	\textsc{\Large Radboud University Nijmegen}\\[.7cm]
+	\includegraphics[width=25mm]{img/in_dei_nomine_feliciter.eps}\\[.5cm]
+	\textsc{Faculty of Science}\\[0.5cm]
+	
+	\HRule \\[0.4cm]
+	{ \huge \bfseries \thesistitle}\\[0.1cm]
+	\textsc{\thesissubtitle}\\
+	\HRule \\[.5cm]
+	\textsc{\large Bachelor thesis Mathematics}\\[.5cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Author:}\\
+			\thesisauthorfirst\space \textsc{\thesisauthorsecond}
+		\end{flushleft}
+	\end{minipage}
+	~
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushright} \large
+			\emph{Supervisor:} \\
+			\thesissupervisorfirst\space \textsc{\thesissupervisorsecond} \\[1em]
+			\emph{Second reader:} \\
+			\thesissecondreaderfirst\space \textsc{\thesissecondreadersecond}
+		\end{flushright}
+	\end{minipage}\\[4cm]
+	\vfill
+	{\large \thesisdate}\\
+	\clearpage
+\end{titlepage}
+\begin{abstract}
+	In this thesis, we will discuss the local structure of symplectic manifolds in the form of Darboux's theorem, which tells us all symplectic forms are locally trivial. We introduce all the linear algebra and differential geometry needed for the proof. Furthermore, we will discuss classical mechanics both from a physics and a mathematical perspective. We will see that a symplectic manifold combined with a smooth function lets us build a mathematical model of classical systems. We will show how this mathematical formalisation can give results on the dynamics of classical systems in terms of local and global behaviour.
+\end{abstract}
+\tableofcontents
+%\todo[caption = {Dingen om te checken}, inline]{
+%	Check:\\
+%	\begin{enumerate}
+%		\item Punten achter elke formule en check wat je moet doen met tussen regels in een align.
+%		\item textbf in definities, maar geen boldsymbol of pmb voor wiskunde symbolen.
+%		\item Tensor indices en sommen
+%		\item Coordinaat formules moeten voor een tensor in een omgeving.
+%		\item Onderscheid tussen lineair en differentiaal symeplectische meetkunde
+%		\item Smooth moet bij sommige dingen, bepaal wat (-> conventions), en check dit overal.
+%		\item Zorg dat er meer gerefereerd wordt naar vergelijkingen.
+%		\item Zet een tilde tussen Eq, prp en ref zodat ze op dezelfde line staan.
+%		\item Er is een veel mooiere align environment als je meerdere kollomen alignt en gebruik cases voor systemen
+%		\item Titelblad in het engels
+%		\item Over het algemeen de introducties van hoofdstukken en secties nakijken.
+%		\item Section heading zonder punt, subsections met
+%		\item misschien moet je gewoon makkelijkere voorbeelden gebruiken, van een harmonische oscillator bijvoorbeeld.
+%	\end{enumerate}}
+\newpage
+\input{chapter/Introduction}%Not even close to done
+\input{chapter/SymplecticVectorSpaces}%finished
+\input{chapter/SymplecticManifold}%Finished
+%\input{chapter/ClassicalMechanics}%Newtonian: Done; Langrian: Done; Hamiltonian: small start
+\input{chapter/ClassicalMechanics}
+\input{chapter/HamiltonianSystems}%Not really done yet, just work through it as you go
+\appendix
+\input{chapter/VectorFields}%Nearly, done
+
+\newpage
+\bibliography{bib/Scriptie1.bib}
+	
+\end{document}

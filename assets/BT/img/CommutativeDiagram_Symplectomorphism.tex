@@ -1,0 +1,14 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+
+\usepackage[]{amssymb}
+\newcommand{\m}[1][M]{\mathcal{#1}}
+\newcommand{\loctang}[2][\m]{T_{#2}#1}
+\newcommand{\h}[1]{\left(#1\right)}
+\begin{document}
+\begin{tikzcd}[sep = huge]
+	\loctang[\m]{p}\times\loctang[\m]{p}\arrow[r, "\h{\omega_{\m}}_p"]\arrow[d,"dF_p\times dF_p" description]&\mathbb{R}\\
+	\loctang[{\m[N]}]{F\left(p\right)}\times\loctang[{\m[N]}]{F\left(p\right)}\arrow[ur,"\h{\omega_{\m[N]}}_p"]& 
+\end{tikzcd}
+\end{document}

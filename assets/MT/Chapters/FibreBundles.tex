@@ -1,0 +1,603 @@
+\documentclass{standalone}
+
+\begin{document}
+\chapter{Fibre bundles and connections}\label{ch: surjective submersions}
+
+Fibre bundles provide a unifying framework that generalises many useful objects in differential geometry, including vector bundles and principal \(G\)-bundles. At their core, these objects consist of a space which is fibred over a base space through a surjective submersion in a locally trivial or homogeneous manner. Historically, they arose in questions posed in topology and geometry of manifolds. In this chapter, we adopt such a perspective, where we examine how the geometry of the base space imposes structure on the total space through the surjective submersion. A central concept in this analysis is that of a connection, which directly describes the relation between dynamics on the base space and the total space in a manner coherent with the surjective submersion.
+
+We begin the chapter with a brief review of the theory of surjective submersions, focusing on their relationship with foliations, which will be essential for understanding their geometric structure. We then proceed to fibre bundles and local triviality. As a final piece of preliminary material, we discuss the notion of a connection and its associated parallel transport, which provides a geometrical way to interpret horizontal lifts. The final section contains the main result of this chapter, namely the equivalence of fibre bundles and surjective submersions with complete connections. Our proof is a new contribution based on the ideas of del Hoyo in \cite{delHoyo2016}, but is based on a refinement of his main analytical lemma, \cite[Lem.\ 2]{delHoyo2016}, where we have changed it to measure the completeness of connections on trivial bundles and then apply this to fibre bundles locally.
+
+Except for the last section, the contents of this chapter are primarily preliminaries for the rest of this thesis, and thus, most proofs have been omitted. Details of the constructions and some proofs can be found in many great books on differential geometry, like \cite{Candel2000, Husemoeller1994, Kolar1993, Lee2013, Moerdijk2003, Warner1983}. We will utilise many results from these first couple of sections throughout the rest of the thesis without further mention.
+
+\section{Surjective submersions}\label{sec: surmersions}
+	Recall that for a map \(\pi\colon M\to B\) between manifolds the \df{rank at \(p\in M\)}\index{Rank of a map} is the rank of its tangent map at \(p\), which we denote by \(T_p\pi\colon T_pM\to T_{\pi\h{p}}B\), i.e.\ it is the dimension of \(\im T_p\pi\subset T_{\pi\h{p}}B\). In general, the rank is not a continuous map from \(M\to\bbZ\), but only lower-semicontinuous. In particular, this means that the rank of a map is not necessarily constant, not even locally. We will say that a map has \df{constant rank}\index{Constant rank} if it has the same rank at every point. According to the dimension theorem from linear algebra, the rank of \(\pi\colon M\to B\) at \(p\) is bounded by the dimension of the domain or codomain, depending on which is smaller. This implies that the rank at \(p\) being maximal means that its tangent map is either surjective or injective. From this dichotomy, we will call a constant rank map a \df{submersion}\index{Submersion} if the tangent map is surjective and an \df{immersion}\index{Immersion} if it is injective. As the rank is lower-semicontinuous, the rank being maximal is an open condition: If it holds at \(p\), then it holds in a neighbourhood of \(p\).
+
+	By the rank theorem, a constant rank map admits charts in which it is linear. A particular corollary of the rank theorem is that constant rank maps are particularly well-behaved under taking level sets. By which we mean that the level set of a constant rank map is automatically a properly embedded submanifold. If \(\pi\) has constant rank, we refer to \(M_b = \pi^{-1}\h{b}\) as the \df{fibre}\index{Fibre} of \(\pi\colon M\to B\) at \(b\in B\), and if all fibres are diffeomorphic to a fixed \(F\), we will say that \(\pi\) has \df{typical fibre}\index{Typical fibre} \(F\). We will use the shorthand \(F\hookrightarrow M\pito B\) to denote a surjective submersion \(\pi\colon M\to B\) with typical fibre \(F\).
+
+	We can describe a submersion in terms of its local sections, where a \df{local section}\index{Local section} of \(\pi\colon M\to B\) is a smooth map \(\sigma\colon U\subset B\to M\) such that \(\pi\circ\sigma = \id_U\). The existence of enough local sections is then precisely equivalent to the map being a submersion. From this alternate description of a submersion, we deduce that surjective submersions act like the quotient maps of the smooth category, with them being quotient maps in particular, as they are automatically open. Moreover, a surjective submersion lets us derive certain global properties from local properties (read: properties on fibres).
+	\begin{proposition}\label{prp: monotone light}
+		Let \(\pi\colon M\to B\) be a proper surjective submersion; then its fibres are compact. Conversely, if \(\pi\colon M\to B\) is a surjective submersion with compact and connected fibres, then it is proper.
+	\end{proposition}
+	\begin{proof}
+		The first implication follows from the fact that points are compact, and by the assumption of properness, their inverse images as well. The second implication will follow as a result of our main theorem, see Proposition~\ref{prp: really late}.
+	\end{proof}
+	In the above proposition, we cannot drop the connectedness assumption, as any finite smooth covering with a closed subset removed gives a counterexample. We will refer to the domain of a surjective submersion as the \df{total space}\index{Total space}, and its codomain as the \df{base space}\index{Base space}.
+
+	Many examples of surjective submersions come from vector bundles, principal \(G\)-bundles, covering spaces and associated bundles. Outside of this context, the most basic example can be constructed for any base manifold \(B\) and typical fibre \(F\) by considering \(\pr_1\colon B\times F\to B\). This we will refer to as the \df{trivial bundle}\index{Trivial bundle} or \df{trivial bundle over \(B\) with fibre \(F\)}. From a surjective submersion \(\pi\colon M\to B\), we can construct a more surjective submersion by restricting the base space to an open \(U\subset B\), resulting in \(\pi|_{\pi^{-1}\h{U}}\colon M|_U = \pi^{-1}\h{U}\to U\).
+	\subsection{Foliations}\label{sec: foliations}
+		Let us also consider a more geometric interpretation of surjective submersions in terms of foliations. In this context, it will also be clearer what a good notion of morphisms between surjective submersions might be. There are many different definitions, all with their merits; here we choose the one which is closest related to the notion of a surjective submersion via the rank theorem.
+		\begin{definition}\label{dfn: foliation}
+			A \df{codimension \(q\) foliated atlas}\index{Foliated!atlas} of a \(n\)-manifold \(M\) is an atlas of the form
+			\[
+				\hv{\psi_\alpha\colon U_\alpha\to \bbR^n=\bbR^{n-q}\times\bbR^q}_{\alpha\in\Lambda}
+			\]
+			such that the transition functions are given by
+			\[
+				\psi_{\beta\alpha}\h{x,y} = \h{g_{\beta\alpha}\h{x,y},h_{\beta\alpha}\h{y}},\quad\forall\h{x,y}\in \psi_\alpha\h{U_\alpha\cap U_\beta}\subset \bbR^{n-q}\times\bbR^q.
+			\]
+			The charts in a foliated atlas are called \df{foliated charts}\index{Foliated!chart}.
+			A \df{foliation of codimension \(q\)}\index{Foliation} of \(M\) is a maximal foliated atlas of \(M\), and we will call such a pair \(\h{M,\hv{U_\alpha,\psi_\alpha}_{\alpha\in\Lambda}}\) a \df{foliated manifold}\index{Foliated!manifold}.
+		\end{definition}
+		A foliated manifold has a particularly nice geometric description: If \((U, \psi)\) is a foliated chart of \(M\), we obtain a partition of \(U\) by the connected components of
+		\[
+		U_y = \psi^{-1}\h{\mathbb{R}^{n-q} \times \hv{y}},
+		\]
+		for any \(y \in \mathbb{R}^q\), which we call the plaques of \(U\). The conditions on a foliated atlas imply that transition functions map plaques of \((U_\alpha, \psi_\alpha)\) to plaques of \((U_\beta, \psi_\beta)\). Globally, we can glue such plaques into \df{leaves}\index{Leaf} by defining an equivalence relation on \(M\), such that \(x \sim y\) if there exists a sequence of foliated charts \(\hv{(U_i, \psi_i)}_{i = 1}^n\) and points \(p_0 = x, p_1, \ldots, p_n = y\), where \(p_{i-1}\) and \(p_i\) lie in the same plaque of \(U_i\). In general, we denote \(\mathcal{F}\) as the set of leaves of the foliated atlas on \(M\), and call \((M, \mathcal{F})\) or \(\calF\) a \df{foliation}. The quotient \(M / \mathcal{F}\), where we view \(\mathcal{F}\) as the equivalence relation, is called the \df{leaf space}\index{Leaf!space} of the foliation. The leaves of a foliation are automatically immersed submanifolds. While they are not always embedded, they do satisfy slightly stronger conditions.
+		\begin{proposition}[{\cite[Thm.\ 1.62]{Warner1983}}]
+			The leaves of a foliated manifold are initial submanifolds.
+		\end{proposition}
+
+		An alternative description of a foliation comes from distributions. Pointwise a foliation \(\calF\) on \(M\) defines a vector subspace of \(TM\) as \(T_x\calF = T_xL\), where \(x\in L\in\calF\). As a leaf is locally given by the level sets of a submersion, say \(\pi\), the local sections of \(T\calF\) are \(\pi\)-related to the zero vector field, and it locally coincides with \(\ker T\pi\). This implies that the Lie bracket of vector fields tangent to the leaves is also \(\pi\)-related to the zero vector field, implying that \(\Gamma\h{T\calF}\subset \frkX\h{M}\) is a Lie subalgebra. This idea results in an equivalent description of foliations, given by considering subbundles of the tangent bundle of a manifold, which we call \df{distributions}\index{Distributions}. Given a distribution \(D \subset TM\), we consider the restriction of the Lie bracket on \(\frkX\h{M}\) to \(\Gamma\h{D}\) as the map
+		\[
+		\comm{\,\cdot\,}{\,\cdot\,}\colon\Gamma\h{D}\times\Gamma\h{D}\to\frkX\h{M}\colon\h{X,Y}\mapsto\comm{X}{Y},
+		\]
+		If the image of this map lies in \(\Gamma\h{D}\) again, we call the distribution \df{involutive}\index{Involutive!Distribution}. The following theorem, called the Frobenius theorem, characterises foliations in terms of distributions.
+		\begin{theorem}[{\cite[Thm.\ 1.60]{Warner1983}}]\label{thm: frobenius}
+			There is a one-to-one correspondence between involutive distributions and foliations.
+		\end{theorem}
+		Given the geometric nature of foliations, if we understand them as their partition of a manifold into initial submanifolds, we can build a geometrically intuitive notion of maps. This notion of a map of foliation should preserve the partitioning and the smooth structure of the total space.
+		\begin{definition}
+			A \df{map of foliations}\index{Map!of foliations} from \(\h{M,\calF}\) to \(\h{M',\calF'}\) is a smooth map \(\psi\colon M\to M'\) such that \(\psi\) maps leaves of \(\calF\) to leaves of \(\calF'\).
+		\end{definition}
+		Let us relate this to the notion of a surjective submersion, where we first focus on the case where the fibres are connected. If \(\pi\colon M\to B\) is a surjective submersion with connected fibres, then the rank theorem gives us foliated charts on our total space, whose associated distribution is given by the \df{vertical bundle}\index{Vertical bundle} \(\Ver = \ker T\pi\). The leaves of the foliation are then the fibres of \(\pi\), and the leaf space is exactly the base space \(B\). Hence, \(\pi\) acts like a particularly nice foliation where the leaves are embedded and it is parametrised by some smooth space. Therefore, they are called simple foliations. A map of foliations between two surjective submersions \(\pi\colon M\to B\) and \(\pi'\colon M'\to B'\) then is a map \(\psi\colon M\to M'\) such that \(\pi'\circ\psi\) is constant on the fibres of \(\pi\). As \(\pi\) is a surjective submersion, this implies that there exists some smooth \(\psi_0\colon B\to B'\) such that \(\pi'\circ\psi = \psi_0\circ\pi\).
+
+		We can generalise these ideas to the nonconnected case, where the foliated chart and distribution are the same, but the leaves now consist of the connected components of the fibres. The leaf space now is not simply the base space, as a point may have some multiplicity depending on the number of connected components of the fibres. As we want maps of our surjective submersions to still preserve some of the geometry of the base space, we cannot use maps of the associated foliations in general, but we need to specify them.
+		\begin{definition}
+			A \df{fibred map}\index{Fibred map} between surjective submersions \(\pi_i\colon M_i\to B_i\), for \(i = 1,2\), is a map \(\psi\colon M_1\to M_2\) such that \(\pi_2\circ\psi\) is constant on the fibres of \(\pi_1\).
+		\end{definition}
+		As above, a fibred map automatically induces a map on the base spaces, denoted with a subscript \(0\). Notice that indeed a fibred map induces a map of the associated foliations, but the converse is not true in general.
+		\begin{example}
+			Take the surjective submersion \(\pi\colon M = \hv{0,1}\times\bbR\to \bbR\colon \h{i,x}\mapsto x\), and consider the map \(\psi\colon M\to M\colon \h{i,x}\mapsto \h{i, x + i}\). As the leaves of the associated foliation to \(\pi\) are just points, this clearly defines a map of foliations. However, this is not a fibred map as \(\pi\h{1,x} = \pi\h{0,x}\), but \(\pi\circ\psi\h{1,x} = \pi\h{1, x+1} = x+1\) and \(\pi\h{1,x} = x\).
+		\end{example}
+		Given a surjective submersion \(\pi\colon M\to B\), we will denote the associated foliation by \(\calF_{\pi}\).
+
+\section{Fibre bundles}\label{sec: loc triv}\label{sec: fibre bundles}
+	The interesting geometry of a surjective submersion, which differs from a general foliation, is the fact that the leaf space is smooth. To probe the transversal geometry of the total space, we need a stronger connection between the base space and the foliation. As the transversal geometry is a local phenomenon, we want to embed the base space into the total space locally, and not globally like a product manifold.
+	\begin{definition}\label{dfn: local trivialisation}\label{dfn: fibre bundle}\label{dfn: trivialising cover}
+		Let \(\pi\colon M\to B\) be a surjective submersion. A pair \(\h{U,\psi}\) is called a \df{local trivialisation}\index{Local trivialisation} if \(U\subset B\) is open and \(\psi\colon M|_U\to U\times F\) is a fibred isomorphism. This means they fit into the following commutative diagram:
+		\[\begin{tikzcd}
+			M|_U&&U\times F\\
+			&U&
+			\arrow["\psi","\sim"',from=1-1,to=1-3]
+			\arrow["\pi",from=1-1,to=2-2]
+			\arrow["\pr_1",from=1-3,to=2-2]
+		\end{tikzcd}\]
+		A \df{fibre bundle}\index{Fibre bundle} is a surjective submersion \(\pi\colon M\to B\) with a collection of local trivialisations \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) such that \(\hv{U_\alpha}_{\alpha\in\Lambda}\) is an open cover of \(B\). Such a collection is called a \df{trivialising cover}\index{Trivialising cover}.
+	\end{definition}
+	Of course, the trivial example of a trivial bundle is always a fibre bundle, but there are many cases of surjective submersions which are not fibre bundles, for example, by taking out singular points of a fibre bundle. Under certain compactness conditions, fibre bundles and surjective submersions actually coincide.
+	\begin{theorem}[{\cite[Lem.\ 9.2]{Kolar1993}}]
+		Let \(\pi\colon M\to B\) be a proper surjective submersion, then it is a fibre bundle.
+	\end{theorem}
+	Additionally, we see that the local triviality of a fibre bundle gives a much stronger connection between the geometry of the base space and total space, as it lets us drop the assumption of connectedness in Proposition~\ref{prp: monotone light} and makes the proof purely topological instead of the analytic prove given in Proposition~\ref{prp: really late}.
+	\begin{proposition}\label{prp: fibre is better}
+		If \(\pi\colon M\to B\) is a fibre bundle, then \(\pi\) is proper if and only if its fibres are compact.
+	\end{proposition}
+	\begin{proof}
+		The first implication follows from Proposition~\ref{prp: monotone light}. The converse goes as follows: Let \(\pi\colon M\to B\) be a fibre bundle with compact fibres and \(K\subset B\) compact. Pick a locally finite trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) such that there exists a precompact open cover \(\hv{V_\alpha\subset U_\alpha}_{\alpha\in\Lambda}\). In particular, \(\hv{V_\alpha}_{\alpha\in\Lambda}\) is an open cover of \(K\), and therefore, there exists a finite subcover indexed by \(\Lambda'\subset\Lambda\). This implies that
+		\[
+		\pi^{-1}\h{K}\subset \pi^{-1}\hk{\bigcup_{\alpha\in\Lambda'}V_\alpha} = \bigcup_{\alpha\in\Lambda'}\pi^{-1}\h{V_\alpha}\subset \bigcup_{\alpha\in\Lambda'}\pi^{-1}\h{\overline{V_\alpha}}.
+		\]
+		As \(\psi_\alpha\colon \pi^{-1}\h{\overline{V_\alpha}}\to \overline{V_\alpha}\times F\) is a diffeomorphism, and \(\overline{V_\alpha}\) and \(F\) are compact, it follows that \(\pi^{-1}\h{\overline{V_\alpha}}\) is compact. This implies that \(\pi^{-1}\h{K}\) is compact as it is a closed set in a finite union of compact sets. Therefore, we conclude that \(\pi\) is proper.
+	\end{proof}
+	These propositions indicate that local triviality adds a significant amount of robustness to a surjective submersion. To explore this structure more in-depth, let us fix a fibre bundle \(\pi\colon M\to B\). In a local trivialisation \(\h{U,\psi}\), with \(\psi\colon M|_U\to U\times F\), any \(b\in U\) defines a diffeomorphism
+	\[
+		\psi_b\colon M_b\to F\colon x\mapsto\pr_2\circ\ \psi\h{x}.
+	\]
+	Its inverse defines an embedding of \(F\) in \(M\), we will denote this map by \(\iota_b\colon F\to M_b\subset M\). This is sometimes called the \df{(fibre) inclusion}. In particular, we find that the restriction \(\pi\) to \(M|_U\) has a typical fibre \(F\).
+
+	Given a trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) of \(\pi\), we deduce, by considering sequences of local trivialisations, that the fibre is constant on connected components over the base space. In other words, the restriction to a connected component of the base space has a typical fibre. Next, each \(\alpha\in\Lambda\) and \(b\in U_\alpha\) admits a diffeomorphisms \(\psi_{\alpha,b}\colon M_b\to F\) and an inclusion \(\iota_{\alpha,b}\colon F\to M\) as defined above. However, there is not a single canonical diffeomorphism, as for \(b\in U_\alpha\cap U_\beta\) the maps \(\psi_{\alpha,b}\) and \(\psi_{\beta,b}\) may differ, and similarly for the inclusion.
+
+	These maps are canonically related through the so-called transition data. For simplicity, we will restrict ourselves to the case where \(B\) is connected, such that \(\pi\) has a typical fibre \(F\). At any \(b \in U_{\alpha\beta}\)\footnote{From here on, we denote \(U_{\alpha\beta} = U_\alpha \cap U_\beta\). For a finite family of sets \(\hv{U_{\alpha_i} \subset B}_{i=1}^n\), we denote \(U_{\alpha_1\alpha_2\ldots\alpha_n} = \bigcap_{i = 1}^n U_{\alpha_i}\).}, we can define a diffeomorphism of \(F\):
+	\[
+	\psi_{\beta\alpha,b}\colon F \to F \colon f \mapsto \psi_{\beta,b} \circ\ \iota_{\alpha,b}(f).
+	\]
+	By assembling these diffeomorphisms over \(U_{\alpha\beta}\), we derive the \df{transition function}\index{Transition!function} from \(\h{U_\alpha,\psi_\alpha}\) to \(\h{U_\beta,\psi_\beta}\) as the function
+	\[
+	\psi_{\beta\alpha}\colon U_{\alpha\beta} \to \Diff\h{F} \colon b \mapsto \psi_{\beta\alpha,b}.
+	\]
+	The full set of these transition functions, \(\hv{\psi_{\beta\alpha}\colon U_{\alpha\beta} \to \Diff\h{F}}\), constitutes the \df{transition data}\index{Transition!data}. This collection forms a well-structured family of functions that encapsulate the geometry of a fibre bundle. Its significance is most effectively conveyed using the language of \v{C}ech 1-cocycles.
+	\begin{definition}\label{dfn: cech cocycle}
+		Given manifolds \(B\) and \(F\), and a subgroup \(G\subset\Diff\h{F}\), a \df{smooth \v{C}ech \(1\)-cocycle}\index{\v{C}ech \(1\)-cocycle} on \(B\) with values in \(G\) consists of an open cover \(\{U_\alpha\}_{\alpha \in \Lambda}\) of \(B\) and a collection of maps \(g_{\beta\alpha} \colon U_{\alpha\beta} \to G\) satisfying the \df{cocycle conditions}\index{cocycle condition}:
+		\[
+		g_{\alpha\alpha,b} = \id,\quad g_{\gamma\alpha,b} =  g_{\gamma\beta,b}g_{\beta\alpha,b}, \quad \forall \alpha, \beta, \gamma \in \Lambda,\ b \in U_{\alpha\beta\gamma}.
+		\]
+		Additionally, there is a smooth criterion requiring the following map to be smooth:
+		\[
+			\overline{g_{\beta\alpha}}\colon U_{\alpha\beta}\times F\to F\colon \h{b,f}\mapsto g_{\beta\alpha}\h{b}\h{f}.
+		\]
+	\end{definition}
+	The naturality of the cocycle conditions comes from a more sheaf-theoretic perspective on bundles. Here, it makes sense as it is exactly the data needed to glue local geometry to a global structure. Therefore, fibre bundles \(F\hookrightarrow M\pito B\) are in \(1\)-\(1\) correspondence with smooth \v{C}ech \(1\)-cocyles on \(B\) with values in \(\Diff\h{F}\) (cf.\ \cite[Thm.\ 5.3.2]{Husemoeller1994} for the topological case).
+
+\section{Connections}\label{sec: connections}
+	In Section~\ref{sec: foliations}, we saw that a surjective submersion has an intrinsically defined vertical direction, whether it be geometrically through the foliation or algebraically as its vertical bundle. This notion was intrinsic as they can be directly deduced from the map \(\pi\), one as the connected components of the fibres and the other as \(\ker T\pi\). However, we want to relate the horizontal geometry of the base to the total geometry. We can see that this is not a canonical relation as there is no canonical embedding of \(B\) into \(M\). Algebraically, we can interpret this as the existence of the following short exact sequence of vector bundles over \(M\):
+	\[\begin{tikzcd}
+		0\arrow[r]&\Ver\arrow[r]&TM\arrow[r]&\pi^*TB\arrow[r]&0.
+	\end{tikzcd}\]
+	The horizontal direction of \(\pi\colon M\to B\) is then identified with the vector bundle \(\pi^*TB\), which is the pullback bundle of \(\pr\colon TB\to B\) along \(\pi\), given by \(\pi^*TB = \hv{\h{x,v}\in M\times TB\colon \pi\h{x} = \pr\h{v}}\), such that it is a vector bundle over \(M\).
+
+	To properly study transversal geometry in this manner, we shortly recall some generalities of short exact sequences of vector bundles. Here, by a short exact sequence, we mean a pair of constant rank vector bundle maps \(\iota\colon V\to V'\) and \(\pi\colon V'\to V''\) covering the identity, such that \(\iota\) is injective, \(\im\iota = \ker\pi\) and \(\pi\) is surjective. Short exact sequences are useful in general as they let us describe bigger objects, namely the middle one, in terms of smaller ones, the outer objects, even though this is not canonical. Such a choice of description is called a splitting of the short exact sequence. Concretely, for a short exact sequence
+    \[\begin{tikzcd}
+        0\arrow[r]&V\arrow[r,"\iota"]&V'\arrow[r,"\pi"]&V''\arrow[r]&0,
+    \end{tikzcd}\]
+    a splitting is given by an isomorphism \(\phi\colon V'\to V\oplus V''\) such that \(\iota = \phi\circ\incl_1\) and \(\pi = \pr_2\circ\ \phi\). If a short exact sequence admits such a splitting, it is called a split short exact sequence. In the case of a vector bundle, we remark that any short exact sequence is split, which will become clearer after the following result. Namely, given a splitting, we obtain a natural way to identify \(V''\) inside of \(V'\), which will complement \(\iota\h{V}\), and a way to project \(V'\) to \(V\). In the category of vector bundles, we can show that any such choice would constitute a splitting.
+	\begin{lemma}[{\cite[Prp~27.20]{Tu2017}}]\label{lem: splitting of vector bundles}
+		Consider a short exact sequence of vector bundles over a manifold \(B\):
+		\[\begin{tikzcd}
+			0\arrow[r]&V\arrow[r,"\iota"]&V'\arrow[r, "\pi"]&V''\arrow[r]&0
+		\end{tikzcd}\]
+		There is a \(1\)-\(1\) correspondence between the following:
+		\[
+		\left\{
+		\parbox{2.7cm}{\centering
+			Right inverses to \(\pi\)
+		}\right\}
+		\longleftrightarrow
+		\left\{
+		\parbox{2.3cm}{\centering
+			Left inverses to \(\iota\)
+		}\right\}
+		\longleftrightarrow
+		\left\{
+		\parbox{2.8cm}{\centering
+			Splittings \(\phi\colon V'\to V\oplus V''\)
+		}\right\}
+		\longleftrightarrow
+		\left\{
+		\parbox{2.4cm}{\centering
+			Complements to \(\iota\h{V}\) in \(V\)
+		}\right\}
+		\]
+		These correspondences are determined uniquely by \(h\circ\pi + i\circ\ \theta = \id_\Omega\) and \(C = \ker\theta = \im h\). Moreover, if \(C\) is a complement of \(\Gamma\) in \(\Omega\), then \(\pi|_C\colon C\to \Gamma'\) is an isomorphism.
+	\end{lemma}
+
+	As we saw, a surjective submersion \(\pi\colon M\to B\) induces a short exact sequence of vector bundles containing the vertical and horizontal directions. Identifying the horizontal direction is then a choice of a splitting, which, by the above lemma, can be defined in a multitude of ways. We will call any such identification a \df{connection}\index{Connection}, but we will refer to them specifically as follows:
+	\begin{definition}\label{dfn: horizontal lift}\label{dfn: connection idempotent}\label{dfn: ehresmann connection}\label{dfn: connection form}\label{dfn: connection}
+		Let \(\pi\colon M\to B\) be a surjective submersion. We define the following objects:
+		\begin{itemize}
+			\item \df{Horizontal lift}\index{Horizontal lift}: A vector bundle morphism \(h\colon\pi^*TB\to TM\) such that \(\pi\circ h = \id_{\pi^*TB}\).
+			\item \df{Vertical projection}\index{Vertical projection}: A vector bundle morphism \(\pr\colon TM\to\Ver\) such that \(\pr\circ\incl = \id_{\Ver}\), where \(\incl\colon\Ver\to TM\) is the inclusion map.
+			\item \df{Connection idempotent}\index{Connection!idemportent}: A vector bundle morphism \(p\colon TM\to TM\) such that \(\im p = \Ver\) and \(p^2 = p\).
+			\item \df{Ehresmann connection}\index{Ehresmann connection}: Vector subbundle \(\Hor\subset TM\) such that \(\Ver\oplus\Hor = TM\).
+			\item \df{Connection \(1\)-form}\index{Connection!form}: \(\Ver\)-valued \(1\)-form \(\alpha\in\Omega^1\h{M;\Ver}\) such that \(\alpha|_{\Ver} = \id_{\Ver}\). We will denote \(\conn{M}\) for the set of connection forms.
+		\end{itemize}
+	\end{definition}
+	\begin{example}
+		Let \(\pi\colon M\to B\) be a smooth covering space, then there exists a unique connection as the vertical bundle is trivial.
+	\end{example}
+	\begin{example}\label{ex: G-bundle connection}
+		Let \(G\acts P\pito Q\) be a principal \(G\)-bundle and \(\omega\) a connection \(1\)-form. This defines an Ehresmann connection by setting \(\Hor = \ker\omega\), with the property that \(TL_g\Hor_p = \Hor_{gp}\). Conversely, any Ehresmann connection \(\Hor\) on \(\pi\colon P\to B\) such that \(TL_g\Hor_p = \Hor_{gp}\) defines a connection \(1\)-form, where \(\Ver\) is canonically isomorphic to \(P\times\frkg\), where \(\frkg\) is the Lie algebra of \(G\). Composing the connection \(1\)-form with this isomorphism defines a \(1\)-form on the principal \(G\)-bundle.
+	\end{example}
+	\begin{example}\label{ex: affine connection}
+		Let \(\pi\colon V\to B\) be a vector bundle with an affine connection \(\nabla\). As \(\pi\) is a submersion, any \(v\in V_b\) can then be obtained as \(v = \sigma\h{b}\) for a local section \(\sigma\colon U\subset B\to V\). One can check that under the additional requirement that \(\nabla\sigma\h{b} = 0\), we can still always find such a section.  We then define the horizontal bundle as \(\Hor_v = \im T_b\sigma\).	As sections are right inverses to \(\pi\), the images of the tangent maps intersect \(\Ver\) trivially, and by counting dimensions, we see that \(\Hor_v\) is a complement to \(\Ver_v\) in \(T_vV\).
+
+		The induced horizontal bundle will incorporate some of the linear structure of a vector bundle. Namely, let us denote its fibrewise scalar multiplication by \(S_\lambda\colon V\to V\colon v\mapsto \lambda v\) for any \(\lambda\in\bbR\). Let us fix some \(v\in V\) and \(\lambda\in\bbR\), then for a local section \(\sigma\) such that \(\sigma\h{b} = v\) we have that \(T_b\h{S_\lambda\circ \sigma} = T_vS_\lambda T_b\sigma\). If we assume that \(\sigma\) is flat, then \(S_\lambda\circ \sigma\) is also flat and we find that
+		\[
+		\Hor_{\lambda v} = \im T_b\h{S_\lambda\circ\sigma} = \im \h{T_vS_\lambda\circ T_b\sigma} = T_vS_\lambda\Hor_v.
+		\]
+		Conversely, any Ehresmann connection on \(\pi\) with this property will define an affine connection.
+	\end{example}
+	In the above examples, we always know that a connection exists. In the general case of a surjective submersion, this follows from the theory of short exact sequences of vector bundles, again, as any short exact sequence of vector bundles admits a splitting. Let us show this in the particular case of a surjective submersion.
+	\begin{proposition}
+		 Any surjective submersion admits a connection.
+	\end{proposition}
+	\begin{proof}
+		Let \(\pi\colon M\to B\) be a surjective submersion and take an atlas for \(M\), say \(\hv{\h{U_\alpha,\chi_\alpha = \h{x_\alpha^i}}}_{\alpha\in\Lambda}\). On each open, \(U_\alpha\), we define the canonical Riemannian metric \(g_\alpha = \chi_\alpha^*g = g_{ij}dx^i_\alpha dx^j_\alpha\). For some partition of unity, \(\hv{\phi_\alpha}_{\alpha\in\Lambda}\), subordinate to \(\hv{U_\alpha}_{\alpha\in\Lambda}\), the gluing \(g = \sum_\alpha\phi_\alpha g_\alpha\) defines a Riemannian metric on \(M\). The fibrewise orthogonal complement of \(\Ver\) with respect to \(g\) then defines a connection on \(M\).
+	\end{proof}
+
+	\subsection{Connections in terms of modules}
+		Recall that a vector bundle \(\pi\colon V\to M\) defines a \(C^\infty\h{M}\) module by taking global sections, denoted \(\Gamma\h{V}\). In the case of a tangent bundle, this gives the vector fields. Additionally, if we pullback \(\pi\colon V\to M\) along \(f\colon N\to M\), then \(\Gamma\h{f^*V} = C^\infty\h{N}\otimes_{C^\infty\h{M}}\Gamma\h{V}\), where \(C^\infty\h{M}\) acts on \(C^\infty\h{N}\) by first precomposing with \(f\).
+
+		As a horizontal lift is a vector bundle morphism, it will define a module morphism on the associated modules of global sections. Hence, if \(h\colon \pi^*TB\to TM\) is a horizontal lift on \(\pi\colon M\to B\), then it defines a morphism of \(C^\infty\h{M}\)-modules \(h\colon C^\infty\h{M}\otimes_{C^{\infty}\h{B}}\frkX\h{B}\to \frkX\h{M}\). By precomposing with the natural inclusion \(\frkX\h{B}\to C^\infty\h{M}\otimes_{C^\infty\h{B}}\frkX\h{B}\colon X\mapsto 1\otimes X\), we obtain a horizontal lifting map \(h\colon \frkX\h{B}\to\frkX\h{M}\). If \(\Hor\) is the associated horizontal distribution, then \(h\) maps \(\frkX\h{B}\) injectively into \(\Gamma\h{\Hor}\), but never surjectively unless \(B = M\). Concretely, for some \(X\in\frkX\h{B}\) this map is defines as \(h\h{X}_x = h\h{x,X_{\pi\h{x}}}\). Moreover, as any tangent vector extends to a vector field, this contains all the information of the connection.
+
+		In the case where \(M = B\times F\), we can naturally identify the sections of \(TM\) using the fact that taking sections and direct sums ``commute''. Therefore, the vector fields on \(M\) can be written as
+		\[
+		\frkX\h{M} = \h{C^\infty\h{M}\otimes_{C^\infty\h{B}}\frkX\h{B}}\oplus\h{C^\infty\h{M}\otimes_{C^\infty\h{F}}\frkX\h{F}},
+		\]
+		Which has a canonical projection to its first and second components. As \(h\) is a horizontal lift, and this is a right inverse to \(\pr_1\), it is a right inverse to the first projection on the level of modules as well. This implies that all information on the connection is contained in the second component, such that we associate \(h\) with the second projection composed with \(h\). Hence, we consider the map
+		\[
+			h\colon C^\infty\h{M}\otimes_{C^\infty\h{B}}\frkX\h{B}\to C^\infty\h{M}\otimes_{C^\infty\h{F}}\frkX\h{F}\colon f\otimes X\mapsto \pr_2\circ h\h{f\otimes X}.
+		\]
+		Furthermore, we can restrict the domain and codomain to the fibre \(M_b\) by taking the tensor product with \(C^\infty\h{M_b}\) over \(C^\infty\h{M}\). One can verify that the following map defines an isomorphism of \(C^\infty\h{M_b}\)-modules:
+		\[
+			C^\infty\h{M_b}\otimes_{C^\infty\h{B}}\frkX\h{B}\to C^\infty\h{M_b}\otimes_{\bbR}T_bB\colon f\otimes X\mapsto f\otimes X_b.
+		\]
+		The surjectivity of this map follows by extending a tangent vector to a local vector field. For the injectivity, we remark that it shows that the left tensor product is really only dependent on the value of \(X\) at \(b\). First, remark that elements of \(C^\infty\h{M_b}\otimes_{C^\infty\h{B}}\frkX\h{B}\) depend on \(\frkX\h{B}\) only locally. If \(f\in C^\infty\h{M_b}\) ,\(X\in\frkX\h{B}\) and \(\psi\) is a bump function such that \(\psi|_U = 1\), for a neighbourhood \(U\) of \(b\).
+		\[
+			f\otimes \psi X = f\cdot\psi\otimes X = f\otimes X,
+		\]
+		where we used that \(\psi\in C^\infty\h{B}\) acts on \(C^\infty\h{M_b}\) as \(\h{f\cdot\psi}\h{x} = f\h{x}\psi\h{b} = f\h{x}\). Hence, suppose that \(\psi\) is supported in some coordinate chart \(\h{U,\h{x^i}}\), it follows that
+		\[
+			f\otimes X = f\otimes \psi X = f\otimes \psi X^i\partial_i = f\cdot X^i\otimes\psi\partial = f\cdot X^i\h{b}\otimes \psi\partial_i = f\otimes \psi X^i\h{b}\partial_i.
+		\]
+		We conclude that \(f\otimes X_b\) being zero implies that \(f\otimes X\) vanishes as well. Therefore, the mapping is an isomorphism of \(C^\infty\h{M_b}\)-modules. We obtain a module morphism
+		\[
+			h\colon C^\infty\h{M_b}\otimes_{\bbR}T_bB\to \frkX\h{F},
+		\]
+		covering the map \(C^\infty\h{M_b}\to C^\infty\h{F}\) induced by the diffeomorphism \(F\to M_b\).
+
+		Again, we can precompose this map with the inclusion \(T_bB\to C^\infty\h{M_b}\otimes_{\bbR}T_bB\colon v\mapsto 1\otimes v\), to obtain an \(\bbR\)-linear map \(h_b\colon T_bB\to \frkX\h{F}\). The collection \(\hv{h_b\colon T_bB\to \frkX\h{F}}_{b\in B}\) contains all the information of the connection as we can explicitly recover it as \(h\h{\h{b,f},v} = \h{v,h_b\h{v}_f}\).
+
+		On a fibre bundle, we obtain similar expressions which are dependent on the choice of local trivialisation. Let \(F\hookrightarrow M\pito B\) be a fibre bundle with trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\). In each trivialisation \(\h{U_\alpha,\psi_\alpha}\) we can consider the following sequence:
+		\[\begin{tikzcd}
+			{\pi^*TU_\alpha} & {TM_{U_\alpha}} & {\psi_\alpha^*T\h{U_\alpha\times F}} & {\psi_\alpha^*\pr_2^*TF} = \h{\pr_2\circ\psi_\alpha}^*TF
+			\arrow["h", from=1-1, to=1-2]
+			\arrow["{T\psi_\alpha}", from=1-2, to=1-3]
+			\arrow["{T\pr_2}", from=1-3, to=1-4]
+		\end{tikzcd}\]
+		By taking sections and pulling back to \(M_b\) like before, we obtain a map \(h_{\alpha,b}\colon T_bB\to \frkX\h{F}\), which is explicitly given by
+		\[
+		h_{\alpha,b}\h{v}\h{f} = T\pr_2\circ T\psi_\alpha\circ h\h{\iota_{\alpha,b}\h{f},v}.
+		\]
+		To transition to a different local trivialisation, we obtain the following expression:
+		\begin{align*}
+		\h{v,h_{\alpha,b}\h{v}\h{f}} &= T\psi_\alpha\circ h\h{\iota_{\alpha,b}\h{f},v} = T\psi_{\alpha\beta}\circ T\psi_\beta\circ h\h{\iota_{\beta,b}\h{\psi_{\beta\alpha,b}\h{f}},v}\\
+		&= \h{v,T\psi_{\alpha\beta,b}h_{\beta,b}\h{v}\h{\psi_{\alpha\beta,b}\h{f}}}.
+		\end{align*}
+		This implies that \(h_{\alpha,b}\h{v} = T\psi_{\alpha\beta,b}h_{\beta,b}\h{v}\), such that the transition data exactly dictate the transition between the local horizontal lifts.
+	\subsection{The space of connections}
+		We remark that \(\conn{M}\subset\Omega^1\h{M;\Ver}\) is not closed under scalar multiplication, as a connection form must be the identity on \(\Ver\), and it does not contain the zero form. Therefore, it cannot be viewed as a vector subspace. However, it does have some affinelike structure, in the sense that it is a vector space up to a choice of basis, such that it can be written as \(\alpha + V\) for some vector subspace \(V\subset \Omega^1\h{M;\Ver}\) and \(\alpha\in\conn{M}\). However, in this case we will be interested in a slightly more nuanced structure, namely, affine \(C^\infty\h{M}\)-modules. By this, we mean that it is of the form \(\alpha + M\), where \(M\subset \Omega^1\h{M;\Ver}\) is a \(C^\infty\h{M}\)-submodule.
+		\begin{proposition}\label{prp: connection forms affine module}
+			For any connection form \(\alpha\) on \(\pi\colon M\to B\), the set of connection forms is given by
+			\[
+			\conn{M} = \alpha + \scrA\h{M;\Ver},
+			\]
+			where \(\scrA\h{M;\Ver} = \hv{\tau\in\Omega^1\h{M;\Ver}\colon\tau|_{\Ver} = 0}\) is a \(C^\infty\h{M}\)-module. Hence, it is an affine \(C^\infty\h{M}\)-module.
+		\end{proposition}
+		\begin{proof}
+			Let \(\pi\colon M\to B\) be a surjective submersion, fix an arbitrary \(\alpha\in\conn{M}\), and define
+			\[
+				\scrA\h{M;\Ver} = \hv{\tau\in\Omega^1\h{M;\Ver}\colon\tau|_{\Ver} = 0}
+			\]
+			Given any \(\alpha'\in\conn{M}\) and \(v\in\Ver\) it follows that
+			\[
+			\h{\alpha' - \alpha}\h{v} = \alpha'\h{v} - \alpha\h{v} = v - v = 0.
+			\]
+			Hence, \(\alpha' - \alpha\in\scrA\h{M;\Ver}\) such that \(\conn{M} - \alpha\subset\scrA\h{M;\Ver}\). Moreover, if \(\tau\in\scrA\h{M;\Ver}\) and \(v\in\Ver\), then
+			\[
+			\h{\alpha + \tau}\h{v} = \alpha\h{v} + \tau\h{v} = \id|_{\Ver}\h{v} = v.
+			\]
+			This implies that \(\alpha + \scrA\h{M;\Ver}\subset \conn{M}\) and thus they indeed coincide.
+
+			Lastly, if we denote \(\iota\colon\Ver\to TM\) for the inclusion, then \(\scrA\h{M;\Ver} = \ker\iota^*\), where we denote
+			\[
+				\iota^*\colon\Omega^1\h{M;\Ver}\to\End\h{\Ver}\colon \alpha\mapsto \alpha\circ\iota.
+			\]
+			This is a \(C^\infty\h{M}\)-module morphism and therefore the kernel is a \(C^\infty\h{M}\)-module. Therefore, we can conclude that the connection forms, \(\conn{M}\), define an affine \(C^\infty\h{M}\)-module.
+		\end{proof}
+		\begin{corollary}\label{cor: connection forms convex}
+			The connection forms \(\conn{M}\) of a surjective submersion \(\pi\colon M\to B\) are a convex subset of \(\Omega^1\h{M;\Ver}\) as a \(C^\infty\h{M}\)-module.
+		\end{corollary}
+		We observe that this convex structure naturally translates to the notions of horizontal lifts, vertical projections, and connection idempotents by taking the convex combination of the vector bundle morphisms. For the Ehresmann connection counterpart, this description is not as neat and is better written as the kernel of the associated connection forms. However, if \(\Hor_i\) are Ehresmann connections and \(t_i\in\h{0,1}\), both for \(i = 1,2\), such that \(t_1 + t_2 = 1\) then the ``convex combination'', which we will denote by \(\sum_it_i\Hor_i\), satisfies the following inclusions:
+		\[
+			\Hor_1\cap\Hor_2\subset\sum_it_i\Hor_i\subset\Hor_1 + \Hor_2.
+		\]
+		This notation, of course, extends to arbitrary convex combinations as well.
+	\subsection{Induced splitting of forms}\label{sec: splitting of forms}
+		An Ehresmann connection \(\Hor\) on a surjective submersion \(\pi\colon M\to B\) is a splitting of \(TM\). This decomposition extends to higher exterior powers of \(TM\), and thus a decomposition of differential forms on \(M\). The decomposition of \(\bigwedge^kTM\) is by the following canonical isomorphisms
+		\[
+		\bigwedge^kTM \cong \bigwedge^k\h{\Ver \oplus \Hor} \cong \bigoplus_{l_1 + l_2 = k} \bigwedge^{l_1}\Ver \otimes \bigwedge^{l_2}\Hor.
+		\]
+		By viewing a \(k\)-form \(\tau\) on \(M\) as a vector bundle morphism  \(\tau\colon\bigwedge^kTM\to\bbR\) covering the map \(M\to\hv{*}\), we obtain a decomposition of  \(\omega\) into a collection \(\hv{\omega_{\h{l_1,l_2}}}_{l_1 + l_2 = k}\). A component in this decomposition is given by the restriction to \(\bigwedge^{l_1}\Ver\otimes\bigwedge^{l_2}\Hor\) as a subset of \(\bigwedge^kTM\) via the above isomorphism.
+
+		Through this identification, the space of \(k\)-forms on \(M\) decomposes as
+		\[
+		\Omega^k\h{M}\cong\bigoplus_{l_1 + l_2 = k}\Gamma\hk{{\bigwedge}^{l_1}\Ver^*}\otimes\Gamma\hk{{\bigwedge}^{l_2}\Hor^*}.
+		\]
+		\begin{example}
+			Let \(\Hor\) be a connection on \(\pi\colon M\to B\) and \(\omega\in\Omega^2\h{M}\). On a pair of tangent vectors \(u = u^\bot + u^\top\), \(v = v^\bot + v^\top\), with \(u^\bot, v^\bot \in \Ver\) and \(u^\top, v^\top \in \Hor\), the above splitting yields:
+			\[
+			\omega(u, v) = \omega_{(2,0)}(u^\bot, v^\bot) + \omega_{(1,1)}\h{u^\bot, v^\top} -  \omega_{\h{1,1}}\h{v^\bot, u^\top} + \omega_{(0,2)}(u^\top, v^\top).
+			\]
+			For example, if we are given a form \(\tau\colon\bigwedge^2\Ver\to\bbR\), we can easily define \(\omega\in\Omega^2\h{M}\) extending it by setting \(\omega_{\h{2,0}} = \tau\), \(\omega_{\h{1,1}} = 0\) and \(\omega_{\h{0,2}} = 0\).
+
+			In the case of \(2\)-forms, we will have a particular interest in those that split with respect to our connection into a vertical part and a horizontal part. Therefore, we will call a \(2\)-form \(\omega\) for which \(\omega_{\h{1,1}}\) vanishes \df{\(\Hor\)-compatible}, or we will say it is compatible with the connection.
+		\end{example}
+
+\section{Parallel transport}\label{sec: parallel transport}
+	To make full analytic use of a connection on a surjective submersion and use it to probe at the transverse geometry of the total space with respect to the base space, we want to relate the curve spaces of the base and the total space. In the trivial example of a product manifold, \(M = B\times F\), a curve \(\gamma\colon I\to B\) and some choice \(f\in F\) canonically defines a curve \(\tilde{\gamma}_f\colon I\to M\colon t\mapsto\h{\gamma\h{t},f}\) such that \(\pr_1\circ\ \tilde{\gamma} = \gamma\) and \(\pr_2\circ\ \tilde{\gamma} = \const_f\). Additionally, in the canonical splitting \(T\h{B\times F} = \pr_1^*TB\oplus\pr_2^*TF\), its tangent vector has the form \(\dot{\tilde{\gamma}}_f\h{t} = \h{\dot{\gamma}\h{t},0}\). In other words, the curve \(\tilde{\gamma}_f\) lifts \(\gamma\) to the total space, such that it moves solely in the horizontal direction.
+
+	In the general case, i.e.\ a surjective submersion \(\pi\colon M\to B\), we can always lift a curve \(\gamma\colon I\to B\) locally around some \(t_0\in I\) to any \(x\in M_{\gamma\h{t_0}}\) by picking a local section \(\sigma\colon U\subset B\to M\), where \(U\) is an open neighbourhood of \(\gamma\h{t_0}\), with \(\sigma\h{\gamma\h{t_0}} = x\) and setting \(\tilde{\gamma} = \sigma\circ\gamma\). However, this is only defined on \(\gamma^{-1}\h{U}\), which might be a proper subset of \(I\) and is dependent on the choice of local section, which is not unique. To obtain a unique lift of \(\gamma\), we need to fix a direction at each point which is horizontal to \(B\), which is exactly the problem solved in the previous section by picking a connection.
+	\begin{definition}\label{dfn: horizontal curve}\label{dfn: horizontal lift of curve}
+		Let \(\pi\colon M\to B\) be a surjective submersion and \(\Hor\) an Ehresmann connection. We call a curve \(\gamma\colon I\to M\) \df{horizontal}\index{Horizontal} if \(\dot{\gamma}\h{t}\in\Hor_{\gamma\h{t}}\). If \(\gamma\colon I\to B\) is a curve, then \(\tilde{\gamma}\colon J\subset I\to M\) is a \df{horizontal lift of \(\gamma\)}\index{Horizontal lift} if \(\pi\circ\tilde{\gamma} = \gamma\) and it is horizontal.
+	\end{definition}
+	This notion of horizontal paths coincides with the usual notion of being parallel along a curve on a vector bundle or a principal bundle after identifying the Ehresmann connection to the affine connection and connection \(1\)-form, respectively, as in Examples~\ref{ex: G-bundle connection}~and~\ref{ex: affine connection}. Additionally, in the unique connection on a smooth covering space, the notion of a horizontal lift corresponds to a path lifting.
+
+	Finding a horizontal lift of a curve with a fixed starting point now has become an initial value problem for an ordinary differential equation, namely: Given \(\pi\colon M\to B\), with a horizontal lift \(h\) and \(\gamma\colon I\to B\) with \(t_0\in I\) and \(x\in M_{\gamma\h{t_0}}\), a horizontal lift \(\tilde{\gamma}\) with \(\tilde{\gamma}\h{t_0} = x\) is a solution to the following system:
+	\[\begin{cases}
+		\tilde{\gamma}\h{t_0} = x,\\
+		\dot{\tilde{\gamma}}\h{t} = h\h{\dot{\gamma}\h{t}}.
+	\end{cases}\]
+
+	In the cases of vector bundles and principal bundles, we know that the horizontal lift is always defined on the total domain of definition of the curve. In the general case, we cannot ensure such global existence, but as lifting horizontally is a solution to a differential equation, we can ensure local existence.
+	\begin{proposition}\label{prp: parallel transport}
+		Let \(\pi\colon M\to B\) be a surjective submersion with a connection and \(\gamma\colon I\to B\) a curve. For any choice \(t_0\in I\), there exists
+		\begin{itemize}
+			\item a neighbourhood \(U\subset M_{\gamma\h{t_0}}\times I\) of \(M_{\gamma\h{t_0}}\times\hv{t_0}\),
+			\item a map \(\tilde{\gamma}\colon U\to M\),
+		\end{itemize}
+		such that for any choice \(f\in M_{\gamma\h{t_0}}\) we obtain a curve \(\tilde{\gamma}_f\colon \pr_2\h{U\cap \h{\hv{f}\times I}}\to M\colon t\mapsto \tilde{\gamma}\h{f,t}\) which is a horizontal lift of \(\gamma\) such that \(\tilde{\gamma}_f\h{t_0} = f\).
+
+		Additionally, \(U\) can be chosen maximally such that this lift is unique, i.e.\ for any horizontal lift of \(\gamma\), say \(\overline{\gamma}\colon J\to M\) with \(f = \overline{\gamma}\h{t_0}\), we have \(\overline{\gamma} = \tilde{\gamma}_f|_J\).
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(\pi\colon M\to B\) is a surjective submersion with a horizontal lift \(h\colon\pi^*TB\to TM\), let \(\gamma\colon I\to B\) be a curve and fix some \(t_0\in I\). We want to determine a vector field on \(M\) which is the lift of \(\dot{\gamma}\) through \(h\). Consider the following vector field:
+		\[
+		X\colon\gamma^*M = I\fp{\gamma}{\pi}M\to T\h{\gamma^*M}\colon\h{s,x}\mapsto \hk{\eval{\pdv{t}}_s, h\h{x,\dot{\gamma}\h{s}}}
+		\]
+		Notice that \(T\h{\gamma^*M} = TI\fp{T\gamma}{T\pi}TM\) and that the image of \(X\) lies in \(TI\fp{T\gamma}{T\pi}\Hor\) per construction. After picking a \(t_0\in I\), we can define \(\tilde{\gamma}\) and its domain as follows:
+		\[
+		U = \hv{\h{f,t}\in M_{\gamma\h{t_0}}\times I\colon \h{t - t_0, t_0, f}\in\scrD\h{X}},\quad \tilde{\gamma}\colon U\to M\colon\h{f,t}\mapsto\pr_2\circ\phi_X\h{t - t_0, t_0, f},
+		\]
+		where \(\phi_X\) denotes the flow of \(X\) and \(\scrD\h{X}\) its domain of definition.
+
+		Fix an \(f\in M_{\gamma\h{t_0}}\) and consider the curve \(\tilde{\gamma}_f\colon U\cap\h{\hv{f}\times I}\to M\colon t\mapsto \tilde{\gamma}\h{f,t}\). We remark that on \(\gamma^*M\) the maps \(\gamma\circ\pr_1\) and \(\pi\circ\pr_2\) coincide, such that
+		\[
+		\pi\circ\tilde{\gamma}\h{f,t} = \pi\circ\pr_2\circ\phi_X\h{t - t_0,f} = \gamma\circ\pr_1\circ\phi_X\h{t - t_0,f}
+		\]
+		As \(\phi_X\) is the flow of \(X\) and \(\pr_1\h{X} = \pdv{t}\), it follows that
+		\begin{align*}
+		\eval{\dv{t}}_{s}\h{\pr_1\circ\phi_X\h{t - t_0, t_0, f}}
+			&= \pr_1\hk{\eval{\dv{t}}_s\phi_X\h{t - t_0, t_0, f}} = \pr_1\h{X_{\phi_X\h{s - t_0, t_0, f}}}\\
+			&= \eval{\pdv{t}}_{\pr_1\h{\phi_X\h{s - t_0, t_0, f}}}
+		\end{align*}
+		This implies that \(\pr_1\circ\phi_X\h{t - t_0, t_0, f} = t\), and thus \(\pi\circ\tilde{\gamma} = \gamma\). Additionally, we already remarked that the image of \(\im \pr_2\circ X\) lies in \(\Hor\), such that \(\dot{\tilde{\gamma}}_f\h{t} = \pr_2\h{X_{\phi_X\h{t - t_0, t_0, ,f}}}\in\Hor_{\tilde{\gamma}_f}\). Hence, we conclude that it is indeed a horizontal lift of \(\gamma\) and \(\tilde{\gamma}_f\h{t_0} = \pr_2\circ\phi_X\h{t_0 - t_ 0, t_0, f} = \pr_2\h{t_0,f} = f\).
+
+		The maximality and unicity then follow from the maximality of the flow domain and the unicity of the flow.
+	\end{proof}
+	\begin{definition}
+		Given a curve \(\gamma\colon I\to B\) on a surjective submersion \(\pi\colon M\to B\) with a connection, we will call \(\tilde{\gamma}\colon U\to M\) the \df{parallel transport map}\index{Parallel transport}\index{Parallel transport!Map} and \(\tilde{\gamma}_f\colon U_f\to M\) \df{the horizontal lift to \(f\)}\index{Horizontal lift}, where \(U_f = U\cap\h{\hv{f}\times I}\) is the maximal interval on which \(\tilde{\gamma}_f\) can be defined.
+	\end{definition}
+	We can remark that the solution of the differential equation is dependent only on the image of the curve, and therefore only on the geometry, and not on the specific parametrisation of the curve.
+	\begin{proposition}\label{prp: reparametrization}
+		Let \(\pi\colon M\to B\) be a surjective submersion with a connection, \(\gamma\colon I\to B\) a curve, and \(\phi\colon J\to I\) is a diffeomorphism. Then \(\tilde{\gamma\circ\phi} = \tilde{\gamma}\circ\h{\id\times\phi}\).
+	\end{proposition}
+	\begin{proof}
+		Suppose \(\pi\colon M\to B\) is a surjective submersion with an Ehresmann connection \(\Hor\) and \(\gamma\colon I\to B\) a curve with \(f\in M_{\gamma\h{t_0}}\). Let \(\phi\colon J\to I\) be some diffeomorphism and define \(\eta = \gamma\circ\phi\colon J\to B\). Next define \(\tilde{\eta}_f = \tilde{\gamma}_f\circ\phi\), then \(\pi\circ\tilde{\eta}_f = \pi\circ\tilde{\gamma}_f\circ\phi = \gamma\circ\phi = \eta\) and
+		\[
+		\dot{\tilde{\eta}}_f = T\tilde{\eta}_f\hk{\pdv{t}} = T\h{\tilde{\gamma}\circ\phi}\hk{\pdv{t}} = T\tilde{\gamma}\hk{\pdv{\phi}{t}\pdv{t}} = \pdv{\phi}{t}T\tilde{\gamma}\hk{\pdv{t}} = \pdv{\phi}{t}\,\dot{\tilde{\gamma}}_f\in\Hor.
+		\]
+		Therefore, \(\tilde{\eta}_f\) is the horizontal lift of \(\eta\) to \(f\) as it exists uniquely and we can conclude that \(\tilde{\eta} = \tilde{\gamma}\circ\h{\id\times\phi}\).
+	\end{proof}
+	In the case where \(\dot{\gamma}\) extends to a vector field \(X\) on \(B\), in the sense that \(\dot{\gamma}\h{t} = X_{\gamma\h{t}}\), we obtain a more direct expression of the horizontal lift using \(h\) as a map \(\frkX\h{B}\to\frkX\h{M}\). Set \(\tilde{X} = h\h{X}\) and let \(\phi_{\tilde{X}}\) denote the flow and \(\scrD\h{\tilde{X}}\) its flow domain. The parallel transport can then be defined as
+	\[
+	U = \hv{\h{f,t}\in M_{\gamma\h{t_0}}\times I\colon \h{t - t_0,f}\in\scrD\h{\tilde{X}}},\quad \tilde{\gamma}\colon U\to M\colon \h{f,t}\mapsto \phi_{\tilde{X}}\h{t - t_0,f}.
+	\]
+	Clearly \(\tilde{\gamma}_f\) is horizontal for any \(f\) as \(\dot{\tilde{\gamma}}_f\h{t} = \tilde{X}\h{\phi_{\tilde{X}}\h{t - t_0,f}}\in\Hor\). Additionally,
+	\[
+	\eval{\dv{t}}_s\pi\circ\tilde{\gamma}_f = T\pi\hk{\eval{\dv{t}}_s\phi_{\tilde{X}}\h{t - t_0,f}} = T\pi\hk{\tilde{X}\h{\tilde{\gamma}_f\h{s}}} = X\h{\pi\h{\tilde{\gamma}_f\h{s}}}.
+	\]
+	This implies that \(\pi\circ\tilde{\gamma}\) is an integral curve of \(X\), which also starts at \(\gamma\h{t_0}\). We conclude that \(\tilde{\gamma}_f\) is the horizontal lift of \(\gamma\) to \(f\).
+
+	Locally on a fibre bundle \(F\hookrightarrow M\pito B\), we can also obtain a more concrete description of parallel transport as a map on the fibre in terms of the local description of a connection. Let \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) be a trivialising cover, take a curve \(\gamma\colon I\to U_\alpha\subset B\) starting at \(b_0\) and some \(x\in M_{b_0}\), which corresponds to \(\psi_\alpha\h{x} = \h{b_0,f_0}\). The horizontal lift of \(\gamma\) to \(x\) then has a local representation as \(\psi_\alpha\h{\tilde{\gamma}_x\h{t}} = \h{\gamma\h{t},\gamma^F\h{t}}\), where \(\gamma^F = \pr_2\circ\psi_\alpha\circ\tilde{\gamma}_x\). The construction implies that \(\gamma^F\) is a solution to the following initial value problem:
+	\[\begin{cases}
+		&\gamma^F\h{0} = f_0,\\
+		&\dot{\gamma}^F\h{t} = h_{\alpha,\gamma\h{t}}\h{\dot{\gamma}\h{t}}\h{\gamma^F\h{t}}.
+	\end{cases}\]
+	If we consider the time-dependent vector field \(X_t = h
+	_{\alpha,\gamma\h{t}}\h{\dot{\gamma}\h{t}}\), the curve \(\gamma^F\) then becomes an integral curve of this vector field flowing from \(f\) at \(t = 0\).
+
+	Still, the horizontal lift may not always be defined; consider a smooth finite covering space with a single point removed. Under some compactness conditions, however, we can resolve this analytically.
+	\begin{proposition}\label{prp: compact is yay}
+		Let \(\pi\colon M\to B\) be a surjective submersion with a connection and \(\gamma\colon\ha{0,1}\to B\) a curve. If \(f\in M_{\gamma\h{0}}\) and \(\tilde{\gamma}_f:U_f\to M\) maps into a compact set, then \(U_f = \ha{0,1}\).
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(\pi\colon M\to B\) is a surjective submersion with a connection and let \(\gamma\colon \ha{0,1}\to B\) be a curve. Fix an \(f\in M_{\gamma\h{0}}\), and suppose that \(\im\tilde{\gamma}_f\) lies inside a compact set. Assume for contradiction that \(U_f\neq\ha{0,1}\), and recall that \(U_f\) is maximal. Without loss of generality, suppose that \(\sup U_f < 1\) and set \(a = \sup U_f\). Since \(U_f\) is an interval and open subset of \(\ha{0,1}\) whose supremum is strictly smaller than \(1\), we have \(U_f = [0, a)\).
+
+		By assumption, the image of the lift \(\tilde{\gamma}_f\) is contained in a compact set and therefore the limit \(\lim_{t\to a}\tilde{\gamma}_f\h{t}\) must exist, such that \(\tilde{\gamma}_f\) admits a continuous extension to \(a\). Furthermore, as \(\tilde{\gamma}_f\) is a solution to an ordinary differential equation determined by the horizontal lift condition, the Picard-Lindelöf theorem implies that there exists \(\epsilon > 0\) such that the lift extends to an open interval \(\h{a-\epsilon, a+\epsilon}\), contradicting the maximality of \(U_f\). Hence, we conclude that \(U_f = \ha{0,1}\).
+	\end{proof}
+
+	\subsection{Holonomy}\label{sec: holonomy}
+		The parallel transport and horizontal lifts of curves contain a lot of information on the connection. But while the restriction of the parallel transport to horizontal lifts is the natural lifts of curves, we can also consider the restriction of parallel transport to a map between fibres.
+		\begin{definition}
+			Let \(\pi\colon M\to B\) be a surjective submersion with a connection and \(\gamma\colon I\to B\) a curve. For \(t_0,t_1\in I\), the \df{holonomy map from \(t_0\) to \(t_1\) along \(\gamma\)}\index{Holonomy} is the map
+			\[
+			\tau_{\gamma}^{t_1,t_0}\colon U_{t_1,t_0}\subset M_{\gamma\h{t_0}}\to M_{\gamma\h{t_1}}\colon f\mapsto \tilde{\gamma}\h{t_1,f},
+			\]
+			where \(U_{t_1,t_0} = \pr_1\h{U_{t_0}\cap\h{M_{\gamma\h{t_0}}\times \hv{t_1}}}\).
+		\end{definition}
+		Hence, given a connection and a curve, we obtain a collection of maps \(\hv{\tau_\gamma^{t_1,t_0}}_{t_0,t_1\in I}\) which contain all the information on the parallel transport of the curve \(\gamma\). This set of data again contains all the data of the connection as given some \(v\in T_bB\) and \(x\in M_b\), if \(\gamma\colon\h{-\epsilon,\epsilon}\) integrates \(v\), then we recover \(h\), by using the fact that \(\tilde{\gamma}_x\h{t} = \tau_\gamma^{t,0}\h{x}\), as
+		\[
+		h\h{x,v} = \eval{\dv{t}}_{0}\tau_\gamma^{t,0}\h{x}.
+		\]
+		Moreover, the set of holonomies has a nice structure with respect to some composition laws.
+		\begin{proposition}\label{prp: holon is nice}
+			The holonomy maps are smooth embeddings, and for \(t_0 \leq t_1 \leq t_2\) they satisfy
+			\[
+			\tau_\gamma^{t_2,t_1}\circ\tau_\gamma^{t_1,t_0}|_{\tilde{U}} = \tau_\gamma^{t_0,t_2}|_{\tilde{U}},\quad \mbox{where }\tilde{U} = U_{t_2,t_0}\cap {\tau_\gamma^{t_1,t_0}}^{-1}\h{U_{t_2,t_1}}.
+			\]
+		\end{proposition}
+		\begin{proof}
+			The fact that the holonomy maps are smooth follows from the fact that \(\tilde{\gamma}\) is smooth, and thus, after restricting to an embedded submanifold and fixing \(t_1\), it will still be smooth. The second property follows from the fact that the flow of a vector field is a one-parameter group action.
+		\end{proof}
+
+\section{Complete connections}
+	The domains \(U_f\subset U\) capture the extendibility of the horizontal lifts of \(\gamma\colon I\to B\). As mentioned before, this domain of definition may be strictly smaller than \(I\). However, in the trivial case \(B\times F\) with the canonical connection, this is always maximal. In this section, we will show that it is exactly the existence of such maximal horizontal lifts which differentiates a fibre bundle from a surjective submersion.
+	\begin{definition}\label{dfn: complete connection}
+		Let \(\pi\colon M\to B\) be a surjective submersion with a connection and \(\gamma\colon I\to B\) a curve. The parallel transport of \(\gamma\), for some \(t_0\in I\), is called \df{complete}\index{Complete!parallel transport} if \(\tilde{\gamma}\colon U\to M\) is defined on \(M_{\gamma\h{t_0}}\times I\). A connection on \(\pi\colon M\to B\) is  \df{complete}\index{Complete!connection} all parallel transports of all curves are complete.
+	\end{definition}
+	To check the completeness of a connection, one has to check many paths over varying domains. However, as we saw in Proposition~\ref{prp: reparametrization}, horizontal lifts are geometrically independent of the domain.  Therefore, we can greatly reduce the collection of paths on which we need to check the completeness.
+	\begin{proposition}\label{prp: reduction to compacts}
+		A connection is complete if and only if all the parallel transport of curves defined on \(\ha{0,1}\) are complete.
+	\end{proposition}
+	\begin{proof}
+		Let \(\pi\colon M\to B\) be a surjective submersion and \(h\colon\pi^*TB\to TM\) a horizontal lift. Clearly, if \(h\) is complete, then all parallel transports of curves \(\gamma\colon\ha{0,1}\to B\) are complete.
+
+		Conversely, suppose that all horizontal lifts of curves defined on \(\ha{0,1}\) exist and are defined on \(\ha{0,1}\). Let \(\gamma\colon I\to B\) be an arbitrary curve, with \(I\) not necessarily \(\ha{0,1}\), and take some arbitrary \(t_0\in I\) and \(f\in M_{t_0}\). For any \(t_1\in I\), where we assume that \(t_1 > t_0\), can consider a reparametrization \(\phi\colon\ha{0,1}\to\ha{t_0,t_1}\colon \) and remark that \(\eta = \gamma\circ\phi\) lifts to the whole of \(\ha{0,1}\). By Proposition~\ref{prp: reparametrization}, the lift of \(\gamma|_{\ha{t_0,t_1}}\) can be obtained from the lift of \(\eta\). In particular, it follows that \(\tilde{\gamma}_f\h{t_1} = \tilde{\eta}_f\h{1}\) and thus as \(t_1\) was arbitrary \(\tilde{\gamma}_f\) is defined on the whole of \(I\).
+	\end{proof}
+	The above proposition lets us consider only the curve space of the form \(C^\infty\h{\ha{0,1}, B}\). In particular, a complete connection defines a nice characterisation in terms of these curve spaces.
+	\begin{corollary}
+		Let \(\pi\colon M\to B\) be a surjective submersion with a connection. Then the connection is complete if and only if the following map is well-defined:
+		\[
+			C^\infty\h{\ha{0,1},B}\fp{\operatorname{ev}_0}{\pi}M\to C^\infty\h{\ha{0,1},M}\colon \h{\gamma,x}\mapsto \tilde{\gamma}_x,
+		\]
+		where \(\operatorname{ev}_0\colon C^\infty\h{\ha{0,1},B}\to B\colon \gamma\mapsto \gamma\h{0}\).
+	\end{corollary}
+	While completeness of connections is somewhat of an analytical condition, as it relates to the existence of solutions to differential equations, Proposition~\ref{prp: compact is yay} already suggests that there are geometrical elements to it as well. Under some additional compactness conditions on a surjective submersion, or a fibre bundle, we can show that any connection is complete.
+	\begin{proposition}\label{prp: cool surm}
+		Let \(\pi\colon M\to B\) be a surjective submersion, whose fibres are compact and connected; then all connections are complete.
+	\end{proposition}
+	\begin{proof}
+		Let \(\pi\colon M\to B\) be a surjective submersion whose fibres are compact and connected, and take an arbitrary connection. Consider an arbitrary curve \(\gamma\colon\ha{0,1}\to B\) and let us denote \(\tilde{\gamma}\colon U\to M\) for its parallel transport. By the tube lemma, there must exist some \(\epsilon>0\) such that \(\pi^{-1}\h{\gamma\h{0}}\times [0,\epsilon)\subset U\), and suppose that this \(\epsilon\) is maximal. For any \(t\in[0,\epsilon)\), the associated holonomy \(\tau^{0,t}_\gamma\colon \pi^{-1}\h{\gamma\h{0}}\to\pi^{-1}\h{\gamma\h{t}}\) is injective as it has a left inverse given by \(\tau^{t,0}\), see Proposition~\ref{prp: holon is nice}. Additionally, this implies that it is an immersion, and thus a local diffeomorphism, as the fibres are of the same dimension. As \(\pi^{-1}\h{\gamma\h{0}}\) and \(\pi^{-1}\h{\gamma\h{t}}\) are connected, it will automatically define a diffeomorphism as it maps connected component to connected component.
+
+		Consider the parallel transport of \(\gamma\) at \(t = \epsilon\), which we will denote with \(\overline{\gamma}\colon U_\epsilon\to M\). By the tube lemma, we find that a \(\delta > 0\) such that \(\pi^{-1}\h{\gamma\h{\epsilon}}\times\h{\epsilon-\delta,\epsilon+\delta}\subset U_\epsilon\). By a similar argument as before, we can conclude that \(\tau_\gamma^{t,\epsilon}\colon \pi^{-1}\h{\gamma\h{\epsilon}}\to \pi^{-1}\h{\gamma\h{t}}\), for \(t\in\h{\epsilon-\delta,\epsilon+\delta}\), defines a diffeomorphism. In particular, we find that the holonomy \(\tau_\gamma^{\epsilon,0} = \tau_\gamma^{\epsilon,t}\circ\tau_\gamma^{t,0}\) is a diffeomorphism, by considering some \(t\in \h{\epsilon-\delta,\epsilon}\). Hence, we can conclude that \(\pi^{-1}\h{\gamma\h{0}}\times[0,\epsilon+\delta)\subset U\), which is a contradiction with the maximality of \(\epsilon\).
+
+		We conclude that the parallel transport along \(\gamma\) is complete, and as our connection was arbitrary, it follows that all connections on \(\pi\) are complete.
+	\end{proof}
+	We can drop the connectedness assumptions if we instead assume that our surjective submersion is a fibre bundle. This result was already known to Ehresmann in his seminal paper, \cite{Ehresmann1952}, where he introduced the notion of fibre bundles and connections.
+	\begin{proposition}[{\cite[Prp.\ 3.1]{Ehresmann1952}}]\label{prp: Ehresmannlem}
+		Let \(\pi\colon M\to B\) be a fibre bundle with compact fibres; then all connections are complete.
+	\end{proposition}
+	As we have mentioned before, a fibre bundle has a lot more geometrical relations between the base space and the total space. Therefore, we will see that the local triviality is exactly the condition one needs to obtain a complete connection, giving us a geometric condition for their existence instead.
+
+	Let us note some historical remarks made in \cite{delHoyo2016}. The statement, relating completeness and local triviality, was first made in \cite[Cor.\ 2.5]{Wolf1964}, accompanied by an incomplete proof. Later, it reappeared in books like \cite{Kolar1993, Michor2008} with a proof relying on the convex glueing of fibred metrics, which was not a sound argument. This was later resolved in \cite[Thm.\ 5]{delHoyo2016} using a glueing of connections which varied over the fibres. The statement is as follows:
+	\begin{theorem}\label{thm: complete iff fibre bundle}
+		A surjective submersion admits a complete connection if and only if it is a fibre bundle.
+	\end{theorem}
+	Before we move to the proof, which involves some preliminary steps, let us give a result which is long overdue.
+	\begin{proposition}\label{prp: really late}
+		Let \(\pi\colon M\to B\) be a surjective submersion whose fibres are compact and connected; then it is a proper map.
+	\end{proposition}
+	\begin{proof}
+		Let \(\pi\colon M\to B\) be a surjective submersion whose fibres are compact and connected, and pick an arbitrary connection. It follows from Proposition~\ref{prp: cool surm} that this is a complete connection, and thus by Theorem~\ref{thm: complete iff fibre bundle}, it is a fibre bundle. Notice that we can now apply Proposition~\ref{prp: fibre is better} to conclude that \(\pi\) is a proper map.
+	\end{proof}
+	Let us turn to the proof of Theorem~\ref{thm: complete iff fibre bundle}. Our proof will be based on some of the material from \cite{delHoyo2016}, but changed in a manner such that we can later apply it to the multiplicative cases as well. The first implication is a standard exercise for fibre bundles and consists of taking a contractible cover of the base space and letting the contractions define paths along which one can parallel transport. The converse is the more intricate argument and will be based on the following lemma and corollary, which is based on Proposition~\ref{prp: compact is yay}, which lets us measure the completeness of connection in the trivial case and the locally trivial case by extension.
+	\begin{lemma}
+		Let \(\Hor\) be an Ehremann connection on \(\operatorname{pr}_1\colon B\times F\to B\) and suppose there exists \(S\subset F\) such that:
+		\begin{itemize}
+			\item \(E|_{B\times S} = TB\times 0_S\), where \(0_S\) is the zero section \(F\to TF\) restricted to \(S\).
+			\item The connected components of \(F\backslash S\) are relatively compact.
+		\end{itemize}
+		Then \(\Hor\) is a complete connection.
+	\end{lemma}
+	\begin{proof}
+		Suppose that \(\Hor\) is an Ehresmann connection on \(\pr_1\colon B\times F\to B\) and \(S\subset F\) as above. Let \(\gamma\colon\ha{0,1}\to B\) be a curve starting at \(b\), and take an arbitrary \(f\in F\). We are in either of two cases: \(f\in S\) or \(f\notin S\).
+		\begin{enumerate}
+			\item Suppose that \(f\in S\), we then define \(\tilde{\gamma}_{\h{b,f}}\h{t} = \h{\gamma\h{t},f}\) and note this is indeed a horizontal lift to \(\h{b,f}\) as
+			\begin{align*}
+				&\pr_1\circ\tilde{\gamma}_{\h{b,f}}\h{t} = \pr_1\h{\gamma\h{t},f} = \gamma\h{t}.
+				&\dot{\tilde{\gamma}}_{\h{b,f}}\h{t} = \h{\dot{\gamma}\h{t},0} \in T_{\gamma\h{t}}B = \Hor_{\h{\gamma\h{t},f}}.
+			\end{align*}
+			Additionally, we find that \(\tilde{\gamma}_{\h{b,f}}\h{0} = \h{\gamma\h{0},f} = \h{b,f}\). Therefore, this lift is defined on \(\ha{0,1}\).
+			\item Suppose that \(f\notin S\), and let \(\tilde{\gamma}_{\h{f,s}}\) denote for the horizontal lift. We remark that \(\pr_2\circ\tilde{\gamma}_{\h{b,f}}\) must stay within a connected component of \(F\backslash S\) as horizontal lifts are unique, and if \(\pr_2\circ\tilde{\gamma}_{\h{b,f}}\) maps into \(S\), the horizontal lift is given by the first case. Therefore, \(\tilde{\gamma}_{\h{b,f}}\) must stay within a compact set, namely \(\im\gamma \times \overline{\operatorname{Conn}\h{F\backslash S,f}}\), where \(\operatorname{Conn}\h{F\backslash S,f}\) denotes the connected component of \(F\backslash S\) containing \(f\). By Proposition~\ref{prp: compact is yay} it follows that \(\tilde{\gamma}_{\h{b,f}}\) is defines on the whole of \(\ha{0,1}\).
+		\end{enumerate}
+		We can conclude that the horizontal lift of \(\gamma\) is always defined on the whole of \(\ha{0,1}\) and thus the parallel transport is always complete. By Proposition~\ref{prp: reduction to compacts}, this shows that \(\Hor\) is a complete connection.
+	\end{proof}
+	Using an argument similar to the one used in the proof of the path-lifting property on covering spaces, we can extend this argument to fibre bundles.
+	\begin{proposition}\label{prp: sick}
+		Let \(\Hor\) be an Ehresmann connection on a fibre bundle \(F\hookrightarrow M\pito B\). If there exists a trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) and for all \(\alpha\in\Lambda\) there exists \(S_\alpha\subset F\) such that:
+		\begin{enumerate}
+			\item \(T\psi_\alpha\h{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}\), where \(0_{S_\alpha}\) denotes the zero section of \(F\to TF\) restricted to \(S_\alpha\).
+			\item The connected components of \(F\backslash S_\alpha\) are precompact.
+		\end{enumerate}
+		Then \(\Hor\) is a complete connection.
+	\end{proposition}
+	\begin{proof}
+		Take a fibre bundle \(F\hookrightarrow M\pito B\) with an Ehresmann connection \(\Hor\) and fix some trivialising cover \(\hv{\h{U_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) with \(S_\alpha\) as above. Let \(\gamma\colon \ha{0,1}\to B\) be a curve, and notice that \(\im\gamma\) is compact, so that there exists a finite subset \(\hv{\h{U_i,\psi_i}}_{i = 1}^n\) covering \(\im\gamma\). Additionally, we can assume, after possibly reordering the cover, that there exists a partition \(0 = a_0 < a_1 < \cdots < a_n = 1\) such that \(\im\gamma|_{\ha{a_{i -1},a_i}}\subset U_i\). Let us denote the restriction \(\gamma\) to each subinterval as \(\gamma_i = \gamma|_{\ha{a_{i-1},a_i}}\). We can then remark that \(\psi_i\circ\gamma|_{\ha{a_{i -1},a_i}}\) has complete parallel transport with respect to the connection \(T\psi_i\h{\Hor|_{M|_{U_i}}}\) on \(U_i\times F\). Therefore \(\gamma_i\) has complete parallel transport by conjugating with \(\psi_i\).
+
+		We can then define \(x_0 = x\), and define \(x_i\) recursively as \(x_i = \tilde{\gamma_i}_{x_{i-1}}\h{a_i}\), the horizontal lift of \(\gamma_i\) to \(x_{i-1}\), and set
+		\[
+		\tilde{\gamma}_x\h{t} = \tilde{\gamma_i}_{x_{i-1}}\h{t},\mbox{ when }t\in \ha{a_{i-1},a_i}.
+		\]
+		This will clearly define a horizontal lift of \(\gamma\) to \(x\), which is defined on the whole of \(\ha{0,1}\). This implies that \(\Hor\) is a complete connection.
+	\end{proof}
+	This lemma gives us a more geometric picture to check the completeness of connections on a fibre bundle. However, this still starts with a connection. In Theorem~\ref{thm: complete iff fibre bundle}, we want to construct a connection and then show that it satisfies the requirements of Proposition~\ref{prp: sick}. Under specific conditions on \(S_\alpha\subset F\), we can indeed define compatible connections.
+	\begin{proposition}\label{prp: good S}
+		Let \(F\hookrightarrow M\pito B\) be a fibre bundle with trivialising cover \(\hv{\h{V_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) which is locally finite, and \(\hv{U_\alpha}_{\alpha\in\Lambda}\) an open cover of \(B\) with \(\overline{U_\alpha}\subset V_\alpha\). Suppose that for each \(\alpha\in\Lambda\) we have a closed subset \(S_\alpha\subset F\), such that they satisfy
+		\[
+			S_\alpha\cap \psi_{\alpha\beta,b}\h{S_\beta} = \emptyset,\quad \forall \alpha\neq\beta\in\Lambda,\ b\in \overline{U_{\alpha\beta}}.
+		\]
+		Then there exists an Ehresmann connection \(\Hor\) such that \(T\psi_\alpha\h{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}\) for all \(\alpha\in\Lambda\).
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(F\hookrightarrow M\pito B\) is a fibre bundle with a trivialising cover \(\hv{\h{V_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) and let \(\hv{U_\alpha}_{\alpha\in\Lambda}\) and \(\hv{S_\alpha}_{\alpha\in\Lambda}\) be as in the statement. Remark that for each \(\alpha\in\Lambda\) we take on \(M|_{U_\alpha}\) the canonical connection induced by the trivialisation, namely
+		\[
+			h_\alpha\colon \pi^*TU_\alpha\to TM|_{U_\alpha}\colon \h{x,v}\mapsto T_{\psi_\alpha\h{x}}\psi_\alpha^{-1}\h{v,0}.
+		\]
+		Next, for each \(\alpha\in\Lambda\) we can define an open subset \(W_\alpha\) by
+		\[
+			W_\alpha = \pi^{-1}\h{U_\alpha}\backslash \bigcup_{\beta\neq\alpha}\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}.
+		\]
+		Notice that the collection \(\{\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}\}_{\beta\neq \alpha}\) is locally finite as the cover \(\hv{V_\alpha}_{\alpha\in\Lambda}\) is, moreover, they are all closed as all \(S_\beta\) are. Their union is then also closed, see \cite[Lemma 39.1 (c)]{Munkres2000}, and thus \(W_\alpha\) is open. Moreover, one can verify that \(\hv{W_\alpha}_{\alpha\in\Lambda}\) defines a cover of \(M\):
+		\begin{itemize}
+			\item If \(x\in M\backslash \bigcup_{\beta}\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}\), then there must exists a \(\alpha\in\Lambda\) such that \(x\in \pi^{-1}\h{U_\alpha}\). This implies that it is an element of \(W_\alpha\).
+			\item If \(x\in \bigcup_{\beta}\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}\), we remark that it in particular lies in \(\psi_\alpha^{-1}\h{\overline{U_\alpha}\times S_\alpha}\) for some \(\alpha\), as it is an element of some \(\pi^{-1}\h{U_\alpha}\). Let us show that it cannot be an element of \(\psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}\) for \(\beta\neq \alpha\). Assume the converse, i.e.\ \(x\in \psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta}\). Remark that we can write them in the local trivialisations as \(\psi_\beta\h{x} =\h{b,s_\beta}\) for \(b\in \overline{U_{\alpha\beta}}\) and \(s_\beta\in S_\beta\). Similarly, we find \(s_\alpha\in S_\alpha\) such that \(\psi_\alpha\h{x} = \h{b,s_\alpha}\). By definition, we have
+			\[
+				\psi_{\alpha\beta,b}\h{s_\beta} = \pr_2\circ\psi_\alpha\circ\psi_\beta^{-1}\h{b,s_\beta} = s_\alpha.
+			\]
+			This implies that \(s_\alpha\in \psi_{\alpha\beta,b}\h{S_\beta}\), which is a contradiction with our assumption on \(\hv{S_\alpha}_{\alpha\in\Lambda}\). It follows that \(\psi_\alpha^{-1}\h{\overline{U_\alpha}\times S_\alpha}\cap \psi_\beta^{-1}\h{\overline{U_\beta}\times S_\beta} = \emptyset\) and thus \(x\in W_\alpha\).
+		\end{itemize}
+		Let \(\hv{\phi_\alpha}_{\alpha\in\Lambda}\) denote the partition of unity subordinate to the open cover \(\hv{W_\alpha}\) and define \(h = \sum_\alpha \phi_\alpha h_\alpha\). By Corollary~\ref{cor: connection forms convex}, this defines a connection, and let \(\Hor\) denote the associated Ehresmann connection. By our construction of \(\hv{W_\alpha}\), we find that \(x\in \psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}\) implies that \(x\in W_\alpha\) and \(x\notin W_\beta\) for \(\beta\neq\alpha\). Therefore, if \(x = \psi_\alpha^{-1}\h{b,s}\), for some \(s\in S_\alpha\) and \(v\in T_{\pi\h{x}}U_\alpha\), then
+		\[
+			h\h{x,v} = \sum_\gamma\phi_\gamma\h{x}h_{\gamma}\h{x,v} = h_{\alpha}\h{x,v} = T_{\psi_\alpha\h{x}}\psi_\alpha^{-1}\h{v,0}
+		\]
+		From this, we can conclude that \(T\psi_\alpha\hk{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}\).
+	\end{proof}
+
+
+	We will now end this section with a proof of Theorem~\ref{thm: complete iff fibre bundle} based on the previous corollaries and proposition to construct a connection and check its completeness.
+	\begin{proof}[Proof of Theorem~\ref{thm: complete iff fibre bundle}]
+		Let \(\pi\colon M\to B\) be a surjective submersion.
+
+		\(\boldsymbol{\implies}\):
+		Suppose \(\Hor\) is a complete Ehresmann connection and let \(\hv{U_\alpha}_{\alpha\in\Lambda}\) be an open cover of \(B\) where each \(U_\alpha\) is contractible. Let \(c_\alpha\colon U_\alpha\times\ha{0,1}\to U_\alpha\) be contractions to some \(b_\alpha\in U_\alpha\), i.e.\ \(c_\alpha\h{b,0} = b,\ c_\alpha\h{b,1} = b_\alpha\). Define the path \(\gamma^{\alpha,b}\colon\ha{0,1}\to U_\alpha\colon t\mapsto c_\alpha\h{b,t}\). Using these paths, we obtain local trivialisations via the parallel transport along these paths:
+		\[
+		\psi_\alpha\colon\pi^{-1}\h{U_\alpha}\to U_\alpha\times \pi^{-1}\h{b_\alpha}\colon x\mapsto \h{\pi\h{x},\tilde{\gamma^{\alpha,\pi\h{x}}}_x\h{1}}.
+		\]
+		This parallel transport is then well-defined at \(1\) as the connection is complete. One can readily verify that these maps are diffeomorphisms preserving the fibred structure.
+
+		\(\boldsymbol{\Longleftarrow}\):
+		Suppose that \(F\hookrightarrow M\pito B\) is a locally trivial fibre bundle. To prove that \(\pi\) admits a complete connection, we will construct an Ehresmann connection using Proposition~\ref{prp: good S} such that it satisfies the conditions of Proposition~\ref{prp: sick}.
+
+		Pick a trivialising cover \(\hv{\h{V_\alpha,\psi_\alpha}}_{\alpha\in\Lambda}\) by relatively compact sets which is locally finite and let \(\hv{U_\alpha}_{\alpha\in\Lambda}\) be a cover of \(B\) such that \(\overline{U_\alpha}\subset V_\alpha\). Remark that we can assume that \(\Lambda = \bbN\) or \(\Lambda = \hv{0,\ldots,n}\) without loss of generality. Let \(f\colon F\to\bbR_{\geq 0}\) be a proper function, which exists by \cite[Prp.\ 2.28]{Lee2013}. We can let \(S_\alpha\) be the preimage of some infinite discrete subsets, \(N_\alpha\), of \(\bbR_{\geq 0}\) under this map.
+
+		To construct the sets \(N_\alpha\subset\bbN\), we will define a map \(n\colon\bbN\times\Lambda\to\bbN\) inductively with respect to the lexicographical ordering\footnote{Given two partial orders \(\h{P,\leq_P}\) and \(\h{Q,\leq_Q}\), the lexicographical ordering on \(P\times Q\) is defines as \(\h{p,q} \leq \h{p',q'}\) if and only if \(p < p'\), or \(p = p'\) and \(q \leq q'\). In particular, we first consider the first coordinate in this ordering.}. We first define \(n\h{0,0} = 0\). Next, suppose that \(n\) is defined on all \(\h{j,\beta}\), with \(\h{j,\beta}<\h{i,\alpha}\), and consider the set
+		\[
+			\tilde{C}_{i,\alpha} = \bigcup_{\h{j,\beta}<\h{i,\alpha}}\psi_\beta^{-1}\h{\overline{U_{\alpha\beta}}\times f^{-1}\h{n\h{j,\beta}}} \subset\pi^{-1}\h{\overline{U_\alpha}}.
+		\]
+
+		Notice that the precompactness of \(U_\beta\) and properness of \(f\) implies that \(\psi^{-1}_{\beta}\h{\overline{U_\beta}\times f^{-1}\h{n\h{j,\beta}}}\) is compact. Next, we notice that the collection \(\{\psi^{-1}_{\beta}\h{\overline{U_\beta}\times f^{-1}\h{n\h{j,\beta}}}\}_{\h{\beta,j}\leq\h{i,\alpha}}\) is a locally finite collection of compact sets. Remark that this implies that \(\psi^{-1}_{\beta}\h{\overline{U_\beta}\times f^{-1}\h{n\h{i,\alpha}}}\) can only have nonempty intersection with finitely many \(\psi^{-1}_{\beta}\h{\overline{U_\beta}\times f^{-1}\h{n\h{j,\beta}}}\)\footnote{Suppose \(\scrA\) is a locally finite collection of compact sets. For a \(K\in\scrA\), any \(x\in K\) admits a neighbourhood \(U_x\) such that it has finitely many nonempty intersections with elements in \(\scrA\). As \(K\) is compact, pick a finite subcover \(\hv{U_{x_i}}_{i = 1}^n\). For each \(i = 1,\ldots,n\), the neighbourhood \(U_{x_i}\) has finitely many nonempty intersections with elements of \(\scrA\) and there are finitely many \(i\), thus \(K\) will also have finitely many nonempty intersection with elements of \(\scrA\).}. We can conclude that \(\tilde{C}_{i,\alpha}\) is compact as the union consists of finitely many nonempty compacts. Therefore, the set \(C_{i,\alpha} = \pr_2\circ\psi_\alpha\h{\tilde{C}_{i,\alpha}}\subset F\), is compact as well and we can set \(n\h{i,\alpha}\) to be the smallest integer strictly larger than \(\sup\hv{f\h{x}|\ x\in C_{i,\alpha}}\).
+
+		Having constructed the full map \(n\colon\bbN\times\Lambda\to\bbN\), we define \(N_\alpha = \hv{n\h{i,\alpha}|\ i\in\bbN}\) and \(S_\alpha = f^{-1}\h{N_\alpha}\).
+
+		Next, we show that \(S_\alpha\cap \psi_{\alpha\beta,b}\h{S_\beta} = \emptyset\) for all \(\alpha\neq\beta\in\Lambda\) and \(b\in \overline{U_{\alpha\beta}}\). Suppose \(s\in S_\alpha\cap \psi_{\alpha\beta,b}\h{S_\beta}\); then there exists \(i,j\in\bbN\) with \(f\h{s} = n\h{i,\alpha}\) and \(f\h{\psi_{\beta\alpha,b}\h{s}} = n\h{j,\beta}\), such that \(s\in \psi_{\alpha\beta,b}\h{f^{-1}\h{n\h{j,\beta}}}\). Without loss of generality, we may assume that \(\h{j,\beta} < \h{i,\alpha}\). By definition, \(\h{i,\alpha}\) must satisfy \(n\h{i,\alpha}>\sup\hv{f\h{x}|\ x\in C_{i,\alpha}}\). Remark that \(C_{i,\alpha}\) can be rewritten as
+		\begin{align*}
+			C_{i,\alpha}
+			&= \pr_2\circ\psi_\alpha\h{\tilde{C}_{i,\alpha}}
+			= \pr_2\circ\psi_\alpha\hk{\bigcup_{\h{k,\gamma}<\h{i,\alpha}}\psi_\gamma^{-1}\h{\overline{U_{\alpha\gamma}}\times f^{-1}\h{n\h{k,\gamma}}}}\\
+			&= \bigcup_{\h{k,\gamma}<\h{i,\alpha}}\pr_2\circ\psi_\alpha\hk{\bigcup_{b\in\overline{U_{\alpha\gamma}}}\psi_\gamma^{-1}\h{\hv{x}\times f^{-1}\h{n\h{k,\gamma}}}}
+			= \bigcup_{\h{k,\gamma}<\h{i,\alpha}}\bigcup_{b\in\overline{U_{\alpha\gamma}}}\psi_{\alpha\gamma,b}\h{f^{-1}\h{n\h{k,\gamma}}}.
+		\end{align*}
+		Remark that in particular, \(s\in C_{i,\alpha}\) as \(\h{j,\beta}<\h{i,\alpha}\) and \(s\in \psi_{\alpha\beta,b}\h{f^{-1}\h{n\h{j,\beta}}}\) by assumption. Therefore, by our construction, we have the following inequalities:
+		\[
+			f\h{s} = n\h{i,\alpha} > \sup_{x\in C_{i,\alpha}}f\h{x} \geq f\h{s},
+		\]
+		which leads to a contradiction. We conclude that \(S_\alpha\cap \psi_{\alpha\beta,b}\h{S_\beta} = \emptyset\) for all \(\alpha\neq\beta\in\Lambda\) and \(b\in \overline{U_{\alpha\beta}}\).
+
+		It follows from Proposition~\ref{prp: good S}, that there exists an Ehresmann connection \(\Hor\) on \(\pi\colon M\to B\) such that
+		\[
+			T\psi_\alpha\hk{\Hor|_{\psi_\alpha^{-1}\h{U_\alpha\times S_\alpha}}} = TU_\alpha\times 0_{S_\alpha}.
+		\]
+		Combining this with the fact that the connected components of \(F\backslash S_\alpha\) are all precompact, as they are subsets of \(f^{-1}\ha{n\h{\alpha,i},n\h{\alpha,i+1}}\), it follows from Proposition~\ref{prp: sick} that \(\Hor\) is a complete connection.
+	\end{proof}
+
+\end{document}

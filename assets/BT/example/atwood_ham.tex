@@ -1,0 +1,18 @@
+\documentclass{standalone}
+\usepackage{standalone}
+
+\begin{document}
+	Let us again consider the Atwood machine of Examples~\ref{exp: atwood newton}~and~\ref{exp: atwood lagrangian}. We already showed how to derive the Lagrangian in the coordinate described in Figure~\ref{fig: atwood coordinates}, see Equation~\ref{eq: atwood lagrangian}. To recover the Hamiltonian, we'll have to determine the generalised momentum
+	\begin{equation*}
+		p = \pdv{\lag}{\dot{x}} = \h{m_1 + m_2}\dot{x}.
+	\end{equation*}
+	Using the Legendre transform, we then obtain the Hamiltonian
+	\begin{equation*}
+		\ham\h{x,p,t} = p\dot{x} - \lag\h{x,\dot{x},t} = \dfrac{p^2}{2\h{m_1 + m_2}} - \dfrac{m_1 - m_2}gx.
+	\end{equation*}
+	This results in the following equations for \(\dot{x}\) and \(\dot{p}\)
+	\begin{equation*}
+		\dot{x} = \pdv{\ham}{p} = \dfrac{p}{m_1 + m_2},\quad \dot{p} = -\pdv{\ham}{x} = \h{m_1 - m_2}g.
+	\end{equation*}
+	We can see that these are equivalent to Equations~\ref{eq: atwood result newton} and~\ref{eq: atwood result lagrangian}.
+\end{document}

@@ -1,0 +1,399 @@
+\documentclass{standalone}
+
+\begin{document}
+\chapter{\VB-groupoids}
+	As we saw in the first chapter, vector bundles play a critical role in the theory of surjective submersions and fibre bundles, through the use of connections. With an eye on the goal of describing such objects in the multiplicative setting of Lie groupoids, we need to translate these ideas to involve the multiplicative setting as well. The primal example of the structure we want to emulate, it that of the tangent groupoid of a Lie groupoid, which is a pair of vector bundles \(T\grG\to\grG\) and \(TM\to M\), which also fit into a pair of Lie groupoids \(T\grG\rr TM\) and \(\grG\rr M\). Moreover, these have some compatible structures. We will capture this in the notion of a \VB-groupoid. The definitions and different notions of \VB-groupoids are taken from \cite{GraciaSaz2017} and \cite{Mackenzie2005}, while the algebraic constructions like the direct sum and kernel are based on \cite{LiBland2011}. Then we discuss a new result on the splitting of short exact sequences in this category. We will finish the chapter with a description of multiplicative forms on Lie groupoids and describe them with values in \VB-groupoids as in \cite{Drummond2019}.
+
+\section{Different notions of \VB-groupoids}
+	There are many equivalent ways of defining \VB-groupoids, each with its own merits. We will start with a more classical notion and then turn to some more categorical definitions, each highlighting a different part of the structures. They all start out with a quadruple \(\h{\Gamma,V,\grG,M}\) which forms a \df{diagram of Lie groupoids and vector bundles}, i.e.\ it fits into the following diagram:
+	\[\begin{tikzcd}[sep = huge]
+		\Gamma\arrows{r}{\tilde{\grs}}{\tilde{\grt}}\arrow[d,"\tilde{q}"]   &V\arrow[d,"q"]\\
+		\grG\arrows{r}{\grs}{\grt}                              &M
+	\end{tikzcd}\]
+	where \(\Gamma\rr V\) and \(\grG\rr M\) are Lie groupoids, and \(\tilde{q}\colon \Gamma\to \grG\) and \(q\colon V\to M\) are vector bundles. We will denote the structure maps of \(\Gamma\rr V\) with a tilde, and let \(\tilde{0}\colon \grG\to \Gamma\) and \(0\colon M\to V\) denote the zero-sections of the vector bundles. We call all these maps of the internal structures, the \df{structure maps}\index{Structure maps!\VB-groupoids} of the \VB-groupoid.
+	\begin{terminology}
+		Let \(\h{\Gamma, V,\grG, M}\) be a diagram of Lie groupoids and vector bundles. We call \(\grG\rr M\) and \(V\to M\) the base groupoid and vector bundle, respectively, and \(\Gamma\rr V\) and \(\Gamma\to\grG\) the top groupoid and vector bundle, respectively.
+	\end{terminology}
+
+	Our guiding example, the tangent groupoid \(T\grG\rr TM\) of a groupoid \(\grG\rr M\) fits into such a diagram. The structure maps of the tangent groupoid admit a lot more compatibility conditions for the internal structures. For example, they are all vector bundle morphisms, while the projection \(\tilde{q}\colon T\grG\to\grG\) defines a Lie groupoid morphism. A \VB-groupoid incorporates all of this structure as well.
+	\begin{definition}
+		A \df{\VB-groupoid}\index{VB-groupoid} is a diagram of Lie groupoids and vector bundles such that the following holds:
+		\begin{enumerate}
+			\item
+			\(\h{\tilde{\grs},\grs}\) and \(\h{\tilde{\grt},\grt}\) are vector bundle morphisms,
+			\item
+			\(\h{\tilde{q},q}\) is a Lie groupoid morphism,
+			\item
+			The interchange law holds:
+			\[
+			\tilde{\grm}\h{\gamma_1 + \gamma_3,\gamma_2 + \gamma_4} = \tilde{\grm}\h{\gamma_1,\gamma_2} + \tilde{\grm}\h{\gamma_3,\gamma_4},
+			\]
+			where \(\h{\gamma_1,\gamma_2},\h{\gamma_3,\gamma_4}\in \Gamma^{\h{2}}\) with \(\tilde{q}\h{\gamma_1} = \tilde{q}\h{\gamma_3}\) and \(\tilde{q}\h{\gamma_2} = \tilde{q}\h{\gamma_4}\).
+		\end{enumerate}
+	\end{definition}
+	This definition slightly deviates from the definition in \cite{Mackenzie2005}, where there is the technical condition that the map
+	\[
+		\rho\colon \Gamma\to V\fp{q}{\grs}G\colon \gamma\mapsto\h{\tilde{\grs}\h{\gamma},\tilde{q}\h{\gamma}}
+	\]
+	is a surjective submersion, which is also called the ``double source condition''. However, it was shown that this is actually redundant in \cite[Lem.\ A.3]{LiBland2010}. Here, they showed that the assumption that \(\h{\tilde{\grs},\grs}\) is a vector bundle morphism implies that \(\rho\) is a surjective submersion.
+	\begin{example}
+		Of course the tangent groupoid of a Lie groupoid is a \VB-groupoid, but even if we start with some \VB-groupoid \(\h{\Gamma, V,\grG, M}\) we can consider the tangent \VB-groupoid \(\h{T\Gamma, TV, T\grG, TM}\) with all the associated tangent maps of the structure maps.
+	\end{example}
+	While this definition of a \VB-groupoid is all good and well, we could have also imagined them as being some objects inside categories, in a similar fashion to how we first described Lie groupoids.
+	\begin{definition}
+		A \df{Lie groupoid object in the category of vector bundles} is a diagram of Lie groupoids and vector bundles such that it satisfies the following conditions:
+		\begin{enumerate}
+			\item
+			\(\tilde{q}\times \tilde{q}\colon \Gamma^{\h{2}}\to \grG^{\h{2}}\) is a vector bundle with the obvious structure maps.
+			\item
+			\(\h{\tilde{\grs},\grs}\), \(\h{\tilde{\grt},\grt}\) and \(\h{\tilde{\grm},\grm}\) are vector bundle morphisms.
+		\end{enumerate}
+		A \df{vector bundle object in the category of Lie groupoids} is a diagram of Lie groupoids and vector bundles such that it satisfies the following:
+		\begin{enumerate}
+			\item
+			\(\h{\tilde{q},q}\) is a Lie groupoid morphism
+			\item
+			\(\Gamma\fp{\tilde{q}}{\tilde{q}}\Gamma\rr V\fp{q}{q}V\) is a Lie groupoid with the obvious structure maps.
+			\item
+			The addition \(+\colon \Gamma\fp{\tilde{q}}{\tilde{q}}\Gamma\to \Gamma\) is a Lie groupoid morphism over \(+\colon V\fp{q}{q}V\to V\).
+		\end{enumerate}
+	\end{definition}
+	The different descriptions of \VB-groupoids luckily coincide, and therefore any of these views is equally valid. We will not give a proof of this and only give the statement.
+	\begin{proposition}[{\cite[Prp.\ 3.5]{GraciaSaz2017}}]\label{prp: equivalence of vb-groupoids}
+		Let \(\h{\Gamma, V,\grG, M}\) be a diagram of Lie groupoids and vector bundles. The following are equivalent:
+		\begin{enumerate}
+			\item It is a \VB-groupoid.
+			\item It is a Lie groupoid object in the category of vector bundles.
+			\item It is a vector bundle object in the category of Lie groupoids.
+		\end{enumerate}
+	\end{proposition}
+	Using all these different interpretations of \VB-groupoids, we can more easily deduce some of the algebraic properties of a \VB-groupoid when compared to just diagrams of Lie groupoids and vector bundles. In particular, we obtain the following:
+	\begin{corollary}\label{cor: unit and zero comm}
+		Let \(\h{\Gamma, V,\grG, M }\) be a \VB-groupoid, then unit and inverse pairs are also vector bundle morphisms, such that for \(x\in M\) we have
+		\[
+			\tilde{1}_{0_x} = \tilde{0}_{1_x}.
+		\]
+	\end{corollary}
+	\begin{notation}
+		Given a \VB-groupoid \(\h{\Gamma,V,\grG,M}\), we will often refer to it simply by \(\Gamma\). The other structures can then all be found internally via the natural embeddings along the unit map or zero section.
+%		\begin{itemize}
+%			\item \(\tilde{\gru}\colon V\to\Gamma\colon v\mapsto \tilde{1}_v\),
+%			\item \(\tilde{0}\colon \grG\to\Gamma\colon g\mapsto \tilde{0}_g\),
+%			\item \(\tilde{0}\circ\gru = \tilde{\gru}\circ 0\colon M\to \Gamma\colon m\mapsto \tilde{1}_{0_x} = \tilde{0}_{1_x}\).
+%		\end{itemize}
+		Additionally, we will refer to both Lie groupoid objects in the category of vector bundles and vector bundle objects in the category of Lie groupoids as a \VB-groupoid, due to their equivalence.
+
+		Additionally, we will say that \(\Gamma\) is a \VB-groupoid over \(\grG\), when \(\grG\) is its base groupoid, and sometimes we will denote \(\h{\Gamma,V,\grG,M}\) as the \VB-groupoid \(\h{\Gamma,V}\) over \(\grG\rr M\).
+ 	\end{notation}
+
+	Again, we need to complete the category of \VB-groupoids by defining their morphisms. These morphisms should preserve all the internal structure, both of the vector bundles and the Lie groupoids.
+	\begin{definition}
+		A \df{\VB-groupoids morphism}\index{Morphism! of VB-groupoids} from \(\h{\Gamma,V,\grG,M}\) to \(\h{\Omega,W,\grH,N}\) is a map \(\Phi\colon \Gamma\to \Omega\) such that there exist maps
+		\[
+			\Phi_0\colon V\to W,\quad \phi\colon\grG\to\grH,\quad \phi_0\colon M\to N
+		\]
+		such that they fit into the following diagrams of \VB-groupoids:
+		\[\begin{tikzcd}[sep = huge]
+			\Gamma
+			\arrows{r}{}{}
+			\arrow[d]
+			\arrow[rr,bend left = 13pt, "\Phi", start anchor=north, end anchor=north]
+			&V
+			\arrow[d]
+			\arrow[rr,bend left = 13pt, "\Phi_0", start anchor=north, end anchor=north]
+			&\Omega
+			\arrows{r}{}{}
+			\arrow[d]
+			&W
+			\arrow[d]
+			\\
+			\grG
+			\arrows{r}{}{}
+			\arrow[rr,bend right = 13pt, "\phi"', start anchor=south, end anchor=south]
+			&M
+			\arrow[rr,bend right = 13pt, "\phi_0"', start anchor=south, end anchor=south]
+			&\grH
+			\arrows{r}{}{}
+			&N
+		\end{tikzcd}\]
+		By which we mean the following:
+		\begin{itemize}
+			\item \(\h{\Phi,\phi}\) and \(\h{\Phi_0,\phi_0}\) are vector bundle morphisms.
+			\item \(\h{\Phi,\Phi_0}\) and \(\h{\phi,\phi_0}\) are Lie groupoid morphisms.
+		\end{itemize}
+
+		If both of the \VB-groupoids are over the same groupoid, we will assume that \(\h{\phi,\phi_0}\) is the identity morphism unless explicitly stated.
+
+		The composition of \VB-groupoid morphisms is simply given by the composition of all the associated maps.
+	\end{definition}
+	Clearly, if \(\Phi\) is a \VB-groupoid morphism, we can recover \(\Phi_0\) as it fits into a Lie groupoid map and \(\phi\) can be recovered by restricting to the zero section of \(\Gamma\to\grG\), the map \(\phi_0\) is then recovered as the restriction of \(\Phi_0\) to the zero section or \(\phi\) to the units. Hence, like in the definition and the notation remark after Corollary~\ref{cor: unit and zero comm}, we often only denote the map on the top left space of the \VB-groupoid.
+
+	Using the definition of a \VB-groupoid morphism, we can also easily define a \VB-subgroupoid based on the notion of Lie subgroupoids defined in Definition~\ref{def: lie subgroupoids}.
+	\begin{definition}
+		A \df{\VB-subgroupoid}\index{\VB-subgroupoid} of \(\Gamma\) is a \VB-groupoid \(\Omega\) with an embedding \(\Phi\colon\Gamma\to\Omega\) which fits into a \VB-groupoid morphism.
+	\end{definition}
+	In particular, when we restrict a \VB-subgroupoid to any of its internal Lie groupoids or vector bundles, it will define a subobject of the associated internal structure of the original groupoid.
+
+	Lastly, we recall that a vector bundle morphism which is an isomorphism on each fibre, covering a diffeomorphism, will automatically be a vector bundle isomorphism, as its fibrewise inverse is then automatically smooth. For Lie groupoids, we saw that being a diffeomorphism automatically makes it a Lie groupoid isomorphism. With this in mind, we obtain the following statement.
+	\begin{proposition}\label{prp: vb-groid isomorphism automatic}
+		Let \(\Phi\colon\Gamma\to\Omega\) be a \VB-groupoid morphism covering a Lie groupoid isomorphism.  If on each fibre of \(\Gamma\) as a vector bundle it is an isomorphism of vector spaces, then it is a \VB-groupoid isomorphism.
+	\end{proposition}
+	\begin{proof}
+		Let \(\Phi\colon\Gamma\to\Omega\) be a \VB-groupoid morphism as above. We remark that \(\Phi\colon\Gamma\to\Omega\) automatically defines an isomorphism of vector bundles, as it covers a diffeomorphism. Additionally, this implies that it is a diffeomorphism Lie groupoid morphism, and thus it is also an isomorphism of the top Lie groupoid structures.
+
+		We conclude that its inverse will define a \VB-groupoid morphism, where the associated maps are exactly the inverses of the associated maps.
+	\end{proof}
+\section{Constructions on \VB-groupoids}
+	As a \VB-groupoid contains the algebraic structures of both Lie groupoids and vector bundles, we can translate some of the ``algebraic'' constructions to this setting as well. In this case, we are mostly interested in the constructions coming from vector bundle theory, which are associated to connections, see Section~\ref{sec: connections}, namely, direct sums, pullbacks, kernels and images. While the objects are often the canonically induced ones by considering the underlying vector bundle structures and remarking that they are functorial, there is often still some checking to do to make sure that the multiplicative structure translates as well.
+	\begin{example}\label{ex vb direct sum}
+		Let us fix a Lie groupoid \(\grG\rr M\), and suppose that \(\h{\Gamma,V}\) and \(\h{\Omega,W}\) are \VB-groupoids over \(\grG\).  The \df{direct sum of \VB-groupoids over \(\grG\)}\index{VB-groupoid!Direct sum} of \(\Gamma\) and \(\Omega\) is defined by the following diagram of Lie groupoids and vector bundles:
+		\[\begin{tikzcd}[sep = huge]
+			\Gamma\oplus \Omega
+			\arrows{r}{\tilde{\grt}_\oplus}{\tilde{\grs}\oplus}
+			\arrow[d,"\tilde{q}"]
+			&V\oplus W
+			\arrow[d,"q"]
+			\\
+			\grG
+			\arrows{r}{\grs}{\grt}
+			&M
+		\end{tikzcd}\]
+		Here, we remark that \(\Gamma\oplus\Omega = \Gamma\fp{\tilde{q}_\Gamma}{\tilde{q}_\Omega}\Omega\) is a fibred product and thus we have a canonical map \(\tilde{q}\colon\Gamma\oplus\Omega\to\grG\). Similarly, \(V\oplus W\) obtains a canonical map to \(M\), which we denoted by \(q\). Moreover, as the source and target maps on \(\Gamma\) and \(\Omega\) are vector bundle morphisms over the source and target of \(\grG\), by functoriality we obtain maps defined on the direct sums of the vector bundles as well, which we denote by \(\grs_\oplus\) and \(\grt_\oplus\). In particular, the pairs \(\h{\grs_\oplus,\grs}\) and \(\h{\grt_\oplus,\grt}\) define vector bundle morphism. Moreover, we automatically know that \(\Gamma\oplus\Omega\rr V\oplus W\) defines a Lie groupoid as it is the fibred product over surjective submersions. We can conclude that this indeed defines a \VB-groupoid.
+
+		 Additionally, one readily verifies that this construction is functorial and thus pairs of \VB-groupoid morphisms define a \VB-groupoid morphism on their respective direct sums.
+
+		 Remark that this categorically defines a direct sum as the inclusion into each component, and the projections define \VB-groupoid morphisms.
+	\end{example}
+	\begin{example}\label{ex: pullback VB}
+		Let \(\h{\Gamma,V}\) be a \VB-groupoid over \(\grG\rr M\), and \(\phi\colon\grH\to\grG\) a Lie groupoid morphism, where \(\grH\) is a Lie groupoid over \(N\). As vector bundles, we can then define \(\phi^*\Gamma\to\grH\) and \(\phi_0^*V\to N\). Due to the functoriality of this assignment, we obtain induced structure maps on the top Lie groupoid. Moreover, this is indeed a Lie groupoid by Corollary~\ref{cor: fibred groupoid}, as we can rewrite it as
+		\[
+			\h{\phi^*\Gamma\rr\phi_0^*V}\cong \h{\Gamma\fp{\tilde{q}}{\phi}\grH \rr V\fp{q}{\phi_0}N}\cong \h{\Gamma\rr V}\fp{\tilde{q}}{\phi}\h{\grH\rr N}.
+		\]
+		We remark that \(\tilde{q}\) is a surjective submersion, such that its intersection with \(\phi\) is clean. We call the resulting \VB-groupoid the \df{pullback \VB-groupoid}\index{Pullback! of \VB-groupoids}.
+	\end{example}
+	\begin{example}\label{ex: VBkernel}
+		To determine the kernel of a \VB-groupoid morphism, we remark that the inverse images of Lie groupoids were only defined under the assumption of clean intersection. However, for vector bundles, we need the additional assumption of constant rank, which automatically implies clean intersection.
+
+		Let \(\Phi\colon\Gamma\to\Omega\) be a \VB-groupoid morphism, where \(\h{\Gamma, V}\) is a \VB-groupoid over \(\grG\rr M\) and \(\h{\Omega, W}\) over \(\grH\rr N\), such that both \(\Phi\) and \(\Phi_0\) have constant rank as a vector bundle morphism, then it will in particular have a clean intersection with the zero section of \(\Omega\). As the vector bundle kernel of \(\Phi\) is given by the following fibred product:
+		\[
+			\ker\Phi = \hv{\gamma\in\Gamma|\ \Phi\h{\gamma} = 0} \cong \Gamma\fp{\Phi}{\tilde{0}}\grH.
+		\]
+		We can remark that it fits into a Lie groupoid over \(\ker\Phi_0 \cong V\fp{\Phi_0}{0}N\) by Corollary~\ref{cor: fibred groupoid}, where one has to imagine these as a fibred product of Lie groupoids. Again, one can readily verify that that \(\h{\ker\Phi,\ker\Phi_0}\) defines a \VB-groupoid over \(\grG\rr M\). In particular, this is a \VB-subgroupoid of \(\Gamma\).
+
+		Remark that this construction will, in particular, hold if \(\Phi\) is fibrewise surjective, as this will imply that \(\phi_0\) is surjective as well, and they are both of constant rank.
+
+		A similar restriction needs to be placed on the map when we want to determine the image. However, in this case, we run into additional problems as the images of Lie groupoid morphisms may not be a Lie groupoid, see Example~\ref{ex: image}. In the case where \(\Phi\) is of constant rank, \(\Phi_0\) is injective and \(\phi\) is an embedding, we can quite easily check that \(\h{\im\Phi,\im\Phi_0}\) defines a \VB-groupoid over \(\im\phi\).
+	\end{example}
+	\begin{terminology}
+		In the above example, the \VB-groupoid morphism \(\Phi\) admits two kernels, namely as a Lie groupoid morphism and as a \VB-groupoid morphism. To differentiate between these two kernels, we will write \(\ker_{\LG}\Phi\) for the Lie groupoid kernel and reserve \(\ker\Phi\) for the full \VB-groupoid as defined in the above example.
+	\end{terminology}
+\section{Short exact sequences}
+	 Another indispensable element in describing connections was that of short exact sequences. As mentioned, in any general category with kernels and images, one can define a short exact sequence. However, as we saw in Example~\ref{ex: VBkernel}, not every \VB-groupoid morphism defines an image or a kernel. However, as we will restrict ourselves to sequences of \VB-groupoids covering a single groupoid, \(\grG\rr M\), we can drop some assumptions.
+	 \begin{definition}
+	 	A \df{short exact sequence} of \VB-groupoids \(\Gamma,\Gamma'\) and \(\Gamma''\) consists of a pair of \VB-groupoid morphisms \(\iota\colon\Gamma\to\Gamma'\) and \(\pi\colon\Gamma'\to\Gamma''\) covering the identity map on the base groupoid, denoted as
+	 	\[\begin{tikzcd}
+	 		0 & {\Gamma} & {\Gamma'} & {\Gamma''} & 0
+	 		\arrow[from=1-1, to=1-2]
+	 		\arrow["\iota", from=1-2, to=1-3]
+	 		\arrow["\pi", from=1-3, to=1-4]
+	 		\arrow[from=1-4, to=1-5]
+	 	\end{tikzcd}\]
+	 	such that they fit into the following short exact sequence of vector spaces at any \(g\in \grG\):
+	 	\[\begin{tikzcd}
+	 		0 & {\Gamma_g} & {\Gamma'_g} & {\Gamma''_g} & 0
+	 		\arrow[from=1-1, to=1-2]
+	 		\arrow["\iota_g", from=1-2, to=1-3]
+	 		\arrow["\pi_g", from=1-3, to=1-4]
+	 		\arrow[from=1-4, to=1-5]
+	 	\end{tikzcd}\]
+	\end{definition}
+	In the definition of a short exact sequence, we only assume that the sequence is short exact on the top vector bundle, as this will automatically imply that the sequence on the base vector bundles is also short exact.
+	\begin{lemma}
+		Let \(\h{\Gamma,E},\h{\Gamma',V'}\) and \(\h{\Gamma'',V''}\) be \VB-groupoids over \(\grG\) which fit into the following short exact sequence of \VB-groupoids:
+		\[\begin{tikzcd}
+			0 & {\Gamma} & {\Gamma'} & {\Gamma''} & 0
+			\arrow[from=1-1, to=1-2]
+			\arrow["\iota", from=1-2, to=1-3]
+			\arrow["\pi", from=1-3, to=1-4]
+			\arrow[from=1-4, to=1-5]
+		\end{tikzcd}\]
+		Then we also have a short exact sequence of vector bundles over \(M\) of the form:
+		\[\begin{tikzcd}
+			0 & {V} & {V'} & {V''} & 0
+			\arrow[from=1-1, to=1-2]
+			\arrow["\iota_0", from=1-2, to=1-3]
+			\arrow["\pi_0", from=1-3, to=1-4]
+			\arrow[from=1-4, to=1-5]
+		\end{tikzcd}\]
+	\end{lemma}
+	\begin{proof}
+		Suppose that \(\h{\Gamma,V},\h{\Gamma',V'}\) and \(\h{\Gamma'',V''}\), and \(\iota\) and \(\pi\) are as in the Lemma. Remark that we have the following commutative diagram:
+		\[\begin{tikzcd}[sep = huge]
+			0 & {\Gamma_{1_x}} & {\Gamma'_{1_x}} & {\Gamma''_{1_x}} & 0 \\
+			0 & {V_x} & {V'_x} & {V''_x} & 0
+			\arrow[from=1-1, to=1-2]
+			\arrow[from=1-2, to=1-3, "\iota"]
+			\arrow["{\tilde{\grs}}", from=1-2, to=2-2]
+			\arrow[from=1-3, to=1-4, "\pi"]
+			\arrow["{\tilde{\grs}}", from=1-3, to=2-3]
+			\arrow[from=1-4, to=1-5]
+			\arrow["{\tilde{\grs}}", from=1-4, to=2-4]
+			\arrow[from=2-1, to=2-2]
+			\arrow["{\tilde{\gru}}", from=2-2, to=1-2, bend left = 10pt, shift left=2]
+			\arrow[from=2-2, to=2-3, "\iota_0"]
+			\arrow["{\tilde{\gru}}", from=2-3, to=1-3, bend left = 10pt, shift left=2]
+			\arrow[from=2-3, to=2-4, "\pi_0"]
+			\arrow["{\tilde{\gru}}", from=2-4, to=1-4, bend left = 10pt, shift left=2]
+			\arrow[from=2-4, to=2-5]
+		\end{tikzcd}\]
+		We can then, by chasing this diagram and in particular, using the fact that \(\tilde{\grs}\circ\tilde{\gru} = \id\), show that the exactness of the top row implies the exactness of the bottom.
+
+		For the exactness at \(V\), take an arbitrary \(v\in \ker \iota_0|_m\). As \(\h{\iota,\iota_0}\) is a Lie groupoid map we find that
+		\[
+			\iota\h{\tilde{\gru}_\Gamma\h{v}} = \tilde{\gru}_\Gamma'\h{\iota_0\h{v}} = \tilde{\gru}_\Gamma'\h{0_m} = \tilde{0}_{\gru\h{m}},
+		\]
+		where the last step follows that \(\h{\tilde{\gru}_\Gamma',\gru}\) is a vector bundle morphism. This implies that \(\tilde{\gru}_\Gamma\h{v}\in\ker_{\Vect}\iota\) and thus it vanishes, i.e. \(\tilde{\gru}_\Gamma\h{v} = \tilde{0}_{\gru\h{m}}\). However, notice that \(\tilde{\gru}_\Gamma\h{0_m} = \tilde{0}_{\gru\h{m}}\) as well, and as \(\tilde{\gru}_\Gamma\) is injective, \(0_m = v\).
+
+		Next, we remark that the following holds as the base maps of Lie groupoids are determined by their total maps:
+		\[
+		\pi_0\circ\iota_0 = \tilde{\grs}_{\Gamma''}\circ\pi\circ\tilde{\gru}_\Gamma'\circ\tilde{\grs}_\Gamma'\circ\iota\circ\tilde{\gru}_\Gamma = \tilde{\grs}_{\Gamma''}\circ\pi\circ\iota\circ\tilde{\gru}_\Gamma = \tilde{\grs}_{\Gamma''}\circ\ 0\tilde{\gru}_\Gamma = 0,
+		\]
+		where the last step follows as \(\h{\tilde{\grs},\grs}\) is a vector bundle morphism. This immediately implies that \(\im\iota_0\subset\ker\pi_0\). Now, if \(f\in\ker\pi_0|_m\), then remark that, using again the fact that our structure maps are vector bundle morphisms,
+		\[
+		\tilde{0}_{\gru\h{m}} = \tilde{\gru}_{\Gamma}\h{0_m} = \tilde{\gru}_\Gamma\h{\pi_0\h{f}} = \pi\h{\gru\h{f}} = \pi\h{\tilde{\gru}_\Gamma'\h{f}}.
+		\]
+		This implies that \(\tilde{\gru}_\Gamma'\h{f}\in \ker_{\Vect}\pi = \im\iota\). Take \(\gamma\in \Gamma\) be such that \(\iota\h{\gamma} = \tilde{\gru}_\Gamma'\h{f}\). Taking the source of \(\gamma\) then gives us our desired element.
+		\[
+		\iota_0\h{\tilde{\grs}_\Gamma\h{\gamma}} = \tilde{\grs}_\Gamma'\h{\iota\h{\gamma}} = \tilde{\grs}_\Gamma'\h{\tilde{\gru}_\Gamma'\h{f}} = f.
+		\]
+		Therefore, we also find that \(\ker\pi_0\subset\im\iota_0\) and hence the sequence is exact at \(V'\).
+
+		For the last exactness, we remark that if \(v\in V''\), then \(\tilde{\gru}_{\Gamma''}\h{v}\in\im\pi\), and thus there exists some \(\omega\in\Gamma'\) with \(\pi\h{\omega} = \tilde{\gru}_{\Gamma''}\h{v}\). It then follows that
+		\[
+		\pi_0\h{\tilde{\grs}_\Gamma'\h{\omega}} = \tilde{\grs}_{\Gamma''}\h{\pi\h{\omega}} = \tilde{\grs}_{\Gamma''}\h{\tilde{\gru}_{\Gamma''}\h{v}} = v.
+		\]
+		Therefore \(\pi_0\) is surjective at each fibre and the base sequence is therefore short exact.
+	\end{proof}
+	Recall that for short exact sequences of vector bundles, a splitting always exists due to the existence of fibrewise inner products, and we obtain multiple equivalent definitions of splittings, see Lemma~\ref{lem: splitting of vector bundles}. For a short exact sequence of \(\VB\)-groupoids, a splitting might not exist; however, we can show that the different ways of describing them still coincide for \VB-groupoids.
+	\begin{lemma}\label{lem: splitting lemma vb-groupoid}
+		Let \(\Gamma,\Gamma'\) and \(\Gamma''\), fit into a short exact sequence of \VB-groupoids over \(\grG\rr M\).
+		\[\begin{tikzcd}
+			0 & {\Gamma} & {\Gamma'} & {\Gamma''} & 0
+			\arrow[from=1-1, to=1-2]
+			\arrow["i", from=1-2, to=1-3]
+			\arrow["\pi", from=1-3, to=1-4]
+			\arrow[from=1-4, to=1-5]
+		\end{tikzcd}\]
+		Then, there is a \(1\)-\(1\) correspondence between then following objects:
+		\begin{itemize}
+			\item \VB-groupoid morphisms \(h\colon \Gamma''\to\Gamma'\) such that \(\pi\circ h = \id\).
+			\item \VB-groupoid morphisms \(p\colon\Gamma'\to\Gamma\) such that \(p\circ\iota = \id\).
+			\item Isomorphisms of \VB-groupoids \(\phi\colon \Gamma'\to\Gamma\oplus\Gamma''\) which is a splitting.
+			\item Complements to \(\iota\h{\Gamma}\) in \(\Gamma'\) as which are \VB-subgroupoids.
+		\end{itemize}
+		These correspondences are determined uniquely by \(h\circ\pi + i\circ\ \theta = \id_\Omega\) and \(C = \ker\theta = \im h\). Moreover, if \(C\) is a complement of \(\Gamma\) in \(\Omega\), then \(\pi|_C\colon C\to \Gamma'\) is an isomorphism of \VB-groupoids.
+	\end{lemma}
+	\begin{proof}[Proof of Lemma~\ref{lem: splitting lemma vb-groupoid}]
+		Let \(\Gamma, \Gamma'\) and \(\Gamma''\), be \VB-groupoids over \(G\rr M\) with two \VB-groupoid morphisms \(\iota\colon \Gamma\to \Gamma'\) and \(\pi\colon \Gamma'\to \Gamma''\), covering the identity, such that they fit into a short exact sequence of \VB-groupoids over \(G\). We will prove that right splittings are \(1\)-\(1\) with complements, and that left splittings are \(1\)-\(1\) with complements. The properties are then a direct consequence of Lemma~\ref{lem: splitting of vector bundles}. In this proof, we will often implicitly use Proposition~\ref{prp: vb-groid isomorphism automatic}
+
+		\textbf{Complements \(\iff\) splittings:} Clearly, a complement defines a splitting and vice versa by chasing some diagrams.
+
+		\textbf{Right splitting \(\iff\) splitting:}
+		Suppose \(h\colon \Gamma''\to\Gamma'\) is a right splitting of the short exact sequence, such that \(\pi\circ h = \Id_{\Gamma''}\). We will show that \(\Gamma''\oplus\Gamma\) defines a \VB-groupoid which is isomorphic to \(\Gamma'\) via the isomorphism \(\phi\colon \Gamma''\oplus\Gamma\to\Gamma'\colon \h{u,v}\mapsto h\h{u} + i\h{v}\). As \(h\) and \(i\) are \VB-groupoid maps, and \(+\) is a Lie groupoid map, this will define a \VB-groupoid map as well. Lastly, we need to show that this is injective, as surjectivity will then follow by counting dimensions. If we suppose \(\phi\h{u,v} = 0\), then it follows that
+		\[
+		0 = \pi\h{0} = \pi\h{\phi\h{u,v}} = \phi\h{h\h{u}} + \pi\h{i\h{v}} = u.
+		\]
+		We can conclude that \(0 = \pi\h{u} + i\h{v} = i\h{v}\). As \(i\) is injective, \(v = 0\) as well and thus \(\phi\) is injective and an isomorphism.
+
+		Conversely, suppose that \(\phi\colon\Gamma'\to\Gamma\oplus\Gamma''\) is a splitting of the short exact sequence. We can then define a right inverse to \(\pi\) as \(h\colon\Gamma''\colon\Gamma'\colon u\mapsto \phi^{-1}\h{\incl_2\h{u}}\). By the assumption that \(\phi\) is a splitting it follows that
+		\[
+			\pi\h{h\h{u}} = \pr_2\circ\phi\circ \phi^{-1} \circ \incl_2\h{u} = \pr_2\circ\incl_2\h{u} = u.
+		\]
+		Therefore, it indeed defines a right splitting.
+
+
+		\textbf{Left splitting \(\iff\) complement:}
+		Suppose that \(\theta\colon \Gamma\to\Gamma'\) is a left splitting, such that \(\theta\circ i = \id_\Gamma\). We can then define \(C = \ker_{\VB}\theta\), which is well-defined as \(\theta\) is fibrewise surjective. Then consider the \VB-groupoid morphism \(\psi\colon C\oplus\Gamma\to\Gamma'\colon \h{u,v}\mapsto u + i\h{v}\), as before this is a \VB-groupoid morphism as \(i\) is and \(+\) is a Lie groupoid morphism. So see that this is an isomorphism, we again only need to check that it is injective. Suppose \(\psi\h{u,v} = 0\), then
+		\[
+		0 = \theta\h{\phi\h{u,v}} = \theta\h{u + i\h{v}} = \theta\circ i\h{v} = v.
+		\]
+		It follows that \(0 = \phi\h{u,v} = u\) and thus \(\phi\) is indeed injective.
+
+		Conversely, given a complement \(C\) of \(\Gamma\) in \(\Gamma'\), then the projection onto the first component defines a left splitting.
+
+
+	\end{proof}
+\section{Multiplicative differential forms}
+	As a last application of \VB-groupoid, we will define multiplicative differential forms, and in particular with values in \VB-groupoids. To obtain a multiplicative structure on forms, we first discuss the simplest case: \(0\)-forms.
+
+	Given a map \(f\colon\grG\to\bbR\), there is a canonical way of requiring multiplicativity:
+	\[
+		f\h{gh} = f\h{g} + f\h{h},\quad \mbox{for all } \h{g,h}\in\grG^{\h{2}}.
+	\]
+	Hence, a \(0\)-form is simply multiplicative if it defines a Lie groupoid map to \(\bbR\). We can then rewrite the set of multiplicative functions as the kernel of the following map:
+	\[
+		\partial\colon C^\infty\h{\grG}\to C^\infty\h{\grG^{\h{2}}}\colon f\mapsto \h{\grm^* - \pr_1^* - \pr_2^*}f.
+	\]
+	With some effort, we can recognise it is obtained as the pullback along the differential of the cochain complex associated to the nerve of \(\grG\), see \cite{Cardenas2021}. In particular, this then has an easy generalisation to higher-degree differential forms
+	\begin{definition}
+		For a Lie groupoid \(\grG\) we call a differential form \(\tau\in \Omega\h{\grG}\) \df{multiplicative}\index{Multiplicative form} if
+		\[
+		\grm^*\tau = \pr_1^*\tau + \pr_2^*\tau
+		\]
+		where \(\grm,\pr_1,\pr_2\colon \grG^{\h{2}}\to\grG\). We denote the multiplicative forms on \(\grG\) by \(\Omega_{\mult}\h{\grG}\).
+	\end{definition}
+	Here, we remark that this is, in particular, a single level in the Bott-Shulmann-Stasheff double complex, as laid out in \cite{Bott1976}. However, there is an alternative description of multiplicative forms by realising them as maps of vector bundles.
+	For working with multiplicative forms, it is useful to realise them as morphisms.
+	\begin{proposition}\label{prp: multiplicative forms }
+		A \(k\)-form \(\tau\in \Omega^k\h{\grG}\) on a Lie groupoid \(\grG\) is multiplicative if and only if the map
+		\[\begin{tikzcd}[sep = huge]
+			\bigoplus^kT\grG\arrow[r,"\overline{\tau}"]\arrows{d}{T\grs_\oplus}{T\grt_{\oplus}}&\h{\mathbb{R},+}\arrow{d}{}{}\\
+			\bigoplus^kT\grG_0\arrow[r]&\hv{*}
+		\end{tikzcd}
+		\overline{\tau}\colon v = \h{v_1,\ldots,v_k}\mapsto \tau\h{v_1,\ldots,v_k}
+		\]
+		is a Lie groupoid morphism.
+	\end{proposition}
+	\begin{proof}
+		Let \(\grG\) be a Lie groupoid and \(\tau\in\Omega^k\h{\grG}\). By Example~\ref{ex vb direct sum}, the \(k\)-fold direct sum of \(T\grG\) is a \VB-groupoid and thus in particular a Lie groupoid. Remark that for any \(\h{u,v}\in \hk{\bigoplus^kT\grG}^{\h{2}}\), we have
+		\begin{align*}
+			\partial\tau\h{u,v}
+			&= \h{\grm^* - \pr_1^* - \pr_2^*}\tau\h{u,v},\\
+			&= \grm^*\tau\h{u,v} - \pr_1^*\tau\h{u,v} - \pr_2^*\tau\h{u,v},\\
+			&= \overline{\tau}\h{T\grm\h{u,v}} - \overline{\tau}\h{T\pr_1\h{u,v}} - \overline{\tau}\h{T\pr_2\h{u,v}},\\
+			&= \overline{\tau}\h{T\grm\h{u,v}} - \overline{\tau}\h{u} - \overline{\tau}\h{v}
+		\end{align*}
+		This implies that \(\partial\tau = 0\) if and only if \(\overline{\tau}\h{T\grm\h{u,v}} = \overline{\tau}\h{u} + \overline{\tau}\h{v}\), i.e.\ \(\overline{\tau}\) is a Lie groupoid morphism.
+	\end{proof}
+	As this relates the multiplicativity of a \(k\)-form to its induced map on the underlying \VB-groupoids, we can more easily translate this notion to general settings as well.
+
+	The first of these is an extension of multiplicative forms to \VB-groupoids. Recall that one can define a \(k\)-form on a vector bundle \(V\) as a section of \(\bigwedge^kV^*\), but that these are in \(1\)-\(1\) correspondence with alternating fibrewise multilinear maps \(\bigoplus^kV\to\bbR\). This is exactly the setting in which Proposition~\ref{prp: multiplicative forms } defines multiplicativity.
+	\begin{definition}
+		Let \(\Gamma\rr V\) be a \VB-groupoid, a \(k\)-form \(\tau\in \Omega^k\h{\Gamma}\) is \df{multiplicative}\index{Multiplicative form! on a \VB-groupoid} if the map
+		\[\begin{tikzcd}[sep = huge]
+			\bigoplus^k\Gamma\arrow[r,"\overline{\tau}"]\arrows{d}{T\grs_\oplus}{T\grt_{\oplus}}&\h{\mathbb{R},+}\arrow{d}{}{}\\
+			\bigoplus^kV\arrow[r]&\hv{*}
+		\end{tikzcd}
+		\overline{\tau}\colon v = \h{v_1,\ldots,v_k}\mapsto \tau\h{v_1,\ldots,v_k}
+		\]
+		is a Lie groupoid morphism. We denote the multiplicative forms on \(\Gamma\) by \(\Omega_{\mult}\h{\Gamma}\).
+	\end{definition}
+	Alternatively, they can we defined as the \(k\)-forms on \(\Gamma\) which lie in the kernel of the map
+	\[
+		\partial\colon \Omega\h{\Gamma}\to\Omega\h{\Gamma^{\h{2}}}\colon \tau\mapsto \tau\circ\h{\tilde{\grm} - \pr_1 - \pr_2}.
+	\]
+	This definition is again more similar to our original definition of multiplicative forms, but it makes it harder to work with.
+
+	The second generalisation we can make is not on the left-hand side of the diagram, but on the right-hand side. Recall that a manifold can admit forms with values in a vector bundle \(V\to M\) by considering sections of \(\bigwedge^kT^*M\otimes V\), or equivalently, we are interested in alternating fibrewise multilinear maps \(\bigotimes^kTM\to V\). Again, using Proposition~\ref{prp: multiplicative forms }, this easily translates to the multiplicative setting.
+	\begin{definition}
+		Let \(\grG\) be a Lie groupoid and \(\Gamma\rr V\) a \VB-groupoid over \(\grG\). A \(k\)-form \(\tau\) on \(\grG\) with values in \(\Gamma\) is called \df{multiplicative} if the map \(\overline{\tau}\colon\bigoplus^kT\grG\to \Gamma\) defined as
+		\[\begin{tikzcd}[sep = huge]
+			\bigoplus^kT\grG\arrow[r,"\overline{\tau}"]\arrows{d}{T\grs_\oplus}{T\grt_{\oplus}}&\Gamma\arrows{d}{}{}\\
+			\bigoplus^kT\grG_0\arrow[r]&V
+		\end{tikzcd}
+		\hspace{.5cm}
+		\overline{\tau}\colon v = \h{v_1,\ldots,v_k}\mapsto \tau\h{v_1,\ldots,v_k}
+		\]
+		is a Lie groupoid morphism. We denote the multiplicative forms with values in \(\Gamma\) by \(\Omega_{\mult}\h{\grG;\Gamma}\).
+	\end{definition}
+\end{document}

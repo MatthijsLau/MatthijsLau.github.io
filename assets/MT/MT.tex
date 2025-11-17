@@ -1,0 +1,322 @@
+\documentclass[11pt, openany]{book}
+\usepackage{csquotes}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin = 1in]{geometry}
+\usepackage[]{setspace}
+\setstretch{1.15}
+
+\usepackage{lipsum}
+
+\usepackage[OT1]{fontenc}
+\usepackage{ebgaramond}
+%\usepackage{times}
+\usepackage[font={small,it}]{caption}
+
+\usepackage{graphicx}
+\graphicspath{{./img/}}
+\usepackage{float}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[alphabetic]{amsrefs}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage[]{stmaryrd}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{cancel}
+
+\usepackage{ifthen}
+\newboolean{inlever}
+\setboolean{inlever}{true}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{tikz-cd}
+\tikzcdset{arrow style=math font}
+\usepackage{pgfplots}
+
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{lipsum}
+
+\setlist[itemize,1]{label = {\small$\diamond$}}
+\setlist[enumerate,1]{label = \roman*),ref = \roman*, font = \textup}
+\setlist[enumerate,2]{label = \roman*),ref = \roman*, font = \textup}
+
+\usepackage{standalone}
+\usepackage{import}
+
+\newboolean{background}
+\setboolean{background}{false}
+
+\newcommand{\changed}[1]{{\color{red}#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    TITELPAGINA WOORDJES    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             ||               %
+%             ||               %
+%             \/               %
+
+\def\thesistitle{Fibred Lie groupoids and multiplicative connections}
+\def\thesisauthorfirst{Matthijs}
+\def\thesisauthorsecond{Lau}
+\def\thesissecondreaderfirst{prof. dr. Walter}
+\def\thesissecondreadersecond{van Suijlekom}
+\def\thesissupervisorfirst{prof. dr. Ioan}
+\def\thesissupervisorsecond{M\u{a}rcu\c{t}}
+\def\thesisdate{\today}
+
+%             /\               %
+%             ||               %
+%             ||               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    TITELPAGINA WOORDJES    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Fancy header setup
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Clear head and foot
+\fancyhf{}
+
+% Define header for even pages
+\fancyhead[LE]{\thepage} % Page number on the left
+\fancyhead[RE]{} % Chapter name on the right
+
+% Define header for odd pages
+\fancyhead[LO]{\nouppercase{\textit{\rightmark}}} % Section name on the left
+\fancyhead[RO]{\thepage} % Page number on the right
+
+% Remove the header rule
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Background colour setup
+\usepackage[dvipsnames]{xcolor}
+\ifthenelse{\boolean{background}}{
+	\definecolor{background}{HTML}{edd1b0}
+	\pagecolor{background}
+	\tikzcdset{background color=background}
+}{
+	\definecolor{background}{HTML}{ffffff}
+}
+
+% PDF metadata
+\title{\thesistitle}
+\author{\thesisauthorfirst\space\thesisauthorsecond}
+\date{\thesisdate}
+
+% Theorem styles
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\numberwithin{equation}{section}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{question}{Question}
+\newtheorem{examplex}[theorem]{Example}
+\newenvironment{example}[1]{\begin{examplex}#1}{\null\hfill$//$\end{examplex}}
+
+
+\theoremstyle{remark}
+\newtheorem*{remarkx}{Remark}
+\newenvironment{remark}[1]{\begin{remarkx}#1}{\null\hfill$//$\end{remarkx}}
+\newtheorem*{notation}{Notation}
+%\newenvironment{notation}[1]{\begin{notationx}#1}{\null\hfill$//$\end{notationx}}
+\newtheorem*{terminology}{Terminology}
+%\newenvironment{terminology}[1]{\begin{terminologyx}#1}{\null\hfill$//$\end{terminologyx}}
+\newtheorem*{assumption}{Assumption}
+%\newenvironment{assumption}[1]{\begin{assumptionx}#1}{\null\hfill$//$\end{assumptionx}}
+
+% Theorem-like environments with tcolorbox
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\definecolor{thmlike}{HTML}{787276}
+\definecolor{deflike}{HTML}{98C865}
+\definecolor{rmklike}{HTML}{ffa365}
+\tcolorboxenvironment{theorem}      {breakable, colframe=thmlike!30!background, colback=thmlike!10!background, arc = .25pt}
+\tcolorboxenvironment{theorem*}      {breakable, colframe=thmlike!30!background, colback=thmlike!10!background, arc = .25pt}
+\tcolorboxenvironment{proposition}  {breakable, colframe=thmlike!30!background, colback=thmlike!10!background, arc = .25pt}
+\tcolorboxenvironment{proposition*}  {breakable, colframe=thmlike!30!background, colback=thmlike!10!background, arc = .25pt}
+\tcolorboxenvironment{lemma}        {breakable, colframe=thmlike!40!background, colback=thmlike!3!background, arc = .25pt}
+\tcolorboxenvironment{corollary}    {breakable, colframe=thmlike!40!background, colback=thmlike!3!background, arc = .25pt}
+\tcolorboxenvironment{definition}   {breakable, colframe=deflike!30!background, colback=deflike!10!background, arc = .25pt}
+\tcolorboxenvironment{notation}     {breakable, colframe=rmklike!30!background, colback=rmklike!10!background, arc = .25pt}
+%\tcolorboxenvironment{remark}       {breakable, colframe=rmklike, colback=rmklike!10!background, arc = .25pt}
+\tcolorboxenvironment{terminology}  {breakable, colframe=rmklike!30!background, colback=rmklike!10!background, arc = .25pt}
+\tcolorboxenvironment{assumption}   {breakable, colframe=rmklike!30!background, colback=rmklike!10!background, arc = .25pt}
+
+% Math operators
+% Brackets
+\newcommand{\h}[1]{\ensuremath{(#1)}}
+%\newcommand{\h}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\hk}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\ha}[1]{\ensuremath{\left[#1\right]}}
+\newcommand{\hv}[1]{\ensuremath{\left\{#1\right\}}}
+\newcommand{\hh}[1]{\ensuremath{\left\langle#1\right\rangle}}
+
+% Fibred products
+\newcommand{\wtimes}{\widetilde{\times}}
+\newcommand{\fp}[2]{\prescript{}{#1}\times^{}_{#2}}
+\newcommand{\hfp}[2]{\prescript{}{#1}\wtimes^{}_{#2}}
+\newcommand{\edv}[2]{\eval{\dv{#1}}_{#1 = #2}}
+
+% Arrows
+\newcommand{\arrows}[3]{\arrow[#1,shift right,swap, "#2"]\arrow[#1, shift left, "#3"]}
+\newcommand{\cev}[1]{\overleftarrow{#1}}
+\newcommand{\osto}[1]{\overset{#1}{\to}}
+\newcommand{\pito}{\osto{\pi}}
+\newcommand{\phito}{\osto{\phi}}
+\newcommand{\gto}[1][g]{\overset{#1}{\longleftarrow}}
+\newcommand{\wto}{\overset{\sim}{\longrightarrow}}
+\newcommand{\rr}{\rightrightarrows}
+\newcommand{\acts}[1][]{\ {\rotatebox[origin=c]{-90}{$\circlearrowright$}}_{#1}\ }
+\newcommand{\sact}[1][]{\ {}_{#1}{\rotatebox[origin=c]{-270}{$\circlearrowleft$}}\ }
+\newcommand{\garrow}[1][g]{\overset{#1}{\longleftarrow}}
+
+\newcommand{\fto}{\overset{f}{\longrightarrow}}
+\newcommand{\Phito}{\osto{\Phi}}
+\newcommand{\Phifto}{\osto{\h{\Phi,f}}}
+
+% Categories
+\newcommand{\catnm}[1]{\textbf{\text{#1}}}
+\newcommand{\Lgrpd}{\catnm{LieGrpd}}
+
+% Namings
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\LG}{LG}
+\DeclareMathOperator{\Gauge}{Gauge}
+
+\newcommand{\VB}{\ensuremath{\mathcal{VB}}}
+
+\DeclareMathOperator{\PBB}{Pbb}
+\DeclareMathOperator{\lft}{lft}
+\DeclareMathOperator{\rgt}{rgt}
+\newcommand{\PBBr}{\PBB_{\rgt}}
+\newcommand{\PBBl}{\PBB_{\lft}}
+
+\DeclareMathOperator{\restr}{restr}
+
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Symp}{Symp}
+\DeclareMathOperator{\connection}{conn}
+\newcommand{\conn}[2][\Ver]{\Omega_{\connection}\h{#2;#1}}
+\DeclareMathOperator{\loc}{loc}
+\DeclareMathOperator{\fibrecompatible}{comp}
+\DeclareMathOperator{\fnd}{fnd}
+\DeclareMathOperator{\fc}{fc}
+\DeclareMathOperator{\mult}{mult}
+\newcommand{\Ver}[1][\pi]{\operatorname{Ver}}
+\DeclareMathOperator{\Hor}{E}
+\DeclareMathOperator{\Pair}{Pair}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Lie}{Lie}
+
+\newcommand{\sympfrk}{\mathfrak{symp}}
+
+\DeclareMathOperator{\spn}{span}
+
+\newcommand{\catname}[1]{\text{\textbf{#1}}}
+\newcommand{\grpd}{\catname{Grpd}}
+\newcommand{\lgrpd}{\catname{LieGrpd}}
+
+% Maps
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\id}{id}
+\newcommand{\Id}{\id}
+\DeclareMathOperator{\incl}{incl}
+\DeclareMathOperator{\const}{const}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\evaluate}{ev}
+
+% Define math alphabets
+\newcounter{char}
+\setcounter{char}{1}
+\loop\ifnum\value{char}<27
+\expandafter\edef\csname gr\alph{char}\endcsname{\noexpand\boldsymbol{\alph{char}}}  % grpd
+\expandafter\edef\csname cal\Alph{char}\endcsname{\noexpand\mathcal{\Alph{char}}}  % mathcal
+\expandafter\edef\csname bb\Alph{char}\endcsname{\noexpand\mathbb{\Alph{char}}}   % mathbb
+\expandafter\edef\csname frk\Alph{char}\endcsname{\noexpand\mathfrak{\Alph{char}}} % mathfrak
+\expandafter\edef\csname sf\Alph{char}\endcsname{\noexpand\mathsf{\Alph{char}}}   % mathsf
+\expandafter\edef\csname scr\Alph{char}\endcsname{\noexpand\mathscr{\Alph{char}}}  % mathscr
+\expandafter\edef\csname gr\Alph{char}\endcsname{\noexpand\mathcal{\Alph{char}}}  % gr
+\addtocounter{char}{1}
+\repeat
+
+\def\mydeff#1{\expandafter\def\csname frk#1\endcsname{\mathfrak{#1}}}
+\def\mydefallf#1{\ifx#1\mydefallf\else\mydeff#1\expandafter\mydefallf\fi}
+\mydefallf abcdefghijklmnopqrstuvwxyz\mydefallf
+
+
+% Referencing
+\newcommand{\df}[1]{\textit{#1}}
+
+\usepackage[hidelinks]{hyperref}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\renewcommand{\tilde}{\widetilde}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ikbenhier}{\todo[inline,color = red]{Hier ben ik met de feedback (grotendeels) verwerken}}
+
+\begin{document}
+	\frontmatter
+
+	\begin{spacing}{1}
+	\begin{titlepage}
+		\thispagestyle{empty}
+		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+		\centering
+		\textsc{\Large Radboud University Nijmegen}\\[.7cm]
+		\includegraphics[width=25mm]{in_dei_nomine_feliciter-eps-converted-to.pdf}\\[.5cm]
+		\textsc{Faculty of Science}\\[0.5cm]
+		\HRule \\[0.4cm]
+		{ \huge \bfseries \thesistitle}\\[0.1cm]
+		%    \textsc{\thesissubtitle}\\
+		\HRule \\[.5cm]
+		\textsc{\large Masterthesis Mathematics}\\[.5cm]
+		\begin{minipage}{0.4\textwidth}
+			\begin{flushleft} \large
+				\emph{Author:}\\
+				\thesisauthorfirst\space {\thesisauthorsecond}
+			\end{flushleft}
+		\end{minipage}
+		~
+		\begin{minipage}{0.4\textwidth}
+			\begin{flushright} \large
+				\emph{Supervisor:} \\
+				\thesissupervisorfirst\space {\thesissupervisorsecond} \\[1em]
+				\emph{First reader:} \\
+				\thesissecondreaderfirst\space {\thesissecondreadersecond}
+			\end{flushright}
+		\end{minipage}\\[4cm]
+		\vfill
+		{\large \thesisdate}\\
+	\end{titlepage}
+	\leavevmode\thispagestyle{empty}
+	\import{Chapters/}{Acknowledgements}
+	\tableofcontents
+	\end{spacing}
+	\import{Chapters/}{Introduction}
+	\mainmatter
+	\fancyhead[RE]{\nouppercase{\textit{\leftmark}}} % Chapter name on the right
+	\import{Chapters/}{FibreBundles}
+	\import{Chapters/}{LieGroupoids}
+	\import{Chapters/}{VBGroupoids}
+	\import{Chapters/}{FibredLieGroupoids}
+	\import{Chapters/}{SymplecticApplications}
+	\begin{spacing}{1}
+	\bibliography{Bibliography}
+	\end{spacing}
+\end{document}

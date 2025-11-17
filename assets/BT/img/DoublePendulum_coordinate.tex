@@ -1,0 +1,38 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\def\realphione{25}
+\def\realphitwo{50}
+\def\lengthone{5}
+\def\lengthtwo{\lengthone}
+\def\toplength{6}
+\def\arcradius{1}
+\def\dotphione{.5}
+\def\dotphitwo{.3}
+
+\def\phione{\realphione - 90}
+\def\phitwo{\realphitwo - 90}
+\begin{document}
+\begin{tikzpicture}
+	\coordinate (origin) at (0,0);
+	\draw (origin) -- ++ (\phione:\lengthone) coordinate (one) node[pos = .5, anchor = east] {\(L_1\)} -- ++ (\phitwo:\lengthtwo) coordinate (two) node[pos = .5, anchor = east] {\(L_2\)};
+	\draw (origin) -- ++ ({-\toplength/2},0) -- ++ (\toplength,0);
+	
+	\draw (origin) -- ++ (0,{-1.5*\arcradius});
+	\draw (one) -- ++ (0,{-1.5*\arcradius});
+	
+	\draw[-stealth] ($(origin) + (-90:\arcradius)$) arc (-90:\phione:\arcradius) node[pos = .5, below] {\(\phi_1\)};
+	\draw[-stealth] ($(one) + (-90:\arcradius)$) arc (-90:\phitwo:\arcradius) node[pos = .5,below] {\(\phi_2\)};
+	
+	\draw[-stealth] (one) -- ++ (\realphione:\lengthone*\dotphione) node[anchor = south west] {\(v_1 = L_1\dot{\phi}_1\)};
+	\draw[black!0] (two)  -- ++ (\realphione:\lengthone*\dotphione) -- ++ (\realphitwo:\lengthtwo*\dotphitwo) coordinate (velocity) ;
+	\draw[dotted] (two) -- ++ (\realphione:\lengthone*\dotphione) -- ++ (\realphitwo:\lengthtwo*\dotphitwo);
+	\draw[dotted] (two) -- ++ (\realphitwo:\lengthtwo*\dotphitwo) -- ++ (\realphione:\lengthone*\dotphione);
+	\draw[-stealth, dotted] (two)  -- ++ (\realphione:\lengthone*\dotphione) node[anchor = north west] {\(L_1\dot{\phi}_1\)};
+	\draw[-stealth, dotted] (two) -- ++ (\realphitwo:\lengthtwo*\dotphitwo) node[anchor = south] {\(L_2\dot{\phi}_2\)};
+	\draw[-stealth] (two) -- (velocity) node[anchor = south west] {\(v_2\)};
+	
+	\node[circle, draw=black, fill=white] at (one) {\(m_1\)};
+	\node[circle, draw=black, fill=white] at (two) {\(m_2\)};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,126 @@
+\documentclass[class = article, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}
+\section{Hamiltonian Formalism}\label{sec: hamiltonian}
+	Up until now, we have developed methods to solve an \(n\)-body problem using at most \(3n\) differential equations, either Newton's second law or the Euler-Lagrange equations. In the Lagrangian formalism, we could lower the dimensionality of the problem by choosing generalised coordinates, which use the symmetries of our problem. However, both Newtonian and Lagrangian formalism end up giving us second-order differential equations, which are not very insightful. Hence, we would like to reduce the order of our system naturally. We will show that we can do this by introducing the general momenta of a Lagrangian system as the new coordinates, which results in the Hamiltonian through the Legendre transform. Before we go this route, we will introduce the Hamiltonian in Cartesian coordinates.
+	
+	\subsection{Cartesian Hamiltonian Mechanics}
+		Let us consider an \(n\)-body system for which we have the total energy functional given by a function \(\ham\h{r_1,\ldots,r_n,p_1,\ldots,p_n,t}\), where \(r_i\) is the position of the \(i\)th body and \(p_i\) the momentum of the \(i\)th body. We can write this in terms of the kinetic en potential energy, where we assume that the kinetic energy is only a function of \(p_i\) and the potential energy a function of \(r_i\) and \(t\)
+		\begin{equation*}
+			\ham\h{r_1,\ldots,r_n,p_1,\ldots,p_n,t} = T\h{p_1,\ldots,p_n} + U\h{r_1,\ldots,r_n,t} = \sum_{i}\dfrac{p_i^2}{2m_i} + U\h{r_1,\ldots,r_n,t}.
+		\end{equation*}
+		Remark that the potential is chosen such that \(F_i = \pdv*{U}{r_i}\), it then follows from the definition of momentum and Newton's second law that
+		\begin{equation}\label{eq: hamiltons equations on rn}
+			\pdv{\ham}{p_i} = \dfrac{p_i}{m_i} = \dot{r}_i,\quad \pdv{\ham}{r_i} = \pdv{U}{r_i} = -F_i = -\dot{p}_i.
+		\end{equation}
+		This gives us \(6n\) first-order differential equations to solve to obtain the motion of the \(n\)-bodies described by the energy functional. Furthermore, using these relations we obtain
+		\begin{equation*}
+			\dv{\ham}{t} = \dot{r}_i\pdv{\ham}{r_i} + \dot{p}_i\pdv{\ham}{p_i} + \pdv{\ham}{t} = \pdv{\ham}{t}.
+		\end{equation*}
+		Hence, the Hamiltonian is conserved as long as it does not depend on time directly.
+		
+	\subsection{The Hamiltonian in Generalised Coordinates}
+		We will now try to extend the discussion of the previous section to work with general coordinates. Remark that the energy functional in the previous section was dependent on the position, momentum and time. We would like to replicate this in general coordinates to obtain a similar equation to Equation~\ref{eq: hamiltons equations on rn}. To do this, we will first have to determine what our quantity of momentum is in generalised coordinates. We will define this in relation to a Lagrangian. Given a Lagrangian \(\lag\) in some generalised coordinates \(\h{q_1,\ldots,q_n}\), we define the generalised momentum associated with a coordinate \(q_i\) as
+		\begin{equation*}
+			p_i = \pdv{\lag}{\dot{q}_i}.
+		\end{equation*}
+		This definition might seem odd, but it works correctly in Cartesian coordinates.
+		\begin{example}
+			Consider the Lagrangian of \(n\) non-interacting objects. In this case, the Lagrangian in Cartesian coordinates is given by
+			\begin{equation*}
+				\lag\h{r_1,\ldots,r_n,\dot{r}_1,\ldots,\dot{r}_n,t} = \dfrac{1}{2}\sum_im_i\norm{\dot{r}_i}^2.
+			\end{equation*}
+			Hence, the generalised momentum associates with \(r_i\) is simply the momentum of the object
+			\begin{equation*}
+				p_i = \pdv{\lag}{\dot{r}_i} = m_i\dot{r}_i.
+			\end{equation*}
+			The definition of the generalised momenta coincides with the usual definition when working in Cartesian coordinates when working with non-interacting particles.
+		\end{example}
+		We would then like to naturally transform the Lagrangian \(\lag\h{q_1,\ldots,q_n,\dot{q}_1,\ldots,\dot{q}_n,t}\) to a function \(\ham\h{q_1,\ldots,q_n,\pdv{\lag}{\dot{q}_1},\ldots,\pdv{\lag}{\dot{q}_n},t} = \ham\h{q_1,\ldots,q_n,p_1,\ldots,p_n,t}\), such that there is a change of dependent variable. This transformation can be formalised using the Legendre transform. 
+		\subsubsection{Legendre Transform}
+			Consider a function \(f:V\to\R\), most often we have \(V = \R[n]\), we define the \textbf{Legendre transform} of \(f\) as the function \(\dual{f}:S\subset\dual{V}\to\R\) for which
+			\begin{equation*}
+				\dual{f}\h{\alpha} = \sup_{v\in V}\h{\alpha\h{v} - f\h{v}}.
+			\end{equation*}
+ 			Remark that this function is defined for all \(\alpha\in\dual{V}\) for which the supremum is finite.
+ 			\begin{example}
+ 				Consider the function \(f:\R\to\R:x\mapsto e^x\), we can recognise that \(\dual{R}\cong\R\) such that we can define the Legendre transform as
+ 				\begin{equation*}
+ 					\dual{f}\h{\dual{x}} = \sup_{x\in\R}\h{\dual{x}x - e^x},
+ 				\end{equation*}
+ 				where \(\dual{x}\in \dual{I}\) which is some domain that we still have to determine. Let us first figure out what \(\dual{f}\) is by calculating the supremum using the derivative with respect to \(x\) and setting it equal to zero.
+ 				\begin{equation*}
+ 					0 = \dv{x}\h{\dual{x}x - e^x} = \dual{x} - e^x.
+ 				\end{equation*}
+ 				Hence we see that \(\dual{x} = e^x\) gives a critical point, and as \(-e^x < 0\) for all \(x\) it follows that we achieve a maximum at \(x = \ln\h{\dual{x}}\). Thus we retrieve our Legendre transform
+ 				\begin{equation*}
+ 					\dual{f}\h{\dual{x}} = \h{\dual{x} - 1}\ln\h{\dual{x}}.
+ 				\end{equation*}
+ 				Remark that this function only exists for \(\dual{x} \in \h{0,\infty} = \dual{I}\). 
+ 			\end{example}
+ 			\begin{example}\label{exp: legendre}
+ 				Take a function \(g:\R[2]\to\R:\h{x,y}\mapsto g\h{x,y}\) which is convex in \(y\) and for a \(x\in \R\) defined \(f_x:\R\to\R:y\mapsto g\h{x,y}\). Remark that \(\dv*{f_x}{y}\h{y} = \pdv*{g}{y}\h{x,y}\). We can then determine the Legendre transform of \(f_x\), which was defined as
+ 				\begin{equation*}
+ 					\dual{f_x}\h{\dual{y}} = \sup_{y\in\R}\h{\dual{y}y - f_x\h{y}}.
+ 				\end{equation*}
+ 				We can again determine this supremum by differentiating with respect to \(y\). It then follows that
+ 				\begin{equation*}
+ 					0 = \dv{y}\h{\dual{y}y - f_x\h{y}} = \dual{y} - \dv{f_x}{y}\h{y}\implies \dual{y} = \dv{f_x}{y}\h{y}.
+ 				\end{equation*}
+ 				As \(g\) is convex in \(y\), it follows that \(y = \h{\dv*{f_x}{y}}^{-1}\h{\dual{y}}\) is the maximum. We can now transform \(g\h{x,y}\) to a function \(h\h{x,\pdv*{g}{y}}\) by defining
+ 				\begin{equation*}
+ 					h\h{x,\pdv{g}{y}} = h\h{x,\dual{y}}= \dual{f_x}\h{\dual{y}} = \dual{y}\h{\dv{f_x}{y}}^{-1}\h{\dual{y}} - g\h{x,\h{\dv{f_x}{y}}^{-1}\h{\dual{y}}}.
+ 				\end{equation*}
+ 				This leads to a natural transformation from \(g\h{x,y}\) to \(h\h{x,\pdv*{g}{y}}\). Furthermore, the differentials of \(g\) and \(h\) are given as
+ 				\begin{equation*}
+ 					dg = udx + vdy\implies dh = xdu - vdy.
+ 				\end{equation*}
+ 				Remark that this is not merely a coordinate transformation, but also a transformation of the space on which the functions act.
+ 			\end{example}
+ 			In the section on Lagrangian formalism, we remarked that a Lagrangian had to be convex in \(\dot{q}\) if it were to result in a well-posed problem. Hence, we can use Example~\ref{exp: legendre} to transform the Lagrangian in the manner discussed before. We define the \textbf{Hamiltonian} of a Lagrangian \(\lag\) as
+			\begin{equation}\label{eq: hamiltonian from lagrangian}
+				\ham\h{q_1,\ldots,q_n,p_1,\ldots,p_n,t} = \sum_{i = 1}^np_i\dot{q}_i - \lag\h{q_1,\ldots,q_n,\dot{q}_1,\ldots,\dot{q}_n,t},\ p_i = \pdv{\lag}{\dot{q}_i}.
+			\end{equation}
+			Hence, the Hamiltonian can be seen as the Legendre transform of the Lagrangian. We can now determine the differential along a physical motion in two manners: directly and using equation \ref{eq: hamiltonian from lagrangian}. If we calculate it directly, we find
+			\begin{equation}\label{eq: differential hamiltonian 1}
+				d\ham = \sum_{i = 1}^n\pdv{\ham}{q_i} + \sum_{i = 1}^n\pdv{\ham}{p_i}dp_i + \pdv{\ham}{t}dt.
+			\end{equation}
+			However, if we calculate it using Equation~\ref{eq: hamiltonian from lagrangian}, we find that
+			\begin{equation*}
+				d\ham
+				= \sum_{i = 1}^np_id\dot{q}_i + \sum_{i = 1}^n\dot{q}_idp_i - d\lag.
+			\end{equation*}
+			We can further expand this expression by first determining the differential of the Lagrangian.
+			\begin{equation*}
+				d\lag = \sum_{i = 1}^n\pdv{\lag}{q_i}dq_i + \sum_{i = 1}^n\pdv{\lag}{\dot{q}_i}d\dot{q}_i + \pdv{\lag}{t}dt.
+			\end{equation*}
+			Combining these two equations results in the differential of the Hamiltonian:
+			\begin{align}
+				d\ham
+		\notag	&= \sum_{i = 1}^np_id\dot{q}_i + \sum_{i = 1}^n\dot{q}_idp_i - \sum_{i = 1}^n\pdv{\lag}{q_i}dq_i - \sum_{i = 1}^n\pdv{\lag}{\dot{q}_i}d\dot{q}_i - \pdv{\lag}{t}dt.
+				\intertext{Again remark that \(p_i = \pdv*{\lag}{\dot{q}_i}\) and that it follows from the Euler-Lagrange equations that the physical path the motion follows satisfies \(\dot{p}_i = \dv*{t}\h{\pdv*{\lag}{\dot{q}_i}} = \pdv*{\lag}{q_i}\).}
+				d\ham
+		\notag	&= \sum_{i = 1}^np_id\dot{q}_i + \sum_{i = 1}^n\dot{q}_idp_i - \sum_{i = 1}^n\dot{p}_idq_i - \sum_{i = 1}^np_id\dot{q}_i - \pdv{\lag}{t}dt\\
+\label{eq: differential hamiltonian 2}
+				&= \sum_{i = 1}^n\dot{q}_idp_i - \sum_{i = 1}^n\dot{p}_idq_i - \pdv{\lag}{t}dt.
+			\end{align}
+			Comparing Equation~\ref{eq: differential hamiltonian 1} and~\ref{eq: differential hamiltonian 2} gives us the \(2n + 1\) equations called \textbf{Hamilton's equations}:
+			\begin{equation*}
+					-\pdv{\lag}{t}	= \pdv{\ham}{t},\quad 
+					-\dot{p}_i		= \pdv{\ham}{q_i},\quad
+					\dot{q}_i 		= \pdv{\ham}{p_i},\qquad\forall 1\leq i\leq n.
+			\end{equation*}
+			Solving a mechanical problem comes down to solving this system of equations, most importantly the last \(2n\), to obtain the motion of the objects. In practice solving a problem goes as follows:
+			\begin{enumerate}[label = {\alph*)}]
+				\item Determine the kinetic and potential energies in an inertial frame.
+				\item Determine the Lagrangian and translate it to some general coordinates for the system.
+				\item Derive the generalised momenta from the Lagrangian and solve for the \(\dot{q}\)'s as functions of \(p\)'s and \(q\)'s.
+				\item Determine the Hamiltonian using Equation~\ref{eq: hamiltonian from lagrangian}.
+				\item Solve Hamilton's equations.
+			\end{enumerate}
+			Let us showcase this method using an example.
+			\begin{example}
+				\input{example/atwood_ham.tex}
+			\end{example}
+\end{document}

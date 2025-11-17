@@ -1,0 +1,542 @@
+\documentclass[class = report, crop = false]{standalone}
+\usepackage{standalone}
+
+\begin{document}	
+	\chapter{Vector Fields}\label{app: vector fields}
+	Throughout this thesis, we assume the reader is familiar with vector fields on a manifold, and even with time-dependent vector fields. In this appendix, we will discuss some of the main results and showcase the notation we use. Furthermore, we will also introduce some theory regarding time-dependent vector fields. We follow Chapters 8 and 9 in \cite{Lee2013}, but for flows, we follow the approach of \cite{Marcut2017}. As a natural complement to these texts on manifolds, we also use some basic existence and uniqueness theorems of solutions to ordinary differential equations, see for example \cites{MyintU1978, Incle1956} or Appendix D of \cite{Lee2013}.
+	
+	In this appendix, we will first discuss vector fields and their algebraic properties. Then expand this to integral curves and flows and use these to take a special kind of derivative: the Lie derivative. After which, we go into time-dependent vector fields and again discuss their flows and derivatives.
+	
+	\section{Vector fields}\label{sec: vector fields}
+	Let us start by defining time-independent vector fields, or simply vector fields. Naturally, we identify these as tangent vectors appended to each point of a manifold. This is formally defined using sections of the projectile map \(\pi:\tang\to\m\).
+	\begin{definition}\label{def: vector field}
+		A \textbf{rough vector field} on a manifold is a section of the projection map \(\pi:\tang\to\m\). More concretely, \(X:\m\to\tang\) is a rough vector field if it is a continuous map such that \(\pi\circ X = \id_{\m}\), in other words, \(X\h{p}\in\loctang{p}\) for each \(p\in\m\). We often denote \(X\h{p}\) as \(X_p\) and identify this as the tangent vector in \(\loctang{p}\).
+		
+		If a rough vector field is a smooth function with respect to the natural smooth structure on \(\tang\) imposed by \(\m\), it is called a \textbf{smooth vector field} or \textbf{simply vector field}. The set of all vector fields on a manifold \(\m\) is denoted by \(\vf\).
+	\end{definition}
+	Remark that we will use the name vector field solely for smooth vector fields and mention roughness only for not necessarily smooth vector fields. If \(\h{U,\h{x^i}}\) is some chart around the point \(p\in\m\), we can write
+	\begin{equation*}
+		X_p = X^i\h{p}\eval{\pdv{x^i}}_p.
+	\end{equation*}
+	The functions \(X^i:U\to\R\) are called the \textbf{component functions} of a vector field. These give us a more simple condition for the smoothness of vector fields.
+	\begin{proposition}\label{prp: smoothenss coordinate field}
+		Let \(X\) be a rough vector field on \(\m\) and \(\h{U,\h{x^i}}\) be a coordinate chart. The restriction \(X\) to \(U\) is smooth if and only if its component functions in this chart are smooth.
+	\end{proposition}
+	\begin{proof}
+		Let \(X\) and \(\h{U,\phi = \h{x^i}}\) be as in the proposition. The coordinate representation of \(X\) is then given by
+		\begin{equation*}
+			\hat{X}\h{x} = \h{x^1,\ldots,x^n,X^1\h{\phi^{-1}\h{x}},\ldots,X^n\h{\phi^{-1}\h{x}}}.
+		\end{equation*}
+		Here \(X^i\) are the component functions of \(X\) in the given chart. As \(\phi^{-1}\) and all \(x^i\) are smooth functions, the fact that \(\hat{X}\) is smooth is equivalent to each \(X^i\) being smooth.
+	\end{proof}
+	Before we move on to more of the geometric structure of vector fields and their interactions with the manifold, we will discuss some of the algebraic structures.
+	
+	\subsection{Algebraic Structures}\label{sec: alg structure vector fields}
+	We can induce many different algebraic structures onto \(\vf\). Here, we will discuss its module structure over \(\sff\) and its Lie algebra structure. In this process, we also discuss some intermediate steps, namely, its vector space structure over \(\R\) and the identification with derivations.
+	
+	\subsubsection{Vector Spaces}\label{sec: vector fields vector space}
+	At each point, a vector field is a vector from a real vector space, namely the tangent space. This lets us define the addition and scalar multiplication of vector field pointwise in each of these vector spaces. For any \(X,Y\in\vf\), \(a,b\in\R\) and \(p\in\m\) define \(aX + bY\) as
+	\begin{equation*}
+		\h{aX + bY}_p = aX_p + bY_p.
+	\end{equation*}
+	Remark that this is well-defined as \(X_p,Y_p\in\loctang{p}\). With these operations, we notice that \(\vf\) inherits the same structure as the tangent spaces.
+	\begin{proposition}\label{prp: vector field is vector space}
+		The set of vector fields with pointwise addition and scalar multiplication form a real vector space.
+	\end{proposition}
+	\begin{proof}
+		It is clear that for any \(X,Y\in\vf\) and \(a,b\in\R\) the function \(aX + bY\) is a rough vector field. We can check the smoothness using Proposition~\ref{prp: smoothness vector field}. The coordinate functions of \(aX + bY\) are given by
+		\begin{equation*}
+			\h{aX + bY}^i = aX^i + bY^i.
+		\end{equation*}
+		As these are the addition of smooth functions, these are also smooth.
+	\end{proof}
+	
+	\subsubsection{Modules}\label{sec: vector fields module}
+	However, what happens if we vary the scalar over the manifold using some smooth function? We can then again define the multiplication pointwise, such that for any \(X,Y\in\vf\), \(f,g\in\sff\) and \(p\in\m\) we define
+	\begin{equation*}
+		\h{fX + gX}_p = f\h{p}X_p + g\h{p}Y_p.
+	\end{equation*}
+	Again we might ask ourselves what kind of structure this has.
+	\begin{proposition}\label{prp: vector field is module}
+		The set of vector fields forms a module over \(\sff\) with pointwise multiplication.
+	\end{proposition}
+	\begin{proof}
+		It is again evident that addition and multiplication give back a rough vector field. The smoothness is a result of Proposition~\ref{prp: smoothness vector field}. Given some \(X,Y\in\vf\) and \(f,g\in\sff\), the coordinate functions of \(fX + gY\) are given by
+		\begin{equation*}
+			\h{fX + gY}^i = fX^i + gY^i.
+		\end{equation*}
+		Which is smooth as \(\sff\) is a ring. Hence, it follows that \(\vf\) is a module.
+	\end{proof}
+	
+	\subsubsection{Derivation}\label{sec: vector fields derivations}
+	As a vector field is an element of the tangent space at each point, it inherits the derivation property at each point. To extend this globally, we define the action of vector fields on smooth functions.
+	\begin{definition}\label{def: action vector field function}
+		Let \(X\) be a vector field on \(\m\) and \(f\in\sff\). Then define the function \(Xf\) pointwise such that  \(\h{Xf}\h{p} = X_pf\).
+	\end{definition}
+	Remark the difference between \(fX\) and \(Xf\), where the first one is a vector field, and the second is a smooth function. Using the action of vector fields on smooth functions we get the following result.
+	\begin{proposition}\label{prp: smoothness vector field}
+		Let \(X\) be a rough vector field. If the function \(Xf\) is smooth for each \(f\in\sff\), then \(X\) is smooth as well.
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(X\) is a rough vector field. Firstly, we will prove that the assumption in the proposition implies we only need to look at open subsets of \(\m\). We will then combine this with Proposition~\ref{prp: smoothenss coordinate field}.
+		
+		Suppose that the conditions in the proposition hold, i.e. if \(f\in\sff\), we can assume that \(Xf\in\sff\). Now suppose that \(U\) is an open subset of \(\m\) and that \(g\in\sff[U]\). For any \(p\in U\), we can find a smooth bump function \(\psi\in\sff\) and neighbourhood \(V\) of \(p\) such that \(V\subset\supp\psi\subset U\). We can then extend \(g\) to the whole manifold in a smooth manner.
+		\begin{equation*}
+			\tilde{g}\h{p} =
+			\begin{dcases}
+				\psi g\h{p}	&\mbox{, if } p\in U.\\
+				0			&\mbox{, else}.
+			\end{dcases}
+		\end{equation*}
+		We can then conclude that \(X\tilde{g}\) is smooth by our assumption. It should be clear that \(X\tilde{g}|_V = Xg|_V\). Hence, \(Xg\) is smooth in a neighbourhood of every \(p\in U\) and thus on the whole of \(U\). As \(U\) was arbitrary, we conclude that for any arbitrary open subset \(U\subset\m\) and \(f\in\sff[U]\) the function \(Xf\in\sff[U]\).
+		
+		Take an arbitrary \(p\in\m\) and some coordinate chart \(\h{U,\h{x^i}}\) around it. Notice that \(x^i\) is smooth on \(U\) and thus is \(X|_Ux^i\) smooth as well. However, in these same coordinates, we can write
+		\begin{equation*}
+			X|_Ux^i =X^j\pdv{x^i}{x^j} = X^i.
+		\end{equation*}
+		Hence, every coordinate function of \(X\) is smooth in \(U\). Therefore \(X\) is smooth on \(U\) by Proposition~\ref{prp: smoothenss coordinate field}. As \(U\) was arbitrary, we can conclude that \(X\) is smooth on the whole of \(\m\).
+	\end{proof}
+	We can also recognise that the vector fields inherit the local structure of the tangent space in terms of derivations as well.
+	\begin{proposition}\label{prp: vector field linear product rule}
+		Any \(X\in\vf\) induces a map \(X:\sff\to\sff\) using Definition~\ref{def: action vector field function} which satisfies the following product rule
+		\begin{equation}\label{eq: derivation product rule}
+			X\h{fg} = fXg + gXf,
+		\end{equation}
+		where \(f,g\in\sff\).
+	\end{proposition}
+	\begin{proof}
+		First, we should check whether \(Xf\) is indeed a smooth function. This can easily be done in some chart \(\h{U,\h{x^i}}\).
+		\begin{equation*}
+			Xf\h{p} = \h{X^i\h{p}\eval{\pdv{x^i}}_p}f = X^i\h{p}\pdv{f}{x^i}\h{p}.
+		\end{equation*}
+		As the coordinate functions are smooth and \(f\in\sff\), we conclude that \(Xf\) is smooth. The fact that it is linear and satisfies Equation~\ref{eq: derivation product rule}, is a direct consequence of the definition and the fact that \(X_p\) is a linear derivation for each \(p\).
+	\end{proof}
+	We can even go further to say that any linear map \(D:\sff\to\sff\) that satisfies the product rule, we call these \textbf{derivations}, can be identified with a vector field.
+	\begin{proposition}\label{prp: vector field is derivation}
+		A map \(D:\sff\to\sff\) is a derivation if and only if it is of the form \(Df = Xf\) for some \(X\in\vf\).
+	\end{proposition}
+	\begin{proof}
+		Proposition~\ref{prp: vector field linear product rule} tells us that any vector field induces a linear map that satisfies the product rule. Hence, if \(D:\sff\to\sff\) is a map for which there exists an \(X\in\vf\) such that \(Df = Xf\), it is clear that it is a derivation.
+		
+		On the other hand, suppose that \(D:\sff\to\sff\) is a derivation. Then define a rough vector field \(X\) at each \(p\in\m\) by its action of functions,
+		\begin{equation*}
+			X_pf = \h{Df}\h{p}.
+		\end{equation*}
+		As \(D\) is a derivation, we can deduce that \(X_p\in\loctang{p}\). It then follows from Proposition~\ref{prp: smoothness vector field} that \(X\) is smooth.
+	\end{proof}
+	
+	\subsubsection{Lie algebra}
+	Now, we will combine the vector space structure and the derivation property of vector fields to create an algebraic structure. Let us define a multiplication using the composition of vector fields as functions on \(\sff\), such that for some \(X,Y\in\vf\) and \(f\in\sff\)
+	\begin{equation}\label{eq: composition definition}
+		XYf = X\h{Yf}.
+	\end{equation}
+	We can verify that \(XY\) is not necessarily a vector field again, see Example~\ref{exp: not a vector field}. Here, we make use of the derivation property of vector fields and show that the composition of two is not necessarily a derivation any longer.
+	\begin{example}\label{exp: not a vector field}
+		Take \(\m = \R[2]\) with the global coordinates \(\h{\R[2],\h{x,y}}\). Define the vector fields \(X = \pdv*{x}\) and \(Y = x\pdv*{y}\) and the functions \(f\h{x,y} = x\) and \(g\h{x,y} = y\). We then compute
+		\begin{equation*}
+			XY\h{fg} = X\h{Y\h{xy}} = \pdv{x}\h{x\pdv{y}\h{xy}} = \pdv{x}\h{x^2} = 2x.
+		\end{equation*}
+		Meanwhile, if we write out the product rule, we get the following computation.
+		\begin{equation*}
+			fXYg + gXYf = x\pdv{x}\h{x\pdv{y}{y}} + y\pdv{x}\h{x\pdv{x}{y}} = x\pdv{x}{x} + y\pdv{0}{x} = x.
+		\end{equation*}
+		We can then remark that \(XY\h{fg} \neq fXYg + gXYf\), and therefore \(XY\) is not a derivation.
+	\end{example}
+	Surprisingly, even though this multiplication does not work, it is still salvageable.
+	\begin{definition}\label{def: lie bracket vector field}
+		The \textbf{Lie bracket} of two vector fields \(X,Y\in\vf\) is defined by its action on a function \(f\in\sff\)
+		\begin{equation*}
+			\comm{X}{Y}f = XYf - YXf.
+		\end{equation*}
+		The multiplication on the right-hand side is as in Equation~\ref{eq: composition definition}.
+	\end{definition}
+	\begin{corollary}\label{cor: lie bracket is bi-endomorfism}
+		The Lie bracket of two vector fields is again a vector field.
+	\end{corollary}
+	\begin{proof}
+		By Proposition~\ref{prp: vector field is derivation}, it is enough to check whether \(\comm{X}{Y}\) is a derivation. Take two vector fields \(X,Y\in\vf\) and smooth functions \(f,g\in\sff\).
+		\begin{align*}
+			\comm{X}{Y}\h{fg}
+			&= XY\h{fg} - YX\h{fg} = X\h{fYg + gYf} - Y\h{fXg + gXf}\\
+			&= XfYg + fXYg + XgYf + gXYf - YfXg - fYXg - YgXf - gYXf.\\
+			&= fXYg + gXYf - fYXg - gYXf = f\comm{X}{Y}g + g\comm{X}{Y}f.
+		\end{align*}
+		This proves that \(\comm{X}{Y}\) is a vector field.
+	\end{proof}
+	\begin{corollary}\label{cor: coordinate function lie bracket}
+		For \(X,Y\in\vf\) we can write \(\comm{X}{Y}\) in a coordinate chart \(\h{U,\h{x^i}}\) at a point \(p\in U\) as
+		\begin{equation*}
+			\eval{\comm{X}{Y}}_U = \h{X^i\pdv{Y^j}{x^i} - Y^i\pdv{X^j}{x^i}}\pdv{x^j},
+		\end{equation*}
+		where \(\eval{X}_U = X^i\pdv*{x^i}\) and \(\eval{Y}_U = Y^i\pdv*{x^i}\).
+	\end{corollary}
+	\begin{proof}
+		Let \(X\) and \(Y\) be vector fields and \(f\in\sff\). Then take an arbitrary coordinate chart \(\h{U,\h{x^i}}\) of \(\m\). We then express \(X|_U = X^i\pdv*{x^i}\) and \(Y|_U = Y^i\pdv{x^i}\) and consider the action of \(\comm{X}{Y}\) on \(f\).
+		\begin{align*}
+			\comm{X}{Y}|_Uf
+			&= \h{XY - YX}|_Uf = X|_U\h{Y^j\pdv{f}{x^j}} - Y|_U\h{X^j\pdv{f}{x^j}}\\
+			&= X|_U\h{Y^j}\pdv{f}{x^j} + Y^jX|_U\h{\pdv{f}{x^j}} - Y|_U\h{X^j}\pdv{f}{x^j} - X^jY|_U\h{\pdv{f}{x^j}}\\
+			&= X^i\pdv{Y^j}{x^i}\pdv{f}{x^j} + Y^jX^i\pdv{f}{x^j}{x^i} - Y^i\pdv{X^j}{x^i}\pdv{f}{x^j} - X^jY^i\pdv{f}{x^j}{x^i}\\
+			&= X^i\pdv{Y^j}{x^i}\pdv{f}{x^j} - Y^i\pdv{X^j}{x^i}\pdv{f}{x^j}\\
+			&= \h{X^i\pdv{Y^j}{x^i} - Y^i\pdv{X^j}{x^i}}\pdv{f}{x^j}.
+		\end{align*}
+		This proves our result.
+	\end{proof}
+	We now use \(\comm{\cdot}{\cdot}:\vf\times\vf\to\vf\) as the multiplication on \(\vf\). The pair \(\h{\vf,\comm{\cdot}{\cdot}}\) is called the Lie algebra of vector fields.
+	\begin{corollary}\label{cor: lie bracket properties}
+		For any \(X,Y,Z\in\vf\) the Lie bracket is:
+		\begin{enumerate}
+			\item Bilinear, i.e. or any \(a,b\in\R\)
+			\begin{align*}
+				&\comm{aX + bY}{Z} = a\comm{X}{Z} + b\comm{Y}{Z}\\
+				&\comm{Z}{aX + bY} = a\comm{Z}{X} + b\comm{Z}{Y}.
+			\end{align*}
+			\item Antisymmetric
+			\begin{equation*}
+				\comm{X}{Y} = -\comm{Y}{X}.
+			\end{equation*}
+			\item A derivation on itself
+			\begin{equation*}
+				\comm{X}{\comm{Y}{Z}} = \comm{Y}{\comm{X}{Z}} + \comm{\comm{X}{Y}}{Z}.
+			\end{equation*}
+		\end{enumerate}
+	\end{corollary}
+	\begin{proof}
+		The first two properties follow from the basic definitions of the Lie bracket and the multiplication and addition of vector fields. The last property can then be proven by proving the equivalent \textbf{Jacobi identity}:
+		\begin{equation*}
+			\comm{X}{\comm{Y}{Z}} + \comm{Y}{\comm{Z}{X}} + \comm{Z}{\comm{X}{Y}} = 0.
+		\end{equation*}
+		Which follows by writing it out and seeing that every term cancels out.
+	\end{proof}
+	
+	\subsection{Integral Curves and Flow}
+	Let us turn back to the geometric picture of vector fields in the sense that they give a direction on a manifold. We make use of this sense of direction by defining integral curves, which are paths following the vector field.
+	\begin{definition}\label{def: integral curve}
+		An \textbf{integral curve of \(\pmb{X}\)}, where \(X\in\vf\), is a function \(\gamma:I\to\m\), with \(I\) being an interval in \(\R\), such that for each \(t\in I\)
+		\begin{equation*}
+			\dot{\gamma}\h{t} = X_{\gamma\h{t}}.
+		\end{equation*}
+		Furthermore, if \(0\) is contained in \(I\), we call \(\gamma\h{0}\) the starting point of \(\gamma\).
+	\end{definition}
+	As our vector fields are independent of time, it follows that the integral curves are invariant under translations in time.
+	\begin{corollary}\label{cor: translation integral curve}
+		Let \(\gamma:I\to\m\) be an integral curve of \(X\in\vf\). Then for any \(b\in\R\), the curve \(\tilde{\gamma}:\tilde{J}\to\m:t\mapsto\gamma\h{t + b}\), where \(\tilde{J} = \hv{t\in\R:t+b\in J}\), is also an integral curve of \(X\).
+	\end{corollary}
+	\begin{proof}
+		Let \(\gamma:J\to\m\) be an integral curve of an arbitrary vector field \(X\in\vf\) and suppose that \(b\in\R\). By defining \(\tilde{\gamma}\) and \(\tilde{J}\) as in the lemma we can check that it is still an integral curve by letting it act on \(f\in C^{\infty}\h{\m}\).
+		\begin{equation*}
+			\dot{\tilde{\gamma}}\h{s}f = \eval{\dv{t}}_{t = s}\h{f\circ\tilde{\gamma}}\h{t} = \eval{\dv{t}}_{t = s}\h{f\circ\gamma}\h{t + b} = \dot{\gamma}\h{s + b}f = X_{\tilde{\gamma}\h{s}}f.
+		\end{equation*}
+		This shows that, \(\tilde{\gamma}\) is an integral curve of \(X\).
+	\end{proof}
+	The existence of these integral curves is a result of the existence of solutions for ordinary differential equations. To showcase this connection, we will calculate the integral curves of a vector field in an example.
+	\begin{example}\label{exp: euler field}
+		Let \(\m = \R[n]\) and let \(\h{x^i}\) denote the global coordinates on \(\R[n]\). Take the point \(x\in\R[n]\) with \(x^i\h{x} = 1\) for each \(1\leq i\leq n\) and define the vector field \(X = x^i\pdv*{x^i}\).
+		
+		We then look for the integral curve of \(X\) that has \(x\) as its starting point. Such an integral curve \(\gamma:J\to\R[n]\) should then satisfy, with \(\hat{\gamma}\) as the coordinate representation of \(\gamma\) and \(\hat{\gamma}^i\) its \(i\)-th component function
+		\begin{equation*}
+			\dv{\hat{\gamma}^i}{t}\eval{\pdv{x^i}}_{\gamma\h{t}} = \dot{\gamma}\h{t} = X_{\gamma\h{t}} = \hat{\gamma}^i\h{t}\eval{\pdv{x^i}}_{\gamma\h{t}}.
+		\end{equation*}
+		and \(\hat{\gamma}^i\h{0} = 1\) for each \(1\leq i\leq n\).
+		
+		This results in a simple autonomous system of first-order linear differential equations with some initial values.
+		\begin{equation*}
+			\dot{u}\h{t} = \mqty(\dot{u}^1\h{t},\cdots,\dot{u}^n\h{t})^T = \mqty(u^1\h{t},\cdots,u^n\h{t})^T\mqty(1&&0\\&\ddots&\\0&&1) = \id u\h{t}.
+		\end{equation*}
+		With the initial condition \(u^i\h{0} = 1\) for all \(1\leq i\leq n\). The solution curves to these initial value problems are given by
+		\begin{equation*}
+			u\h{t} = e^{t\id}u\h{0} = e^t\id u\h{0} = \mqty(e^t,\cdots,e^t)^T.
+		\end{equation*}
+		Thus the integral curve starting at \(x\) are given by \(\hat{\gamma}^i\h{t} = e^t\).
+	\end{example}
+	Example~\ref{exp: euler field} shows that finding the integral comes down to solving the differential equation generated by the vector field in coordinates. With this, we can ensure the local existence of integral curves as the differential equation theory only ensures local solutions and this is done in the local coordinates.
+	\begin{proposition}\label{prp: existence integral curve}
+		For a vector field \(X\in\vf\) and a point \(p\in\m\) there exists an \(\epsilon>0\) and curve \(\gamma:\h{-\epsilon,\epsilon}\to\m\) that is an integral curve of \(X\) with starting point \(p\). Furthermore, it is uniquely defined on this interval.
+	\end{proposition}
+	\begin{proof}
+		Take an arbitrary vector field \(X\in\vf\), point \(p\in\m\) and chart \(\h{U,\phi = \h{x^i}}\) centred around \(p\). The vector field can then be expressed in these coordinates as \(X = X^i\eval{\pdv*{x^i}}_p\). Using this coordinate expression, we can translate our problem to an initial value problem on \(\R[n]\).
+		\begin{equation*}
+			\dot{u}^i = X^i\h{\phi^{-1}\h{u}},\quad u\h{0} = \phi\h{p} = 0.
+		\end{equation*}
+		We can ensure the local existence of a unique solution to this problem, i.e. there exists an \(\epsilon>0\) and a function \(u:\h{-\epsilon,\epsilon}\to\R[n]\) that satisfies the initial value problem. We then define \(\gamma = \phi^{-1}\circ u:\h{-\epsilon,\epsilon}\to\m\) such that it satisfies \(\dot{\gamma}\h{t} = X_{\gamma\h{t}}\) and is therefore an integral curve of \(X\).
+	\end{proof}
+	We would like to show that the solution for an integral curve starting at a point is unique, however, we can only show that the integral curves are unique on their domain. Therefore, we will focus on a special type of domain and integral curve, whose existence is unique.
+	\begin{definition}\label{def: maximal integral curve}
+		An integral curve \(\gamma:I\to\m\) of \(X\in\vf\) starting at \(p\in\m\) is called a \textbf{maximal integral curve} if its domain cannot be extended to a larger open interval while remaining an integral curve of \(X\) starting at \(p\).
+	\end{definition}
+	\begin{corollary}\label{cor: maximal integral curve}
+		Let \(X\) be a vector field on a manifold \(\m\) and suppose that \(p\) is an arbitrary point on \(\m\). Then there exists a unique \textbf{maximal integral curve} \(\gamma_p:I_p\to\m\) of \(X\) starting at \(p\).
+	\end{corollary}
+	\begin{proof}
+		Suppose that \(X\in\vf\) and \(p\in\m\). By Theorem~\ref{prp: existence integral curve} we know that there exists an integral curve of \(X\) starting at \(p\).
+		
+		Suppose that \(\gamma_1:I_1\to\m\) and \(\gamma_2:I_2\to\m\) are both integral curves of \(X\) starting at \(p\). Then define the set of points where the integral curves coincide,
+		\begin{equation*}
+			J = \hv{t\in I_1\cap I_2:\ \gamma_1\h{t} = \gamma_2\h{t}}.
+		\end{equation*}
+		Remark that this is a non-empty set as \(0\in I_1\cap I_2\) and \(\gamma_1\h{0} = p = \gamma_2\h{0}\). We can easily see that it is closed by the continuity of the integral curves. Furthermore, we can prove that it is open using Corollary~\ref{cor: translation integral curve}. Translate the integral curves by some \(t\in J\), for which we define \(\sigma^i\h{s} = \gamma^1\h{s + t}\) for any \(s\in \hv{t\in\R:t + s\in J}\). Remark that \(\sigma^1\h{0} = \gamma^1\h{t} = \gamma^2\h{t} = \sigma^2\h{0} := q\). Hence, by the uniqueness of Proposition~\ref{prp: existence integral curve} it follows that \(\sigma^1 = \sigma^2\) in a neighbourhood of \(0\). It follows that \(J\) contains an neighbourhood of \(t\) in \(I_1\cap I_2\), hence \(J\) is open in \(I_1\cap I_2\). As \(J\) is open, closed and non-empty in \(I_1\cap I_2\), it follows that \(J\) is the whole of \(I_1\cap I_2\). This implies that any two integral curves starting at \(p\) agree on the intersection of their domains.
+		
+		Now let \(I_p\) be the union of all the domains of integral curves starting at \(p\). Then define \(\gamma_p\h{t}\) for some \(t\in I_p\) be the common value of all integral curves starting at \(p\) whose domain contain \(t\). Then \(\gamma_p:I_p\to\m\) is maximal. The uniqueness of this integral curve follows from the fact that any two integral curves must agree on their common domain and we can not extend \(I_p\) any further.
+	\end{proof}
+	
+	Next up, we would like to not only consider the integral curve of a vector field at a point but on the whole manifold simultaneously. This is motivated by the fact that we can generate a vector field simply from a so-called global flow.
+	\begin{proposition}\label{prp: global flow}
+		Given a smooth function \(\flow[]:\R\times\m\to\m\), from which we also define \(\timeflow[]{t}:\m\to\m:p\mapsto\phi\h{t,p}\) and \(\posflow[]{p}:\R\to\m:t\mapsto\phi\h{t,p}\), which is a global flow. This means that it satisfies \(\timeflow[]{t}\circ\timeflow[]{s} = \timeflow[]{t + s}\) and \(\timeflow[]{0} = \id_{\m}\). There exists a vector field \(X\) such that \(X_p =  \dtposflow[]{p}\h{0}\) and \(\posflow[]{p}\) is the integral curve of this vector field with starting point \(p\).
+	\end{proposition}
+	\begin{proof}
+		Let \(\phi\) be as in the proposition and define \(X\) pointwise as \(X_p = \dtposflow[]{p}\h{0}\). We will prove that \(X\) is smooth using Proposition~\ref{prp: smoothness vector field}, as it is clear that \(X\) is a section of \(\pi:\tang\to\m\) by definition. Hence, let \(f\) be an arbitrary smooth function on some \(U\subset \m\) and suppose that \(p\in U\). We then calculate \(Xf\h{p}\),
+		\begin{equation*}
+			Xf\h{p} = X_p\h{f} = \dtposflow[]{p}\h{0}f = \dtnull f\h{\posflow[]{p}\h{t}} = \eval{\pdv{t}}_{t = 0}f\h{\phi\h{t,p}}.
+		\end{equation*}
+		As both \(f\) and \(\phi\) are smooth this shows that \(Xf\) is smooth as well. As \(f\) and \(U\) are arbitrary this shows that \(X\) is smooth.
+		
+		We should still check that \(\posflow[]{p}\) is an integral curve of \(X\). This comes down to an easy calculation on an arbitrary smooth function \(f\).
+		\begin{align*}
+			X_{\posflow[]{p}\h{s}}f
+			&= \dtposflow[]{\flow[]\h{s,p}}f = \dtnull f\h{\flow[]\h{t,\flow[]\h{s,p}}}\\
+			&= \dtnull f\h{\flow[]\h{t + s,p}} = \eval{\dv{u}}_{u = s}f\h{\flow[]\h{u,p}} = \dtposflow[]{p}\h{s}f.
+		\end{align*}
+		This proves that \(X_{\posflow[]{p}\h{s}} = \dtposflow[]{p}\h{s}\) implying that \(\posflow[]{p}\) are the integral curves of \(X\). Furthermore, the assumption that \(\phi\h{0,p} = p\) implies that \(\posflow[]{p}\) is the integral curve starting at \(p\).
+	\end{proof}
+	We would now like to inverse these operations. Unfortunately, this is not always possible as the flow of a vector field may not be global, i.e. not defined on the whole of \(\R\times\m\). Hence, we weaken our condition and look for some local flow or flow as a function \(\flow:\flowdomain\to\m\) where \(\flowdomain\subset \R\times\m\).
+	\begin{definition}\label{def: flow}
+		Suppose that \(X\in\vf\). Define \(\flowdomain\), which we call the \textbf{flow domain of \(X\)}, as
+		\begin{equation*}
+			\flowdomain = \hv{\h{t,p}\in\R\times\m:\ t\in I_p},
+		\end{equation*}
+		where \(I_p\) is the domain of the maximal integral curve starting at \(p\). The associated map is called the \textbf{flow of \(X\)}, \(\flow:\flowdomain\to\m\), and is defined as
+		\begin{equation*}
+			\flow\h{t,p} = \gamma_p\h{t},
+		\end{equation*}
+		where \(\gamma_p\) is the maximal integral curve starting at \(p\). Naturally, we can define two maps \(\posflow{p}:I_p\to\m: t\mapsto \phi\h{t,p}\) and \(\timeflow{t}:\timedomain\to\m:p\mapsto\phi\h{t,p}\), where \(\timedomain\) is a subset of \(\m\) given by \(\timedomain = \hv{p\in\m:\ \h{t,p}\in\flowdomain}\)
+	\end{definition}
+	Even though our definition is not algebraic, the flow does have some group structure and it is therefore sometimes called the local one-parameter group action.
+	\begin{proposition}\label{prp: flow one-parameter group}
+		For an \(X\in\vf\) and arbitrary \(p\in\m\). Then for any \(s\in I_p\), we have that \(t\in I_{\phi\h{s,p}}\) if and only if \(t + s\in I_p\). Furthermore, the flow of \(X\) obeys the following
+		\begin{equation*}
+			\flow\h{t,\flow\h{s,p}} = \flow\h{t + s,p},
+		\end{equation*}
+		where \(s\in I_p\) and \(t\in I_{\flow\h{s,p}}\).
+	\end{proposition}
+	\begin{proof}
+		Let \(X\), \(p\), \(s\) and \(t\) be as in the lemma. Then call \(q = \flow\h{s,p}\) and \(\tau_s\h{t} = t + s\). Then it follows that \(\gamma_p\circ\tau_s: \tau_{-s}\h{I_p}\to\m\) is an integral curve of \(X\) starting at \(q\) and therefore \(\tau_{-s}\h{I_p}\subset I_q\) and \(\gamma_p\circ \tau_s = \eval{\gamma_q}_{\tau_{-s}\h{I_p}}\). This implies that \(\timeflow{t + s} = \timeflow{t}\circ\timeflow{s}\).
+		
+		In a similar manner, we can conclude that \(\gamma_q\circ\tau_{-s}:\tau_s\h{I_q}\to\m\) is an integral curve starting at \(p\), and hence \(\tau_s\h{I_q}\subset I_p\). But we had already seen that \(\tau_{-s}\h{I_p} \subset I_q\), hence \(\tau_s\h{I_q} = I_p\).
+	\end{proof}
+	Lastly, we will go into some of the topological properties of the flow and flow domain.
+	\begin{theorem}\label{thm: flow domain}
+		For a vector field \(X\) on \(\m\), the flow domain \(\mathcal{D}\h{X}\) is open and \(\flow\) is smooth.
+	\end{theorem}
+	\begin{proof}
+		Suppose that \(X\) is a vector field on \(\m\). For an arbitrary \(p\in\m\) with a surrounding chart \(\h{U,\phi = \h{x^i}}\), we can solve the flow in the coordinate representation
+		\begin{equation*}
+			\dtflow^i\h{t,p} = X^i\h{\flow\h{t,p}}.
+		\end{equation*}
+		We know that there is some smooth solution to this differential equation exists, see \cite[Appendix C]{Conlon1993}. Hence, there exists a neighbourhood \(U\) of \(p\) such that \(\flow\) is smooth on \(\h{-\epsilon,\epsilon}\times U\).
+		
+		Suppose that we define the \(W\subset \mathcal{D}\h{X}\) as the set of all point \(\h{t,p}\) such that \(\flow\) is defined and smooth on some neighbourhood of \(\h{t,p}\) of the form \(J\times U\). Then this is an open subset of \(\R\times\m\) and \(\flow\) restricted to \(W\) is smooth as well. We will show by contradiction that \(W = \mathcal{D}\h{X}\). The idea is to find a point up until which the flow is smooth and then remark that we can extend the flow smoothly using Proposition~\ref{prp: flow one-parameter group}.
+		
+		Suppose that \(\overline{W} = \mathcal{D}\h{X} - W\) is non-empty, and assume that there is some \(\h{t,p_0}\in\overline{W}\) with \(t > 0\). Define some \(\tau\) as follows
+		\begin{equation*}
+			t_0 = \inf\h{t\in\R_{\geq0}:\ \h{t,p_0}\in\overline{W}}.
+		\end{equation*}
+		Clearly, the flow is smooth in some neighbourhood \(\h{-\epsilon_0,\epsilon_0}\times W_0\) of \(p_0\), hence \(t_0 > 0\). Now define the point \(q = \flow\h{t_0,p_0}\). We can then assure the smoothness of the flow in some neighbourhood \(\h{-\epsilon_q,\epsilon_q}\times W_q\) of \(q\). Now take some \(t_1 < t_0\) such that \(t_1 + \epsilon_q > t_0\). Then \(\h{t_1,p_0}\in W\) such that there is some neighbourhood \(\h{t_1 - \epsilon_1,t_1 + \epsilon_1}\times W_1\subset W\). Thus the flow is smooth in this neighbourhood, which lets us define the following mapping
+		\begin{equation*}
+			\tilde{\phi}:[0,t_1 + \epsilon_q)\times W_1\to\m:\h{t,p}\mapsto
+			\begin{cases}
+				\flow\h{t,p}&\mbox{if }0\leq t < t_1\\
+				\flow\h{t - t_1,\flow\h{t_1,p}}&\mbox{if }t_1\leq t< t_1 + \epsilon_q.
+			\end{cases}
+		\end{equation*}
+		This then forms a natural smooth extension of the flow in a neighbourhood of \(\h{t_0,p_0}\), which was a contradiction with the definition of \(t_0\). Hence, it follows that \(\overline{W}\) is empty, implying that \(\mathcal{D}\h{X} = W\) and that it is therefore open.
+	\end{proof}
+	
+	\subsubsection{Derivations along vector fields}
+	With the interpretation of the vector fields as a sense of direction and the flow as the paths we can walk along, we can see how different functions change in the direction of the vector field. We call such derivatives the Lie derivative along a vector field. We can define these for both functions and vector fields, and we will see that they coincide with some simpler expressions. In Section~\ref{sec: lie derivative}, we go deeper into the action of the Lie derivative on tensor fields.
+	\begin{definition}\label{def: lie derivative function}
+		For an \(X\in\vf\) and \(f\in \sff\) we define the \textbf{Lie derivative of \(f\) along \(X\)} as
+		\begin{equation*}
+			\ld[X]f = \dtnull \pull{\h{\phi_X^t}}f.
+		\end{equation*}
+		The existence of this operator is ensured by the fact that the flow locally exists
+	\end{definition}
+	\begin{corollary}\label{cor: lie derivative is action}
+		For a vector field \(X\) and smooth function \(f\) we have \(\ld[X]f = Xf\).
+	\end{corollary}
+	\begin{proof}
+		Take some arbitrary \(X\in\vf\) and \(f\in\sff\). Remark that the pullback of a function is defined such that
+		\begin{equation*}
+			\pull{\h{\timeflow{t}}}f\h{p} = f\circ\posflow{p}\h{t}.
+		\end{equation*}
+		We can calculate the Lie derivative at an arbitrary point \(p\). This reduces to the derivative of the composition \(f\circ\posflow{p}\),
+		\begin{equation*}
+			\h{\ld[X]f}\h{p} = \dtnull f\circ\posflow{p} = df_p\h{\dtposflow{p}\h{0}} = df_p\h{X_p} = Xf\h{p}.
+		\end{equation*}
+		This proves that \(\ld[X]f = Xf\) as \(p\) is arbitrary.
+	\end{proof}
+	We can extend this definition to vector fields.
+	\begin{definition}\label{def: lie derivative vector field}
+		Lie derivative of vector field \(Y\) along \(X\) is defined as
+		\begin{equation*}
+			\ld[X]Y = \dtnull \pull{\h{\phi_X^t}}Y.
+		\end{equation*}
+		By the local existence of the flow, this is well-defined.
+	\end{definition}
+	We can also express this operator in simpler terms, namely in terms of the Lie bracket defined in Definition~\ref{def: lie bracket vector field}. This proof is based on Theorem 20.4 in \cite{Tu2011}.
+	\begin{corollary}\label{cor: lie derivative is bracket}
+		For arbitrary vector fields \(X\) and \(Y\), the Lie derivative of \(Y\) along \(X\) is given by \(\ld[X]Y = \comm{X}{Y}\).
+	\end{corollary}
+	\begin{proof}
+		Let \(\m\) be an arbitrary manifold and suppose that \(X,Y\in\vf\) and \(f\in\sff\). We know we can write the Lie bracket of \(X\) and \(Y\) in some coordinate chart \(\h{U,\h{x^i}}\) using Corollary~\ref{cor: coordinate function lie bracket}.
+		\begin{equation*}
+			\comm{X}{Y}_ p = \h{X^i\eval{\pdv{Y^j}{x^i}}_p - Y^i\eval{\pdv{X^j}{x^i}}_p}\eval{\pdv{x^j}}_p.
+		\end{equation*}
+		So we just need to check whether the Lie derivative also satisfies this equation.
+		\begin{align*}
+			\h{\ld[X]Y}_p
+			&= \dtnull \h{\pulltimeflow{t}Y}_p = \dtnull \h{d\timeflow{-t}}_{\flow\h{t,p}}\h{Y_{\flow\h{t,p}}}\\
+			&= \dtnull Y^i\h{\flow\h{t,p}}\h{d\timeflow{-t}}_{\flow\h{t,p}}\h{\eval{\pdv{x^i}}_{\flow\h{t,p}}}\\
+			&= \ha{\dtnull Y^i\h{\flow\h{t,p}}\eval{\pdv{x^j\circ\timeflow{-t}}{x^i}}_{\flow\h{t,p}}}\eval{\pdv{x^j}}_p\\
+			\intertext{Using the product and chain rule, we can simplify this equation.}
+			&= \ha{\eval{\pdv{Y^i}{x^k}}_p\eval{\pdv{x^k\circ\posflow{p}}{t}}_{t = 0}\eval{\pdv{x^j\circ\timeflow{0}}{x^i}}_p - Y^i\h{p}\eval{\pdv{x^j\circ\timeflow{-t}}{t}{x^i}}_{t = 0, \flow\h{t,p}}}\eval{\pdv{x^j}}_p\\
+			&= \ha{\eval{\pdv{Y^j}{x^k}}_pX^k\h{p} - Y^i\h{p}\eval{\pdv{X^j}{x^i}}_p}\eval{\pdv{x^j}}_p = \comm{X}{Y}_p
+		\end{align*}
+	\end{proof}
+	Thus, we see that the Lie derivative has not yet given us any new operations in the sense that \(\ld[X] f = Xf\) and \(\ld[X] Y = \comm{X}{Y}\) were already defined. It does give us more intuition behind the definition of these operators.
+	
+	\section{Time-dependent Vector Fields}
+	Now we will generalise our theory of vector fields, to ones that change over time. These turn up naturally in the proof of Darboux's theorem, see Theorem~\ref{thm: darboux}, but their theory is slightly more involved than time-independent vector fields. However, we can come to a nearly equivalent result.
+	\begin{definition}\label{def: time dependent vector field}
+		A \textbf{time-dependent vector field} on \(\m\) is a smooth function \(X:J\times\m\to\tang\), where \(J\) is an interval in \(\R\), such that for each \(\h{t,p}\in J\times\m\) we have \(X\h{t,p}\in\loctang{p}\). In other words, the map \(X_t:\m\to\tang\) defined by \(X_t\h{p} = X\h{t,p}\) is a vector field of \(\m\).
+	\end{definition}
+	We will not go into the algebraic structure of the vector fields here, but we solely focus on the geometric interpretation.
+	
+	\subsection{Integral Curves and Flow}
+	Much like time-independent vector fields, we can use a time-dependent vector field to generate motion over a manifold in the form of an integral curve.
+	\begin{definition}\label{def: time dependent intergral curve}
+		Let \(X\) be a time-dependent vector field on \(\m\) defined on the time interval \(J\). An \textbf{integral curve} of \(X\) is a curve \(\gamma:I\to\m\), with \(I\subset J\), such that
+		\begin{equation*}
+			\dot{\gamma}\h{t} = X\h{t,\gamma\h{t}},
+		\end{equation*}
+		with \(t\in I\). We define maximality similarly to Definition~\ref{def: maximal integral curve}.
+	\end{definition}
+	
+	We should note that it is much harder to define a flow in this case, as different integral curves may go over the same point without being equal to each other in a neighbourhood of this point, see Example~\ref{exp: integral curve time dependent}.
+	\begin{example}\label{exp: integral curve time dependent}
+		Let \(\m = \R[2]\) and define \(X\h{t,p} = -\sin\h{t}\pdv*{x} + \cos\h{t}\pdv*{y}\).
+		
+		Let \(\gamma_1:\ha{0,\infty}\to\m\) be the integral curve such that \(\gamma_1\h{0} = \h{1,0}^T\). It then needs to be a solution of the following differential equation
+		\begin{equation*}
+			\dot{\gamma}\h{t} = X\h{t,\gamma\h{t}} = \mqty(-\sin\h{t}\\\cot\h{t}).
+		\end{equation*}
+		The obvious solution then is the following
+		\begin{equation*}
+			\gamma_1\h{t} = \mqty(\cos\h{t}\\\sin\h{t}).
+		\end{equation*}
+		Now suppose that \(\gamma_2:\ha{\pi,\infty}\to\m\) is the integral curve such that \(\gamma\h{\pi} = \h{1,0}^T\). For time-independent vector fields, this would lead to the same integral curve up to some time translation. However, given our time-dependent vector field, we find a different solution to the differential equation, namely
+		\begin{equation*}
+			\gamma_2\h{t} = \mqty(2 + \cos\h{t}\\-\sin\h{t}).
+		\end{equation*}
+		We can see in Figure~\ref{fig: trajectories}, that these are very different, even though they pass through the same point, \(\h{1,0}^T\). This is very different from time-independent vector fields.
+		\begin{figure}
+			\centering
+			\includegraphics{img/trajectory_plots.pdf}
+			\caption{}
+			\label{fig: trajectories}
+		\end{figure}
+	\end{example}
+	The previous example clearly shows that it is not very informative to look at a single integral curve passing through a point. We will instead focus on the more global behaviour over time in terms of a time-dependent flow.
+	\begin{theorem}\label{thm: time dependent flow}
+		Let \(X\) be a time-dependent vector field on \(\m\) defined on some open interval \(J\). There exists an open subset \(\mathscr{E}\h{X}\subset J\times J\times\m\) and a smooth function \(\flow:\mathscr{E}\h{X}\to\m\) called the \textbf{time-dependent flow} with the following properties:
+		\begin{enumerate}
+			\item \label{part: a}For each \(t_0\in J\) and \(p\in\m\), the set \(\mathscr{E}^{\h{t_0,p}}\h{X} = \hv{t\in J:\h{t,t_0,p}\in\mathscr{E}\h{X}}\) is an open interval containing \(t_0\). Furthermore, \(\posflow{t_0,p}\h{t} = \flow\h{t,t_0,p}\) is the unique maximal integral curve of \(V\), with the condition \(\posflow{t_0,p}\h{t_0} = p\).
+			\item \label{part: b}For any \(t_1\in\mathscr{E}^{\h{t_0,p}}\h{X}\) and \(q = \posflow{t_0,p}\h{t_1}\), we have \(\mathscr{E}^{\h{t_1,q}}\h{X} = \mathscr{E}^{\h{t_0,p}}\h{X}\) and \(\posflow{t_1,q} = \posflow{t_0,p}\).
+			\item \label{part: c}For each \(\h{t_1,t_0}\in J\times J\), the set \(\m_{t_1,t_0} = \hv{p\in\m:\h{t_1,t_0,p}\in\mathscr{E}\h{X}}\) is open in \(\m\), and the map \(\timeflow{t_1,t_0}:\m_{t_1,t_0}\to\m\) defined by \(\timeflow{t_1,t_0}\h{p} = \flow\h{t_1,t_0,p}\) is a diffeomorphism from \(\m_{t_1,t_0}\) onto \(\m_{t_0,t_1}\).
+			\item \label{part: d}If \(p\in \m_{t_1,t_0}\) and \(\timeflow{t_1,t_0}\h{p}\in \m_{t_2,t_1}\), then \(p\in \m_{t_2,t_1}\) and
+			\begin{equation*}
+				\timeflow{t_2,t_1}\circ\timeflow{t_1,t_0}\h{p} = \timeflow{t_2,t_0}\h{p}.
+			\end{equation*}
+		\end{enumerate}
+	\end{theorem}
+	\begin{proof}
+		Let \(X\) be a time-dependent vector field on \(\m\) defined on a time interval \(J\). We can translate this to a vector field \(\widetilde{X}\) on \(J\times\m\) defined as follows
+		\begin{equation*}
+			\widetilde{X}_{\h{s,p}} = \h{\eval{\pdv{s}}_s,X\h{s,p}}.
+		\end{equation*}
+		We use \(s\) as the standard standard coordinate of \(J\) and remark that an element of \(\loctang[\h{J\times\m}]{\h{s,p}}\) can be identified in \(\loctang[J]{s}\oplus\loctang{p}\). This vector field has a flow \(\flow[\widetilde{X}]\) that is of the following form
+		\begin{equation*}
+			\flow[\widetilde{X}]\h{t,\h{s,p}} = \h{\alpha\h{t,\h{s,p}},\beta\h{t,\h{s,p}}}.
+		\end{equation*}
+		As it is the flow of \(\widetilde{X}\) we can see that \(\alpha\) satisfies the following initial value problem
+		\begin{equation*}
+			\pdv{\alpha}{t}\h{t,\h{s,p}} = 1,\quad \alpha\h{0,\h{s,p}} = s.
+		\end{equation*}
+		Hence, we get \(\alpha\h{t,\h{s,p}} = s + t\). For \(\beta\) we then see it should satisfy the following
+		\begin{equation}\label{eq: ode beta}
+			\pdv{\beta}{t}\h{t,\h{s,p}} = X\h{t + s,\beta\h{t,\h{s,p}}}.
+		\end{equation}
+		Hence, we see that this can function as an integral curve of the vector field, enticing us to define the flow of \(X\), \(\flow\), as
+		\begin{equation}\label{eq: definition flow}
+			\flow\h{t,t_0,p} = \beta\h{t - t_0,\h{t_0,p}}.
+		\end{equation}
+		The smoothness of \(\flow\) is implied by the smoothness of \(\flow[\widetilde{X}]\) and \(\beta\). The domain of this function, \(\mathscr{E}\h{X}\), can be made as large as possible by defining it as
+		\begin{equation*}
+			\mathscr{E}\h{X} = \hv{\h{t,t_0,p}\in\R\times J\times\m:\ \h{t - t_0,\h{t_0,p}}\in\mathcal{D}(\widetilde{X})}.
+		\end{equation*}
+		Remark that the function \(\alpha\) maps \(\mathcal{D}(\widetilde{X})\) to \(J\), such that for any point \(\h{t,t_0,p}\in\mathscr{E}\h{X}\) we have \(t\in J\), implying that \(\mathscr{E}\h{X}\subset J\times J\times\m\). Similarly, we can deduce that \(\mathscr{E}\h{X}\) is open from the fact that \(\mathcal{D}(\widetilde{X})\) is open.
+		
+		Now take some arbitrary \(t_0\in J\) and \(p\in\m\) and define \(\mathscr{E}^{\h{t_0,p}}\h{X}\) as in the theorem, which is open by definition. If we define \(\posflow[\widetilde{X}]{\h{t_0,p}} = \flow[\widetilde{X}]\h{t,t_0,p}\) we can see that it is an integral curve by combining Equation~\ref{eq: ode beta} and~\ref{eq: definition flow}. The uniqueness and maximality are direct consequences of the definition of the flow of a vector field. This proves~\ref{part: a}.
+		
+		If we have some \(t_0\in J\) and \(p\in\m\), we can take some arbitrary \(t_1\in\mathscr{E}^{\h{t_0,p}}\) and define \(q = \flow\h{t_1,t_0,p}\). Then \(\posflow{\h{t_0,p}}\) and \(\posflow{\h{t_1,q}}\) are both integral curves that go through \(q\) at \(t = t_1\). Hence, by the uniqueness of the flow of \(\widetilde{X}\) these are the same curve and hence \(\mathscr{E}^{\h{t_0,p}} = \mathscr{E}^{\h{t_1,q}}\). This proves~\ref{part: b}.
+		
+		We will now skip to proving~\ref{part: d}. Assuming \(p\in\m_{t_1,t_0}\) and \(\timeflow{t_1,t_0}\h{p}\in\m_{t_2,t_1}\), then~\ref{part: b} implies that
+		\begin{equation*}
+			\flow\h{t_2,t_1,\flow\h{t_1,t_0,p}} = \flow\h{t_2,t_0,p}\implies \timeflow{t_2,t_1}\circ\timeflow{t_1,t_0}\h{p} = \timeflow{t_2,t_0}\h{p}.
+		\end{equation*}
+		This proves~\ref{part: d}.
+		
+		Lastly, take a look at~\ref{part: c}. Suppose that \(\h{t_1,t_0}\in J\), the openness of \(\m_{t_1,t_0}\) is implied by the openness of \(\mathscr{E}\h{X}\). We can easily define the inverse function of \(\timeflow{t_1,t_0}\) as this is simply \(\timeflow{t_0,t_1}\). We should remark that for an arbitrary \(p\in M_{t_1,t_0}\) we know that \(\mathscr{E}^{\h{t_0,p}} = \mathscr{E}^{\h{t_1,q}}\), with \(q = \timeflow{t_1,t_0}\h{p}\). Implying that \(q\in M_{t_0,t_1}\), or in other words, \(\timeflow{t_1,t_0}\h{M_{t_1,t_2}} = M_{t_0,t_1}\). This concludes the proof.
+	\end{proof}
+	\subsubsection{Derivations along time-dependent vector fields}
+	With the existence of the flow, we can once again see how functions and vector fields change along the vector field.
+	\begin{definition}
+		The Lie derivative of \(f\in\sff\) along a time-dependent vector field \(X\) on \(\m\) at some \(t\in J\), where \(J\) is an open interval in \(\R\) on which \(X\) is defined, is given by
+		\begin{equation*}
+			\ld[X_t]f = \eval{\dv{s}}_{s = t}\pulltimeflow{s,t}f.
+		\end{equation*}
+		The existence is ensured by Theorem \ref{thm: time dependent flow}.
+	\end{definition}
+	\begin{proposition}
+		If \(X\) is a time-dependent vector field on \(\m\) and \(s\in J\), then
+		\begin{equation*}
+			\eval{\dv{s}}_{s = t}\pulltimeflow{s,0}f = \pulltimeflow{t,0}\ld[X_t]f
+		\end{equation*}
+		for all \(f\in\sff\).
+	\end{proposition}
+	\begin{proof}
+		Suppose that \(X\) is a time-dependent vector field on \(\m\) and \(t\in J\), where \(J\) is the time-interval on which \(X\) is defined. It follows for an arbitrary \(f\in\sff\) from the definition that
+		\begin{align*}
+			\eval{\dv{s}}_{s = t}\pulltimeflow{s,0}f
+			&= \eval{\dv{s}}_{s = t}\pull{\h{\timeflow{s,t}\circ\timeflow{t,0}}}f = \eval{\dv{s}}_{s = t}\pulltimeflow{t,0}\circ\pulltimeflow{s,t}f\\
+			&= \pulltimeflow{t,0}\eval{\dv{s}}_{s = t}\pulltimeflow{s,t}f = \pulltimeflow{t,0}\ld[X_t]f
+		\end{align*}
+		This proves our statement. 
+	\end{proof}
+	Furthermore, remark that the action of the Lie derivative of a time-dependent vector field can be calculated rather simply.
+	\begin{proposition}
+		Let \(X\) be a time-dependent vector field on \(\m\) defined on a time interval \(J\). The Lie derivative of an \(f\in\sff\) at \(t\in J\) is given by
+		\begin{equation*}
+			\ld[X_t]f = X_tf.
+		\end{equation*}
+	\end{proposition}
+	\begin{proof}
+		Let \(X\) be a time-dependent vector field on \(\m\), defined on the time interval \(J\). Take an arbitrary \(f\in\sff\), \(p\in\m\) and \(t\in J\), we can then conclude that
+		\begin{align*}
+			\h{\ld[X_t]f}\h{p}
+			&= \eval{\dv{s}}_{s = t}\pulltimeflow{s,t}f\h{p} = \eval{\dv{s}}_{s = t}\h{f\circ\posflow{t,p}}\h{s}\\
+			&= df_p\h{\dtposflow{t,p}\h{t}} = df_p\h{X\h{t,p}} = \h{X_tf}\h{p}.
+		\end{align*}
+		As \(p\) is arbitrary it follows that \(\ld[X_t]f = X_tf\) on the whole of \(\m\). 
+	\end{proof}
+	We can see that the Lie derivative along a time-dependent vector field acts in the same manner as the Lie derivative of a time-independent vector field does.
+\end{document}
