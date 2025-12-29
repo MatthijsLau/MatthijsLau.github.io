@@ -12,6 +12,12 @@
 *.cb2
 .*.lb
 
+## Specific folders
+assets/documents/BT/
+assets/documents/MT/
+assets/documents/CV/
+assets/documents/poster_ruifest/
+
 ## Intermediate documents:
 *.dvi
 *.xdv
