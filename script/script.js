@@ -25,27 +25,23 @@ function randBanner() {
 }
 
 // ===============================
-// Event utilities
+// Global variables
 // ===============================
+let EVENTS_HTML = ''; // precomputed HTML string for events
 
-function parseEventDate(date, options = {}) {
-    if (options.tba || !date) {
-        return { start: null, end: null, tba: true };
-    }
-    if (typeof date === "string") {
-        const d = new Date(date);
-        return { start: d, end: d, tba: false };
-    }
+// ===============================
+// Utilities: parse & format dates
+// ===============================
+function parseEventDate(date, tbaYear) {
+    if (!date) return { start: null, end: null, tba: true, year: tbaYear || 'TBA' };
+    if (typeof date === 'string') date = { start: date };
     return { start: new Date(date.start), end: new Date(date.end || date.start), tba: false };
 }
 
 function formatDateRange(date) {
-    if (date.tba) return "TBA";
-
+    if (date.tba) return 'TBA';
     const opts = { month: 'short', day: 'numeric' };
-    if (date.start.getTime() === date.end.getTime()) {
-        return date.start.toLocaleDateString(undefined, opts);
-    }
+    if (date.start.getTime() === date.end.getTime()) return date.start.toLocaleDateString(undefined, opts);
     if (date.start.getMonth() === date.end.getMonth()) {
         return `${date.start.toLocaleDateString(undefined, { month: 'short' })}. ${date.start.getDate()}–${date.end.getDate()}`;
     }
@@ -53,160 +49,89 @@ function formatDateRange(date) {
 }
 
 // ===============================
-// Event HTML generator
+// Generate HTML for events
 // ===============================
-
 function generateEventsHTML(events) {
     const now = new Date();
+    const sections = { upcoming: {}, past: {} };
 
-    const enriched = events.map(([date, url, title, location, options = {}]) => {
-        return { date: parseEventDate(date, options), url, title, location, options };
+    events.forEach(ev => {
+        const date = parseEventDate(ev.date, ev.year);
+        const section = date.tba || date.end >= now ? 'upcoming' : 'past';
+        const year = date.tba ? date.year : date.start.getFullYear();
+        if (!sections[section][year]) sections[section][year] = [];
+        sections[section][year].push({ ...ev, date });
     });
 
-    enriched.sort((a, b) => {
-        if (a.date.tba && b.date.tba) return 0;
-        if (a.date.tba) return 1;
-        if (b.date.tba) return -1;
-        return a.date.start - b.date.start;
-    });
-
-    const groups = { upcoming: {}, past: {} };
-
-    enriched.forEach(ev => {
-        const section = ev.date.tba || ev.date.end >= now ? 'upcoming' : 'past';
-        const year = ev.date.tba ? (ev.options.year ?? "TBA") : ev.date.start.getFullYear();
-        if (!groups[section][year]) groups[section][year] = [];
-        groups[section][year].push(ev);
-    });
-
-    function renderSection(label, data) {
+    const renderSection = (label, data) => {
         const years = Object.keys(data).sort((a, b) => label === 'Upcoming' ? a - b : b - a);
         if (!years.length) return '';
         return `
 <details open class="mainDetails">
-    <summary>${label}</summary>
-    ${years.map(year => `
+  <summary>${label}</summary>
+  ${years.map(year => `
     <details open class="secondaryDetails">
-        <summary>${year}</summary>
-        <ul>
-            ${data[year].map(ev => `
-            <li>
-                <span class="flexspan">
-                    <span>
-                        ${ev.url
-                ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer">${ev.title}</a>`
-                : ev.title
-            }, ${ev.location},
-                    </span>
-                    <span class="date">${formatDateRange(ev.date)}</span>
-                </span>
-            </li>
-            `).join('')}
-        </ul>
-    </details>
-    `).join('')}
-</details>
-`;
-    }
+      <summary>${year}</summary>
+      <ul>
+        ${data[year].map(ev => `
+          <li>
+            <span class="flexspan">
+              <span>${ev.url ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer">${ev.title}</a>` : ev.title}, ${ev.location},</span>
+              <span class="date">${formatDateRange(ev.date)}</span>
+            </span>
+          </li>`).join('')}
+      </ul>
+    </details>`).join('')}
+</details>`;
+    };
 
-    return `
-${renderSection('Upcoming', groups.upcoming)}
-<div class="hline" style="height:1px"></div>
-${renderSection('Past', groups.past)}
-`;
+    return renderSection('Upcoming', sections.upcoming) + `<div class="hline"></div>` + renderSection('Past', sections.past);
 }
 
 // ===============================
-// Page loader
+// Load page dynamically
 // ===============================
-
 function loadPage(file) {
-    $('#content').load(file);
+    $('#content').load(file, function () {
+        if (file === 'research.html') {
+            const $list = $('#events-list');
+            if ($list.length) $list.html(EVENTS_HTML || 'Loading events...');
+        }
+    });
 }
 
 // ===============================
-// Main initialization
+// Load header/footer includes
 // ===============================
-
-$(function () {
-    const includes = $('[data-include]');
+function loadIncludes() {
     const jobs = [];
-
-    // Load header/footer fragments
-    includes.each(function () {
+    $('[data-include]').each(function () {
         const $el = $(this);
-        const file = $el.data('include') + '.html';
+        jobs.push($.get($el.data('include') + '.html').then(html => $el.html(html)).catch(() => $el.html('')));
+    });
+    return Promise.all(jobs);
+}
 
-        jobs.push(
-            $.get(file)
-                .then(html => $el.html(html))
-                .catch(() => $el.html(''))
-        );
+// ===============================
+// Initialization
+// ===============================
+$(function () {
+    // 1️⃣ Load header/footer first
+    loadIncludes().then(() => {
+        // 2️⃣ Load About Me immediately
+        loadPage('aboutme.html');
     });
 
-    // Once all includes are loaded
-    Promise.all(jobs).then(() => {
-        randBanner(); // Pick random banner
-        loadPage('aboutme.html'); // Load default page
-
-        // Once the page content loads, populate events
-        $(document).ajaxComplete(function (event, xhr, settings) {
-            if (settings.url.includes('aboutme.html')) {
-                // Load events from JSON
-                fetch('/assets/data/events.json')
-                    .then(res => res.json())
-                    .then(events => {
-                        loadEvents(events);
-                    })
-                    .catch(err => console.error('Failed to load events:', err));
-            }
-        });
-    });
+    // 3️⃣ Fetch events asynchronously
+    fetch('assets/data/events.json')
+        .then(res => res.json())
+        .then(events => { EVENTS_HTML = generateEventsHTML(events); })
+        .catch(() => { EVENTS_HTML = ''; });
 });
 
-// Render events into the <!-- events --> section
-function loadEvents(events) {
-    const $container = $('.content-container:has(h2:contains("Conferences, Workshops and Schools"))');
-    if (!$container.length) return;
-
-    const $details = $('<details open class="mainDetails"></details>');
-    $details.append('<summary>Conferences, Workshops and Schools</summary>');
-
-    const $ul = $('<ul></ul>');
-
-    // Optional: sort events by date ascending
-    events.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    events.forEach(event => {
-        const $li = $('<li></li>');
-
-        // Event title (emphasized), wrapped in a link if URL exists
-        let titleHTML = `<em>${event.title}</em>`;
-        if (event.url) {
-            titleHTML = `<a href="${event.url}" target="_blank" rel="noopener noreferrer">${titleHTML}</a>`;
-        }
-
-        // Event location + date
-        let contentHTML = `<span class="flexspan"><span>${titleHTML}`;
-        if (event.location) contentHTML += `; ${event.location}`;
-        contentHTML += `</span>`;
-
-        if (event.date) contentHTML += `<span class="data">${event.date}</span>`;
-        contentHTML += `</span>`;
-
-        $li.html(contentHTML);
-        $ul.append($li);
-    });
-
-    $details.append($ul);
-
-    // Replace <!-- events --> comment with generated HTML
-    $container.contents().filter(function () {
-        return this.nodeType === 8 && this.nodeValue.trim() === 'events';
-    }).replaceWith($details);
-}
-
-
+// ===============================
+// Navigation clicks
+// ===============================
 $(document).on('click', '.nav-link', function (e) {
     e.preventDefault();
     const page = $(this).data('page');
