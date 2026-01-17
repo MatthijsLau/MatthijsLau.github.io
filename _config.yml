@@ -1,3 +1,8 @@
 theme: minima
 title: Matthijs Lau
 description: PhD student at DipMat University of Salerno.
+
+url: "https://matthijslau.github.io" 
+
+plugins:
+  - jekyll-sitemap
