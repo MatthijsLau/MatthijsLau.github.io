@@ -28,6 +28,10 @@ function randBanner() {
 // Event utilities
 // ===============================
 
+let EVENTS_CACHE = null;
+let EVENTS_PROMISE = null;
+
+
 function parseEventDate(date, options = {}) {
     if (options.tba || !date) {
         return { start: null, end: null, tba: true };
@@ -121,8 +125,25 @@ ${renderSection('Past', groups.past)}
 // ===============================
 
 function loadPage(file) {
-    $('#content').load(file);
+    $('#content').load(file, function () {
+
+        if (file === 'research.html') {
+
+            // If already loaded, render immediately
+            if (EVENTS_CACHE) {
+                loadEvents(EVENTS_CACHE);
+            }
+            // Otherwise wait for the original fetch
+            else if (EVENTS_PROMISE) {
+                EVENTS_PROMISE.then(events => {
+                    if (events) loadEvents(events);
+                });
+            }
+        }
+    });
 }
+
+
 
 // ===============================
 // Main initialization
@@ -132,7 +153,6 @@ $(function () {
     const includes = $('[data-include]');
     const jobs = [];
 
-    // Load header/footer fragments
     includes.each(function () {
         const $el = $(this);
         const file = $el.data('include') + '.html';
@@ -144,67 +164,39 @@ $(function () {
         );
     });
 
-    // Once all includes are loaded
-    Promise.all(jobs).then(() => {
-        randBanner(); // Pick random banner
-        loadPage('aboutme.html'); // Load default page
-
-        // Once the page content loads, populate events
-        $(document).ajaxComplete(function (event, xhr, settings) {
-            if (settings.url.includes('aboutme.html')) {
-                // Load events from JSON
-                fetch('/assets/data/events.json')
-                    .then(res => res.json())
-                    .then(events => {
-                        loadEvents(events);
-                    })
-                    .catch(err => console.error('Failed to load events:', err));
-            }
+    // 🔹 Start fetching events immediately (once)
+    EVENTS_PROMISE = fetch('assets/data/events.json')
+        .then(res => res.json())
+        .then(events => {
+            EVENTS_CACHE = events;
+            return events;
+        })
+        .catch(err => {
+            console.error('Failed to load events:', err);
+            return null;
         });
+
+    Promise.all(jobs).then(() => {
+        randBanner();
+        loadPage('aboutme.html'); // or 'research.html'
     });
 });
 
+
 // Render events into the <!-- events --> section
 function loadEvents(events) {
-    const $container = $('.content-container:has(h2:contains("Conferences, Workshops and Schools"))');
-    if (!$container.length) return;
+    const $list = $('#events-list');
+    if (!$list.length) return;
 
-    const $details = $('<details open class="mainDetails"></details>');
-    $details.append('<summary>Conferences, Workshops and Schools</summary>');
+    // Prevent double rendering
+    if ($list.data('events-loaded')) return;
+    $list.data('events-loaded', true);
 
-    const $ul = $('<ul></ul>');
-
-    // Optional: sort events by date ascending
-    events.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    events.forEach(event => {
-        const $li = $('<li></li>');
-
-        // Event title (emphasized), wrapped in a link if URL exists
-        let titleHTML = `<em>${event.title}</em>`;
-        if (event.url) {
-            titleHTML = `<a href="${event.url}" target="_blank" rel="noopener noreferrer">${titleHTML}</a>`;
-        }
-
-        // Event location + date
-        let contentHTML = `<span class="flexspan"><span>${titleHTML}`;
-        if (event.location) contentHTML += `; ${event.location}`;
-        contentHTML += `</span>`;
-
-        if (event.date) contentHTML += `<span class="data">${event.date}</span>`;
-        contentHTML += `</span>`;
-
-        $li.html(contentHTML);
-        $ul.append($li);
-    });
-
-    $details.append($ul);
-
-    // Replace <!-- events --> comment with generated HTML
-    $container.contents().filter(function () {
-        return this.nodeType === 8 && this.nodeValue.trim() === 'events';
-    }).replaceWith($details);
+    const html = generateEventsHTML(events);
+    $list.html(html);
 }
+
+
 
 
 $(document).on('click', '.nav-link', function (e) {
