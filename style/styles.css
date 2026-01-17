@@ -111,7 +111,7 @@ body {
 /* Headers and navigation*/
 .banner-header {
     max-height: 120;
-    background-image: linear-gradient(rgba(248, 247, 242, 0.5), rgba(248, 247, 242, 0.8));
+    background-image: linear-gradient(rgba(248, 247, 242, 0.5), rgba(248, 247, 242, 0.8)), url('/assets/images/banners/banner-fisciano.png');
     background-blend-mode: lighten;
     background-repeat: no-repeat;
     background-position: center;
