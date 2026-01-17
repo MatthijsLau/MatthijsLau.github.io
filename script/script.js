@@ -9,6 +9,8 @@ const images = [
     '/assets/images/banners/banner-blacklake.png'
 ];
 
+function preloadImage(url) { const img = new Image(); img.src = url; }
+
 function setBanner(url) {
     const $banner = $('.banner-header');
     if (!$banner.length) return;
@@ -18,38 +20,27 @@ function setBanner(url) {
     );
 }
 
-function randBanner() {
-    if (!images.length) return;
-    setBanner(images[Math.floor(Math.random() * images.length)]);
-}
+// ===============================
+// Page loader with hooks
+// ===============================
+const pageHooks = {
+    'research.html': () => Promise.all([
+        window.AppEvents?.loadEvents?.().then(() => window.AppEvents.renderEventsList()),
+        window.AppPublications?.loadPublications?.().then(() => window.AppPublications.renderPublicationsList()),
+        window.AppTalks?.loadTalks?.().then(() => window.AppTalks.renderTalksList()),
+        window.AppPosters?.loadPosters?.().then(() => window.AppPosters.renderPostersList())
+    ]),
+    'teaching.html': () =>
+        window.AppTeaching?.loadTeaching?.().then(() => window.AppTeaching.renderTeachingList())
+};
 
-// ===============================
-// Page loader
-// ===============================
 function loadPage(file, target = '#content') {
     $(target).load(file, function () {
-        // After content is loaded
-        if (file === 'research.html') {
-            window.AppEvents.loadEvents().then(() => {
-                window.AppEvents.renderEventsList();
-            });
-            window.AppPublications.loadPublications().then(() => {
-                window.AppPublications.renderPublicationsList();
-            });
-            window.AppTalks.loadTalks().then(() => {
-                window.AppTalks.renderTalksList();
-            });
-            window.AppPosters.loadPosters().then(() => {
-                window.AppPosters.renderPostersList();
-            });
-        }
-        else if (file === 'teaching.html') {
-            window.AppTeaching.loadTeaching().then(() => {
-                window.AppTeaching.renderTeachingList();
-            });
-        }
+        $(target).show();
+        pageHooks[file]?.(); // 👈 run hook if it exists
     });
 }
+
 
 // ===============================
 // Include loader
@@ -69,8 +60,11 @@ function loadIncludes() {
 // On document ready
 // ===============================
 $(function () {
+    const rand_img = images[Math.floor(Math.random() * images.length)];
+    preloadImage(rand_img)
+
     loadIncludes().then(() => {
-        randBanner();           // Pick random banner
+        setBanner(rand_img);           // Pick random banner
         loadPage('aboutme.html'); // Load default page
     });
 });

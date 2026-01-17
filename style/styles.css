@@ -22,6 +22,10 @@ body {
     margin: 0;
 }
 
+#content {
+    display: none;
+}
+
 /* General containers*/
 .main-container {
     line-height: 125%;
