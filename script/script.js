@@ -1,6 +1,6 @@
-// Banner loader: simple and without preloading logic
-
-// List of banner images
+// ===============================
+// Banner loader
+// ===============================
 const images = [
     '/assets/images/banners/banner-fisciano.png',
     '/assets/images/banners/banner-siena.png',
@@ -9,59 +9,72 @@ const images = [
     '/assets/images/banners/banner-blacklake.png'
 ];
 
-// Track which banner is currently displayed
-let currentBanner = null;
+function preloadImage(url) { const img = new Image(); img.src = url; }
 
-// Set the banner background immediately (no preloading or Image objects).
 function setBanner(url) {
     const $banner = $('.banner-header');
     if (!$banner.length) return;
-    $banner.css('background-image', "linear-gradient(rgba(248,247,242,0.5), rgba(248,247,242,0.8)), url('" + url + "')");
-    currentBanner = url;
+    $banner.css(
+        'background-image',
+        `linear-gradient(rgba(248,247,242,0.5), rgba(248,247,242,0.8)), url('${url}')`
+    );
 }
 
-// Choose a random banner different from current (when possible) and set it.
-function randBanner() {
-    if (!images || images.length === 0) return;
-    let candidates = images.filter(function (s) { return s !== currentBanner; });
-    if (!candidates.length) candidates = images.slice();
-    const chosen = candidates[Math.floor(Math.random() * candidates.length)];
-    setBanner(chosen);
-}
+// ===============================
+// Page loader with hooks
+// ===============================
+const pageHooks = {
+    'research.html': () => Promise.all([
+        window.AppEvents?.loadEvents?.().then(() => window.AppEvents.renderEventsList()),
+        window.AppPublications?.loadPublications?.().then(() => window.AppPublications.renderPublicationsList()),
+        window.AppTalks?.loadTalks?.().then(() => window.AppTalks.renderTalksList()),
+        window.AppPosters?.loadPosters?.().then(() => window.AppPosters.renderPostersList())
+    ]),
+    'teaching.html': () =>
+        window.AppTeaching?.loadTeaching?.().then(() => window.AppTeaching.renderTeachingList())
+};
 
-// Load a page fragment into #content
-function loadPage(file) { $('#content').load(file); }
-
-// On ready: include header/footer fragments, then set initial banner and page.
-$(function () {
-    const includes = $('[data-include]');
-    const jobs = [];
-    includes.each(function () {
-        const $el = $(this);
-        const file = $el.data('include') + '.html';
-        jobs.push($.get(file).then(function (html) { $el.html(html); }).catch(function () { $el.html(''); }));
+function loadPage(file, target = '#content') {
+    $(target).load(file, function () {
+        $(target).show();
+        pageHooks[file]?.(); // 👈 run hook if it exists
     });
+}
 
-    Promise.all(jobs).then(function () {
-        const el = document.querySelector('.banner-header');
-        let declared = null;
-        if (el && el.style && el.style.backgroundImage) {
-            const m = el.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/);
-            declared = m ? m[1] : null;
-        }
 
-        if (declared) setBanner(declared);
-        else randBanner();
+// ===============================
+// Include loader
+// ===============================
+function loadIncludes() {
+    const jobs = [];
+    $('[data-include]').each(function () {
+        const $el = $(this);
+        jobs.push($.get($el.data('include') + '.html')
+            .then(html => $el.html(html))
+            .catch(() => $el.html('')));
+    });
+    return Promise.all(jobs);
+}
 
-        loadPage('aboutme.html');
-    }).catch(function () { randBanner(); loadPage('aboutme.html'); });
+// ===============================
+// On document ready
+// ===============================
+$(function () {
+    const rand_img = images[Math.floor(Math.random() * images.length)];
+    preloadImage(rand_img)
+
+    loadIncludes().then(() => {
+        setBanner(rand_img);           // Pick random banner
+        loadPage('aboutme.html'); // Load default page
+    });
 });
 
-// Navigation: clicking .nav-link loads pages; clicking the #name link also switches banner.
+// ===============================
+// Navigation elements
+// ===============================
 $(document).on('click', '.nav-link', function (e) {
     e.preventDefault();
     const page = $(this).data('page');
     if (!page) return;
-    if ($(this).attr('id') === 'name') randBanner();
     loadPage(page + '.html');
 });

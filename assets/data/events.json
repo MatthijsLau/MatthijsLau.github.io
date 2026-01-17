@@ -1,0 +1,82 @@
+[
+  {
+    "date": null,
+    "title": "Higher Structures in Pavia",
+    "location": "Univ. di Pavia (Italy)",
+    "url": null,
+    "tba": true,
+    "year": 2026
+  },
+  {
+    "date": {
+      "start": "2026-08-03",
+      "end": "2026-08-07"
+    },
+    "title": "Poisson Geometry Summer School",
+    "location": "KU Leuven (Belgium)",
+    "url": "https://www.uantwerpen.be/nl/personeel/sonja-hohloch/private-webpage/conference-workshop/poissonschool2026/"
+  },
+  {
+    "date": {
+      "start": "2026-08-10",
+      "end": "2026-08-14"
+    },
+    "title": "Poisson 2026",
+    "location": "KU Leuven (Belgium)",
+    "url": "https://wis.kuleuven.be/events/2026_poisson/conference_poisson2026"
+  },
+  {
+    "date": {
+      "start": "2025-08-03",
+      "end": "2025-08-08"
+    },
+    "title": "Around Singularities in Poisson Geometry",
+    "location": "IASM Hangzhou (China) (Attended Online)",
+    "url": "https://www.birs.ca/events/2025/5-day-workshops/25w5442"
+  },
+  {
+    "date": {
+      "start": "2025-06-30",
+      "end": "2025-07-04"
+    },
+    "title": "Interactions of Poisson Geometry, Lie Theory and Symmetry",
+    "location": "IST Lisbon (Portugal)",
+    "url": "https://sites.google.com/view/ipgls2025/"
+  },
+  {
+    "date": {
+      "start": "2025-02-01",
+      "end": "2025-07-31"
+    },
+    "title": "Seminar: Non-commutative geometry of foliations",
+    "location": "RU Nijmegen",
+    "url": null
+  },
+  {
+    "date": {
+      "start": "2025-01-23",
+      "end": "2025-01-24"
+    },
+    "title": "Higher Geometric Structures along the Lower Rhine XVIII",
+    "location": "RU Nijmegen (Netherlands)",
+    "url": "https://www.math.ru.nl/~sagave/higher-structures-XVIII/index.html"
+  },
+  {
+    "date": {
+      "start": "2025-01-22",
+      "end": "2025-01-23"
+    },
+    "title": "Central Europe Relativity Seminar 15",
+    "location": "RU Nijmegen (Netherlands)",
+    "url": "https://cers.univie.ac.at/cers15/index.html"
+  },
+  {
+    "date": {
+      "start": "2024-06-27",
+      "end": "2024-06-28"
+    },
+    "title": "Poisson aan de Waal 4",
+    "location": "RU Nijmegen and UU Utrecht (Netherlands)",
+    "url": "https://sites.google.com/view/poisson-aan-de-waal-4/home"
+  }
+]

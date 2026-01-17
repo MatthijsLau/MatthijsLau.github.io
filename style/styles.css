@@ -16,9 +16,14 @@ html {
 
 body {
     color: var(--text-color);
-    background-color: transparent; /* let html show behind the scrollbar gutter */
+    background-color: transparent;
+    /* let html show behind the scrollbar gutter */
     min-height: 100%;
     margin: 0;
+}
+
+#content {
+    display: none;
 }
 
 /* General containers*/
@@ -51,7 +56,6 @@ body {
 
 
 /* Collapsibles */
-
 .mainDetails {
     margin: 0px auto -5px
 }
@@ -106,9 +110,10 @@ body {
     margin: 7px auto;
 }
 
-.secondaryDetails ul{
+.secondaryDetails ul {
     list-style-type: "-  ";
 }
+
 /* Headers and navigation*/
 .banner-header {
     max-height: 120;
@@ -130,9 +135,9 @@ body {
     margin-left: 10px;
     text-align: left;
     text-shadow:
-         .5px  .5px 2px var(--bg-color),
-        -.5px  .5px 2px var(--bg-color),
-         .5px -.5px 2px var(--bg-color),
+        .5px .5px 2px var(--bg-color),
+        -.5px .5px 2px var(--bg-color),
+        .5px -.5px 2px var(--bg-color),
         -.5px -.5px 2px var(--bg-color)
 }
 
@@ -172,7 +177,7 @@ body {
 }
 
 .rightheader nav ul li a,
-.rightheader nav ul li a:visited{
+.rightheader nav ul li a:visited {
     background-color: var(--main-color);
     color: var(--bg-color);
     display: block;
@@ -189,7 +194,7 @@ body {
     border-radius: 0 3px 3px 0;
 }
 
-.rightheader nav ul li:not(:first-child) a{
+.rightheader nav ul li:not(:first-child) a {
     border-left: 1px solid var(--accent-dark-color)
 }
 
@@ -268,6 +273,7 @@ br {
 .date {
     font-size: .9em;
     font-style: italic;
+    min-width: 8.3em;
 }
 
 /* hlines */
