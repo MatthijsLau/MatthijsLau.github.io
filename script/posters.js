@@ -34,14 +34,13 @@ function generatePostersHTML(posters) {
         // Fallbacks for missing fields
         const title = poster.title || 'Untitled';
         const url = poster.url || null
-        const type = poster.type || 'TBA';
         const location = poster.location || 'TBA';
         const dateStr = formatPosterDate(date);
 
         return `<li>${url
             ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><em>${title}</em></a>`
             : `<em>${title}</em>`
-            }; ${type}, at ${location}, ${dateStr}</li>`;
+            }; at ${location}, ${dateStr}</li>`;
 
     }).join('\n')}
     </ul>`;
