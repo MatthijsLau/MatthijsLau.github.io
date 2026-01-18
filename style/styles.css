@@ -1,4 +1,6 @@
-/* setup up color scheme */
+/* =========================
+   Color scheme
+========================= */
 :root {
     --main-color: hsl(228, 28%, 37%);
     --bg-color: hsl(49, 28%, 96%);
@@ -8,181 +10,158 @@
     --link-color: hsl(349, 28%, 37%);
 }
 
+/* =========================
+   Base document
+========================= */
 html {
-    scrollbar-gutter: stable;
-    background-color: var(--bg-color);
     min-height: 100%;
+    background-color: var(--bg-color);
+    scrollbar-gutter: stable;
 }
 
 body {
-    color: var(--text-color);
-    background-color: transparent;
-    /* let html show behind the scrollbar gutter */
     min-height: 100%;
     margin: 0;
+    color: var(--text-color);
+    background-color: transparent;
 }
 
 #content {
     display: none;
 }
 
-/* General containers*/
+/* =========================
+   General containers
+========================= */
 .main-container {
-    line-height: 125%;
     max-width: 960px;
     margin: 0 auto;
+    padding: 0;
     font-family: Georgia, serif;
+    font-size: 18px;
+    line-height: 1.25;
     color: var(--text-color);
-    font-size: 18px
-}
-
-.main-container a,
-.main-container a:visited {
-    color: var(--link-color);
-    text-decoration: none
-}
-
-.main-container a:hover {
-    text-decoration: underline dotted
-}
-
-.main-container a:active {
-    text-decoration: underline
 }
 
 .content-container {
-    padding: 10px
+    padding: 10px;
 }
 
+/* Links */
+.main-container a {
+    color: var(--link-color);
+    text-decoration: none;
+}
 
-/* Collapsibles */
-.mainDetails {
-    margin: 0px auto -5px
+.main-container a:hover {
+    text-decoration: underline dotted;
+}
+
+.main-container a:active {
+    text-decoration: underline;
+}
+
+/* =========================
+   Collapsibles
+========================= */
+.mainDetails,
+.secondaryDetails {
+    margin: 0 auto -5px;
 }
 
 .mainDetails[open] {
-    margin: 0px auto
+    margin-bottom: 0;
 }
 
-.mainDetails>summary {
+.mainDetails > summary,
+.secondaryDetails > summary {
     display: block;
-    text-decoration: underline;
-    font-weight: bold;
     cursor: pointer;
+    text-decoration: underline;
+}
+
+.mainDetails > summary {
+    font-weight: bold;
     margin: 10px auto;
 }
 
-.mainDetails[open]>summary {
-    display: block;
-    text-decoration: underline;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px auto 7px;
+.mainDetails[open] > summary {
+    margin-bottom: 7px;
 }
 
 .mainDetails ul {
-    margin: 0px auto 10px
+    margin: 0 auto 10px;
 }
 
-.secondaryDetails {
-    margin: 0px auto -5px
-}
-
-.secondaryDetails[open] {
-    margin: 0px auto -5px
-}
-
-.secondaryDetails[open]>summary {
-    display: block;
-    text-decoration: underline;
+.secondaryDetails > summary {
     font-weight: normal;
     font-style: italic;
-    cursor: pointer;
-    margin: 7px auto 5px;
-}
-
-.secondaryDetails>summary {
-    display: block;
-    text-decoration: underline;
-    font-weight: normal;
-    font-style: italic;
-    cursor: pointer;
     margin: 7px auto;
+}
+
+.secondaryDetails[open] > summary {
+    margin-bottom: 5px;
 }
 
 .secondaryDetails ul {
     list-style-type: "-  ";
 }
 
-/* Headers and navigation*/
+/* =========================
+   Header & navigation
+========================= */
 .banner-header {
-    max-height: 120;
-    background-image: linear-gradient(rgba(248, 247, 242, 0.5), rgba(248, 247, 242, 0.8));
-    background-blend-mode: lighten;
+    max-height: 140px;
+    background-image: linear-gradient(
+        rgba(248, 247, 242, 0.5),
+        rgba(248, 247, 242, 0.8)
+    );
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    background-blend-mode: lighten;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 10px
+    margin: 20px 10px;
 }
 
 .leftheader {
     margin-left: 10px;
     text-align: left;
     text-shadow:
-        .5px .5px 2px var(--bg-color),
-        -.5px .5px 2px var(--bg-color),
-        .5px -.5px 2px var(--bg-color),
-        -.5px -.5px 2px var(--bg-color)
+        0.5px  0.5px 2px var(--bg-color),
+       -0.5px  0.5px 2px var(--bg-color),
+        0.5px -0.5px 2px var(--bg-color),
+       -0.5px -0.5px 2px var(--bg-color);
 }
 
-.leftheader a,
-.leftheader a:visited,
-.leftheader a:active,
-.leftheader a:hover {
+.leftheader a {
     color: var(--main-color);
     text-decoration: none;
 }
 
+/* Navigation */
 .rightheader {
     text-align: right;
 }
 
-.rightheader a,
-.rightheader a:visited {
-    color: var(--bg-color);
-    text-decoration: none;
-}
-
-.rightheader a:hover {
-    color: var(--bg-color);
-    text-decoration: underline dotted
-}
-
-.rightheader a:active {
-    color: var(--bg-color);
-    text-decoration: underline
-}
-
 .rightheader nav ul {
-    list-style: none;
+    display: flex;
     margin: 0;
     padding: 0;
-    display: flex;
+    list-style: none;
 }
 
-.rightheader nav ul li a,
-.rightheader nav ul li a:visited {
+.rightheader nav ul li a {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
     background-color: var(--main-color);
     color: var(--bg-color);
-    display: block;
-    text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
 }
 
@@ -195,30 +174,31 @@ body {
 }
 
 .rightheader nav ul li:not(:first-child) a {
-    border-left: 1px solid var(--accent-dark-color)
+    border-left: 1px solid var(--accent-dark-color);
 }
 
 .rightheader nav ul li:not(:last-child) a {
-    border-right: 1px solid var(--accent-dark-color)
+    border-right: 1px solid var(--accent-dark-color);
 }
 
-.rightheader nav ul li a:active,
-.rightheader nav ul li a:hover {
+.rightheader nav ul li a:hover,
+.rightheader nav ul li a:active {
     background-color: var(--accent-dark-color);
 }
 
-
-/* Footer */
+/* =========================
+   Footer
+========================= */
 .footer {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin: 0px 10px
+    margin: 0 10px;
 }
 
 .leftfooter,
 .rightfooter {
-    padding: 10px 0px 10px;
+    padding: 10px 0 10px;
 }
 
 .leftfooter {
@@ -229,62 +209,70 @@ body {
     text-align: right;
 }
 
-/* text setting */
-h1 {
+/* =========================
+   Typography
+========================= */
+h1,
+h2,
+h3 {
     color: var(--main-color);
-    margin: 5px auto 10px
+}
+
+h1 {
+    margin: 5px auto 10px;
 }
 
 h2 {
-    color: var(--main-color);
-    margin: 5px auto 5px
+    margin: 5px auto 5px;
 }
 
 h3 {
-    color: var(--main-color);
-    margin: 0px auto -5px;
+    margin: 0 auto -5px;
 }
 
 .name-subtitle {
-    margin: 5px auto 5px;
+    margin: 5px auto;
 }
 
 .subtitle {
     font-style: italic;
-    margin: -5px auto 5px
+    margin: -5px auto 5px;
 }
 
 .footer-p {
-    margin: 5px auto 0px;
+    margin: 5px auto 0;
 }
 
 br {
     display: block;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
-/* date lines */
+/* =========================
+   Date lines
+========================= */
 .flexspan {
     display: flex;
     justify-content: space-between;
 }
 
 .date {
-    font-size: .9em;
-    font-style: italic;
     min-width: 8.3em;
+    font-size: 0.9em;
+    font-style: italic;
 }
 
-/* hlines */
+/* =========================
+   Horizontal lines
+========================= */
 .hline {
-    background-color: var(--main-color);
     width: 100%;
+    background-color: var(--main-color);
 }
 
 .wline {
-    height: .2em;
-    background-color: var(--bg-color);
     width: 100%;
-    margin: 0px;
+    height: 0.2em;
+    margin: 0;
+    background-color: var(--bg-color);
 }

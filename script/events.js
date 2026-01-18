@@ -47,32 +47,55 @@ function groupEventsByYear(events) {
     const upcoming = {};
 
     events.forEach(event => {
-        const dateObj = parseEventDate(event.date);
-        const eventEnd = dateObj?.end || dateObj?.start;
+        let eventYear;
+        let container;
+        let dateObj = null;
 
-        if (!eventEnd) return;
+        // Handle TBA events per object
+        if (event.tba === true && Number.isInteger(event.year)) {
+            eventYear = event.year;
+            container = upcoming;
+        } else {
+            dateObj = parseEventDate(event.date);
+            const eventEnd = dateObj?.end || dateObj?.start;
 
-        const year = eventEnd.getFullYear();
-        const container = eventEnd >= today ? upcoming : past;
+            // Skip invalid non-TBA events
+            if (!eventEnd) return;
 
-        if (!container[year]) container[year] = [];
-        container[year].push({ ...event, dateObj });
+            eventYear = eventEnd.getFullYear();
+            container = eventEnd >= today ? upcoming : past;
+        }
+
+        if (!container[eventYear]) {
+            container[eventYear] = [];
+        }
+
+        container[eventYear].push({
+            ...event,
+            dateObj
+        });
     });
 
-    const sortYearsAndEvents = container => {
-        return Object.keys(container)
+    const sortYearsAndEvents = container =>
+        Object.keys(container)
             .sort((a, b) => b - a)
             .map(year => ({
                 year,
-                events: container[year].sort((a, b) => b.dateObj.start - a.dateObj.start)
+                events: container[year].sort((a, b) => {
+                    // TBA events last within the year
+                    if (!a.dateObj && !b.dateObj) return 0;
+                    if (!a.dateObj) return 1;
+                    if (!b.dateObj) return -1;
+                    return b.dateObj.start - a.dateObj.start;
+                })
             }));
-    };
 
     return {
         past: sortYearsAndEvents(past),
         upcoming: sortYearsAndEvents(upcoming)
     };
 }
+
 
 // ===============================
 // Generate HTML for grouped events
@@ -85,9 +108,14 @@ function generateEventsHTML(events) {
             <summary>${yearGroup.year}</summary>
             <ul>
                 ${yearGroup.events.map(event => {
-                    const dateStr = formatEventDate(event.dateObj);
+                    const dateStr = event.tba
+                        ? 'TBA'
+                        : formatEventDate(event.dateObj);
+
                     const location = event.location || '';
-                    const linkStart = event.url ? `<a href="${event.url}" target="_blank" rel="noopener noreferrer">` : '';
+                    const linkStart = event.url
+                        ? `<a href="${event.url}" target="_blank" rel="noopener noreferrer">`
+                        : '';
                     const linkEnd = event.url ? `</a>` : '';
                     const title = event.title || "Untitled";
 
@@ -107,12 +135,20 @@ function generateEventsHTML(events) {
         <details open class="mainDetails">
             <summary>${title}</summary>
             ${list.map(buildYearHTML).join("\n")}
-        </details>
-        <div class="hline" style="height:1px"></div>`;
+        </details>`;
     };
 
-    return buildSectionHTML("Upcoming", upcoming) + buildSectionHTML("Past", past);
+    const upcomingHTML = buildSectionHTML("Upcoming", upcoming);
+    const pastHTML = buildSectionHTML("Past", past);
+
+    const divider =
+        upcomingHTML && pastHTML
+            ? `<div class="hline" style="height:1px"></div>`
+            : '';
+
+    return upcomingHTML + divider + pastHTML;
 }
+
 
 // ===============================
 // Load events data (Promise-based)
