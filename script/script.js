@@ -1,6 +1,14 @@
-// ===============================
-// Banner loader
-// ===============================
+function loadIncludes() {
+    const jobs = [];
+    $('[data-include]').each(function () {
+        const $el = $(this);
+        jobs.push($.get($el.data('include') + '.html')
+            .then(html => $el.html(html))
+            .catch(() => $el.html('')));
+    });
+    return Promise.all(jobs);
+}
+
 const images = [
     '/assets/images/banners/banner-fisciano.png',
     '/assets/images/banners/banner-siena.png',
@@ -20,20 +28,6 @@ function setBanner(url) {
     );
 }
 
-// ===============================
-// Page loader with hooks
-// ===============================
-const pageHooks = {
-    'research.html': () => Promise.all([
-        window.AppEvents?.loadEvents?.().then(() => window.AppEvents.renderEventsList()),
-        window.AppPublications?.loadPublications?.().then(() => window.AppPublications.renderPublicationsList()),
-        window.AppTalks?.loadTalks?.().then(() => window.AppTalks.renderTalksList()),
-        window.AppPosters?.loadPosters?.().then(() => window.AppPosters.renderPostersList())
-    ]),
-    'teaching.html': () =>
-        window.AppTeaching?.loadTeaching?.().then(() => window.AppTeaching.renderTeachingList())
-};
-
 function loadPage(file, target = '#content') {
     $(target).load(file, function () {
         $(target).show();
@@ -41,37 +35,18 @@ function loadPage(file, target = '#content') {
     });
 }
 
-
-// ===============================
-// Include loader
-// ===============================
-function loadIncludes() {
-    const jobs = [];
-    $('[data-include]').each(function () {
-        const $el = $(this);
-        jobs.push($.get($el.data('include') + '.html')
-            .then(html => $el.html(html))
-            .catch(() => $el.html('')));
-    });
-    return Promise.all(jobs);
-}
-
-// ===============================
-// On document ready
-// ===============================
 $(function () {
     const rand_img = images[Math.floor(Math.random() * images.length)];
     preloadImage(rand_img)
 
     loadIncludes().then(() => {
-        setBanner(rand_img);           // Pick random banner
-        loadPage('aboutme.html'); // Load default page
+        setBanner(rand_img);
+        loadPage('aboutme.html')
     });
 });
 
-// ===============================
-// Navigation elements
-// ===============================
+
+
 $(document).on('click', '.nav-link', function (e) {
     e.preventDefault();
     const page = $(this).data('page');
