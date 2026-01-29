@@ -44,7 +44,7 @@ body {
    General containers
 ========================= */
 .main-container {
-    max-width: 100%;
+    max-width: max(100%,960px);
     margin: 0 auto;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -126,8 +126,13 @@ body {
 /* =========================
    Header & navigation
 ========================= */
-.banner-header {
-    max-height: 8.75rem;
+.header {
+    display: flex;
+    flex-wrap: wrap; /* mobile-first */
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
     background-image: linear-gradient(
         rgba(248, 247, 242, 0.5),
         rgba(248, 247, 242, 0.8)
@@ -138,17 +143,7 @@ body {
     background-blend-mode: lighten;
 }
 
-.header {
-    display: flex;
-    flex-wrap: wrap; /* mobile-first */
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.25rem 0.625rem;
-}
-
 .leftheader {
-    margin-left: 0.625rem;
     text-align: left;
     text-shadow:
         0.03125rem  0.03125rem 0.125rem var(--bg-color),
@@ -169,7 +164,7 @@ body {
 
 .rightheader nav ul {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -177,8 +172,8 @@ body {
 
 .rightheader nav ul li a {
     display: block;
-    padding: 0.875rem 1rem;
-    min-width: 3rem;
+    padding: 0.875rem 0.875rem;
+    min-width: 5rem;
     white-space: nowrap;
     text-align: center;
     background-color: var(--main-color);
@@ -310,7 +305,8 @@ br {
     .main-container {
         max-width: 60rem;
         font-size: 1.125rem;
-        padding: 1.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
 
     .header,
