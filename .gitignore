@@ -13,6 +13,8 @@
 *.cb2
 .*.lb
 
+*.py
+
 ## Specific folders and files
 assets/documents/BT/
 assets/documents/MT/
@@ -23,6 +25,8 @@ script/scriptV1.js
 script/scriptV2.js
 script/scriptV3.js
 data/data.json
+templates/research.html
+templates/teaching.html
 
 ## Intermediate documents:
 *.dvi
