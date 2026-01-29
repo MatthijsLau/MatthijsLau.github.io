@@ -1,0 +1,114 @@
+[
+    {
+    "type": "event",
+    "date": null,
+    "meeting": "Higher Structures in Pavia",
+    "institute": "Università di Pavia (Italy)",
+    "url": null,
+    "tba": true,
+    "year": 2026
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2026-08-03",
+      "end": "2026-08-07"
+    },
+    "meeting": "Poisson Geometry Summer School",
+    "institute": "University  of Antwerp (Belgium)",
+    "url": "https://www.uantwerpen.be/nl/personeel/sonja-hohloch/private-webpage/conference-workshop/poissonschool2026/"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2026-08-10",
+      "end": "2026-08-14"
+    },
+    "meeting": "Poisson 2026",
+    "institute": "KU Leuven (Belgium)",
+    "url": "https://wis.kuleuven.be/events/2026_poisson/conference_poisson2026"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2025-08-03",
+      "end": "2025-08-08"
+    },
+    "meeting": "Around Singularities in Poisson Geometry",
+    ">": "IASM Hangzhou (China)",
+    "url": "https://www.birs.ca/events/2025/5-day-workshops/25w5442",
+    "note": "Attended online"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2025-06-30",
+      "end": "2025-07-04"
+    },
+    "meeting": "Interactions of Poisson Geometry, Lie Theory and Symmetry",
+    "institute": "IST Lisbon (Portugal)",
+    "url": "https://sites.google.com/view/ipgls2025/"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2025-02-01",
+      "end": "2025-07-31"
+    },
+    "meeting": "Seminar: Non-commutative geometry of foliations",
+    "institute": "RU Nijmegen",
+    "url": null
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2025-01-23",
+      "end": "2025-01-24"
+    },
+    "meeting": "Higher Geometric Structures along the Lower Rhine XVIII",
+    "institute": "RU Nijmegen (Netherlands)",
+    "url": "https://www.math.ru.nl/~sagave/higher-structures-XVIII/index.html"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2025-01-22",
+      "end": "2025-01-23"
+    },
+    "meeting": "Central Europe Relativity Seminar 15",
+    "institute": "RU Nijmegen (Netherlands)",
+    "url": "https://cers.univie.ac.at/cers15/index.html"
+  },
+  {
+    "type": "event",
+    "date": {
+      "start": "2024-06-27",
+      "end": "2024-06-28"
+    },
+    "meeting": "Poisson aan de Waal 4",
+    "institute": "RU Nijmegen and UU Utrecht (Netherlands)",
+    "url": "https://sites.google.com/view/poisson-aan-de-waal-4/home"
+  },
+  {
+    "type": "poster",
+    "title": "Completeness of multiplicative Ehresmann connections on fibred Lie groupoids",
+    "url": "https://drive.google.com/file/d/1ZwYj6T85aOcLNhYI9ckrHFH6b8O733Ik/view",
+    "meeting": "Interactions of Poisson Geometry, Lie Theory and Symmetry",
+    "institute": "IST Lisbon (Portugal)",
+    "date": "2025-07-02"
+  },
+  {
+    "type": "talk",
+    "title": "Multiplicative Ehresmann connections",
+    "meeting": "Incontro Geometria Differenziale Bari-Salerno",
+    "institute": "UniSa Salerno (Italy)",
+    "date": "2026-02-11"
+  },
+  {
+    "type": "talk",
+    "title": "Lie groupoids; Holonomy and Monodromy of foliations",
+    "meeting": "Seminar: Non-commutative geometry of foliations",
+    "institute": "RU Nijmegen (Netherlands)",
+    "date": "2025-03-20"
+  }
+]
