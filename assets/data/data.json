@@ -1,12 +1,13 @@
 [
-    {
+  {
     "type": "event",
-    "date": null,
+    "date": {
+      "start": "2026-06-17",
+      "end": "2026-06-19"
+    },
     "meeting": "Higher Structures in Pavia",
-    "institute": "Università di Pavia (Italy)",
-    "url": null,
-    "tba": true,
-    "year": 2026
+    "institute": "Univ. di Pavia (Italy)",
+    "url": "http://wpage.unina.it/francesco.dandrea/Pavia2026/"
   },
   {
     "type": "event",
@@ -15,7 +16,7 @@
       "end": "2026-08-07"
     },
     "meeting": "Poisson Geometry Summer School",
-    "institute": "University  of Antwerp (Belgium)",
+    "institute": "Univ.  of Antwerp (Belgium)",
     "url": "https://www.uantwerpen.be/nl/personeel/sonja-hohloch/private-webpage/conference-workshop/poissonschool2026/"
   },
   {
@@ -100,8 +101,8 @@
   {
     "type": "talk",
     "title": "Multiplicative Ehresmann connections",
-    "meeting": "Incontro Geometria Differenziale Bari-Salerno",
-    "institute": "UniSa Salerno (Italy)",
+    "meeting": " Bari-Salerno Differential Geometry Days",
+    "institute": "Univ. degli Studi di Salerno (Italy)",
     "date": "2026-02-11"
   },
   {

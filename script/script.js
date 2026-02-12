@@ -21,23 +21,11 @@ function setBanner(url) {
 }
 
 // ===============================
-// Page loader with hooks
+// Page loader - Updated for static HTML generation
 // ===============================
-const pageHooks = {
-    'research.html': () => Promise.all([
-        window.AppEvents?.loadEvents?.().then(() => window.AppEvents.renderEventsList()),
-        window.AppPublications?.loadPublications?.().then(() => window.AppPublications.renderPublicationsList()),
-        window.AppTalks?.loadTalks?.().then(() => window.AppTalks.renderTalksList()),
-        window.AppPosters?.loadPosters?.().then(() => window.AppPosters.renderPostersList())
-    ]),
-    'teaching.html': () =>
-        window.AppTeaching?.loadTeaching?.().then(() => window.AppTeaching.renderTeachingList())
-};
-
 function loadPage(file, target = '#content') {
     $(target).load(file, function () {
         $(target).show();
-        pageHooks[file]?.(); // 👈 run hook if it exists
     });
 }
 
