@@ -90,23 +90,55 @@ class BibEntry:
     number: str | None = None
     arxiv: str | None = None
 
-    def format_authors(self) -> str:
-        """Format author list."""
+    def format_authors(self, max_authors: int | None = None) -> str:
+        """
+        Format BibTeX-style authors as 'M. Surname'.
+
+        Supports:
+        - 'First Last'
+        - 'Last, First'
+        - middle names
+        - surname particles (van, de, von, etc.)
+        """
+
         if not self.author:
             return ""
-        # Handle "and" separated authors
-        authors = self.author.split(" and ")
-        if len(authors) > 2:
-            return f"{authors[0].strip()} et al."
-        return ", ".join(a.strip() for a in authors)
 
-    def render_html(self, style: str = "default") -> str:
+        particles = {"von", "van", "de", "del", "da", "di", "la", "le"}
+        authors = [a.strip() for a in self.author.split(" and ")]
+        formatted = []
+
+        for author in authors:
+            if "," in author:
+                # Format: "Last, First"
+                last, first = [p.strip() for p in author.split(",", 1)]
+            else:
+                # Format: "First Last"
+                parts = author.split()
+
+                # detect surname particles
+                last_parts = [parts[-1]]
+                i = len(parts) - 2
+                while i >= 0 and parts[i].lower() in particles:
+                    last_parts.insert(0, parts[i])
+                    i -= 1
+
+                last = " ".join(last_parts)
+                first = parts[0]
+
+            formatted.append(f"{first[0]}. {last}")
+
+        if max_authors and len(formatted) > max_authors:
+            return f"{formatted[0]} et al."
+
+        return ", ".join(formatted)
+    def render_html(self, style: str = "default", include_note: bool = True) -> str:
         """Render as HTML based on style."""
         if style == "default":
-            return self._render_default()
-        return self._render_default()
+            return self._render_default(include_note)
+        return self._render_default(include_note)
 
-    def _render_default(self) -> str:
+    def _render_default(self, include_note: bool = True) -> str:
         """Mathematical CV style:
         Authors, Title, Journal Volume (Year), no. X, pages, arXiv:XXXX.
         """
@@ -147,8 +179,8 @@ class BibEntry:
         if publication_parts:
             parts.append(", ".join(publication_parts))
 
-        # Note (e.g., to appear)
-        if self.note:
+        # Note (e.g., to appear) - only if include_note is True
+        if include_note and self.note:
             parts.append(self.note)
 
         # DOI inline if needed
@@ -351,11 +383,16 @@ def render_event(entry: Entry) -> str:
     )
 
 
-def render_publication(entry: Entry) -> str:
-    """Render a publication item."""
+def render_publication(entry: Entry, is_in_preparation: bool = False) -> str:
+    """Render a publication item.
+
+    Args:
+        entry: The publication entry to render
+        is_in_preparation: If True, don't include the note ("To appear", etc.)
+    """
     # If it has a BibEntry, use its rendering
     if entry.bib_entry:
-        return entry.bib_entry.render_html()
+        return entry.bib_entry.render_html(include_note=not is_in_preparation)
 
     # Otherwise use the old format
     auth = f" ({entry.authors})" if entry.authors else ""
@@ -380,9 +417,11 @@ def generate_sections(entries: list[Entry]) -> dict[str, str]:
             # Check if publication has a note (in preparation)
             has_note = entry.note or (entry.bib_entry and entry.bib_entry.note)
             if has_note:
-                sections["in_preparation"].append(render_publication(entry))
+                sections["in_preparation"].append(
+                    render_publication(entry, is_in_preparation=True))
             else:
-                sections["published"].append(render_publication(entry))
+                sections["published"].append(
+                    render_publication(entry, is_in_preparation=False))
         elif entry.type == "talk":
             sections["talks"].append(render_talk_or_poster(entry))
         elif entry.type == "poster":

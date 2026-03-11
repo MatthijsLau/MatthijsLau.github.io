@@ -9,7 +9,7 @@ on:
       - '*_generate.py'
       - '.github/workflows/generate-pages.yml'
   schedule:
-    - cron: '0 0 20 6 *'  # Run when Jun 20, 2026 event ends (auto-updated)
+    - cron: '0 0 18 4 *'  # Run when Apr 18, 2026 event ends (auto-updated)
   workflow_dispatch:
 
 jobs:
