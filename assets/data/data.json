@@ -2,6 +2,16 @@
   {
     "type": "event",
     "date": {
+      "start": "2026-04-16",
+      "end": "2026-04-17"
+    },
+    "meeting": "Higher Geometric Structures along the Lower Rhine",
+    "institute": "UU Utrecht (Netherlands)",
+    "url": "https://www.uu.nl/en/research/utrecht-geometry-centre/higher-geometric-structures-along-the-lower-rhine"
+  },
+  {
+    "type": "event",
+    "date": {
       "start": "2026-06-17",
       "end": "2026-06-19"
     },

@@ -338,3 +338,7 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+.github/workflows/generate-pages.yml
+assets/data/resources.bib
+script/generate_cv.py
+script/research_generate.py
