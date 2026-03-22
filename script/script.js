@@ -1,5 +1,5 @@
 // ===============================
-// Banner loader
+// Banner configuration
 // ===============================
 const images = [
     '/assets/images/banners/banner-fisciano.png',
@@ -9,60 +9,121 @@ const images = [
     '/assets/images/banners/banner-blacklake.png'
 ];
 
-function preloadImage(url) { const img = new Image(); img.src = url; }
+let currentBanner = null;
 
-function setBanner(url) {
-    const $banner = $('.banner-header');
-    if (!$banner.length) return;
-    $banner.css(
-        'background-image',
-        `linear-gradient(rgba(248,247,242,0.5), rgba(248,247,242,0.8)), url('${url}')`
-    );
+// ===============================
+// Utilities
+// ===============================
+function getRandomImage() {
+    return images[Math.floor(Math.random() * images.length)];
+}
+
+function preloadImage(url) {
+    const img = new Image();
+    img.src = url;
 }
 
 // ===============================
-// Page loader - Updated for static HTML generation
+// Banner handler (matches your CSS: .header)
 // ===============================
-function loadPage(file, target = '#content') {
-    $(target).load(file, function () {
-        $(target).show();
+function applyBanner() {
+    const $header = $('.header');
+
+    if (!$header.length) {
+        console.warn('⚠️ .header not found when applying banner');
+        return;
+    }
+
+    $header.css('background-image', `url('${currentBanner}')`);
+}
+
+// ===============================
+// Page loader
+// ===============================
+function loadPage(page, target = '#content') {
+    const $target = $(target);
+
+    return new Promise((resolve, reject) => {
+        $target.load(page, function (response, status) {
+            if (status === 'error') {
+                console.error(`Failed to load page: ${page}`);
+                reject();
+                return;
+            }
+
+            $target.show();
+
+            // Apply banner AFTER content is loaded
+            applyBanner();
+
+            resolve();
+        });
     });
 }
-
 
 // ===============================
 // Include loader
 // ===============================
 function loadIncludes() {
     const jobs = [];
+
     $('[data-include]').each(function () {
         const $el = $(this);
-        jobs.push($.get($el.data('include') + '.html')
-            .then(html => $el.html(html))
-            .catch(() => $el.html('')));
+        const file = $el.data('include') + '.html';
+
+        const job = $.get(file)
+            .then(html => {
+                $el.html(html);
+            })
+            .catch(() => {
+                console.warn(`⚠️ Failed to load include: ${file}`);
+                $el.html('');
+            });
+
+        jobs.push(job);
     });
+
     return Promise.all(jobs);
 }
 
 // ===============================
-// On document ready
+// Navigation
 // ===============================
-$(function () {
-    const rand_img = images[Math.floor(Math.random() * images.length)];
-    preloadImage(rand_img)
+function setupNavigation() {
+    $(document).on('click', '.nav-link', function (e) {
+        e.preventDefault();
 
-    loadIncludes().then(() => {
-        setBanner(rand_img);           // Pick random banner
-        loadPage('aboutme.html'); // Load default page
+        const page = $(this).data('page');
+        if (!page) return;
+
+        loadPage(page + '.html');
     });
-});
+}
 
 // ===============================
-// Navigation elements
+// Initialization
 // ===============================
-$(document).on('click', '.nav-link', function (e) {
-    e.preventDefault();
-    const page = $(this).data('page');
-    if (!page) return;
-    loadPage(page + '.html');
+function init() {
+    // Pick ONE random banner per session
+    currentBanner = getRandomImage();
+    preloadImage(currentBanner);
+
+    // Load layout first, then content
+    loadIncludes()
+        .then(() => loadPage('aboutme.html'))
+        .then(() => {
+            // Safety reapply (in case header is outside loaded content)
+            applyBanner();
+        })
+        .catch(() => {
+            console.error('Initialization failed');
+        });
+}
+
+// ===============================
+// Start app
+// ===============================
+$(document).ready(function () {
+    init();
+    setupNavigation();
 });
