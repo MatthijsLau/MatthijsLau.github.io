@@ -268,16 +268,22 @@ br {
    Date lines
 ========================= */
 .flexspan {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.flexspan .title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .date {
     min-width: 8.3em;
     font-size: 0.9em;
     font-style: italic;
+    text-align: right;
 }
 
 /* =========================
