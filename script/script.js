@@ -29,12 +29,11 @@ function preloadImage(url) {
 function applyBanner() {
     const $header = $('.header');
 
-    if (!$header.length) {
-        console.warn('⚠️ .header not found when applying banner');
-        return;
-    }
+    if (!$header.length) return;
 
-    $header.css('background-image', `url('${currentBanner}')`);
+    // We set the CSS Variable on the header element itself.
+    // The ::before element in the CSS will then "pick it up".
+    $header.get(0).style.setProperty('--banner-url', `url('${currentBanner}')`);
 }
 
 // ===============================
