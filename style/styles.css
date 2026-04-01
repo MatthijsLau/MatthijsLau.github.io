@@ -11,7 +11,8 @@
     --text-color: hsl(228, 28%, 17%);
     --accent-dark-color: hsl(228, 28%, 23%);
     --accent-light-color: hsl(228, 28%, 60%);
-    --link-color: hsl(349, 28%, 37%);
+    --internal-link-color: hsl(228, 50%, 42%);
+    --external-link-color: hsl(349, 45%, 42%);
 
     /* Base font scaling */
     font-size: clamp(15px, 1vw + 0.5rem, 18px);
@@ -58,7 +59,7 @@ body {
 
 /* Links */
 .main-container a {
-    color: var(--link-color);
+    color: var(--external-link-color);
     text-decoration: none;
 }
 
@@ -68,6 +69,14 @@ body {
 
 .main-container a:active {
     text-decoration: underline;
+}
+
+a.external {
+    color: var(--external-link-color)
+}
+
+a.internal {
+    color: var(--internal-link-color)
 }
 
 /* =========================
