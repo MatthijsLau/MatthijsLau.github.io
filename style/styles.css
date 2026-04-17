@@ -15,7 +15,7 @@
     --external-link-color: hsl(349, 45%, 42%);
 
     /* Base font scaling - improved for mobile */
-    font-size: clamp(16px, 1.5vw + 0.75rem, 18px);
+    font-size: clamp(14px, 1.2vw + 0.6rem, 18px);
 }
 
 html {
@@ -178,7 +178,7 @@ a.internal {
 }
 
 .leftheader h1 {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 /* Navigation */
@@ -290,7 +290,7 @@ h3 {
 }
 
 .footer h3 {
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
 }
 
 br {
