@@ -292,6 +292,7 @@ h3 {
 .footer-p {
     margin: 0.3125rem auto 0;
     font-size: 0.95em;
+    text-align: center;
 }
 
 .footer h3 {
