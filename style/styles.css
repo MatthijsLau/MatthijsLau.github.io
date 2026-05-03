@@ -255,7 +255,7 @@ a.internal {
 }
 
 .rightfooter {
-    text-align: right;
+    text-align: left;
 }
 
 /* =========================
@@ -281,7 +281,9 @@ h3 {
 }
 
 .name-subtitle {
+    color: var(--main-color);
     margin: 0.3125rem auto;
+    font-weight: bold;
 }
 
 .subtitle {
@@ -292,7 +294,7 @@ h3 {
 .footer-p {
     margin: 0.3125rem auto 0;
     font-size: 0.95em;
-    text-align: center;
+    text-align: left;
 }
 
 .footer h3 {
