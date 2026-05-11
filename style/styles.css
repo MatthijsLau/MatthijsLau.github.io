@@ -200,6 +200,7 @@ a.internal {
     text-decoration-color: var(--internal-link-color);
 }
 
+
 .rightheader nav ul {
     margin: 0;
     padding: 0.5rem 0.75rem;
@@ -219,16 +220,16 @@ a.internal {
     white-space: normal;
     background-color: transparent;
     color: var(--main-color);
-    text-decoration: underline dashed;
+    text-decoration: none;
     text-decoration-thickness: .75pt;
     font-size: 0.82em;
-    font-weight: bold;
+    font-weight: bolder;
     line-height: 1.2;
 }
 
 .rightheader nav ul li a:hover,
 .rightheader nav ul li a:active {
-    text-decoration: underline;
+    text-decoration: none;
     text-decoration-thickness: .75pt;
     background-color: transparent;
 }
@@ -295,6 +296,13 @@ h3 {
     margin: 0.3125rem auto 0;
     font-size: 0.95em;
     text-align: left;
+    padding-top: -0.625rem;
+    padding-left: -0.625rem;
+}
+
+.footer-p ul {
+    margin: 0rem;
+    padding-left: 16pt;
 }
 
 .footer h3 {
