@@ -37,8 +37,12 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-#content {
+.page {
     display: none;
+}
+
+#aboutme {
+    display: block;
 }
 
 /* =========================
@@ -203,7 +207,6 @@ a.internal {
     text-decoration-color: var(--internal-link-color);
 }
 
-
 .rightheader nav ul {
     margin: 0;
     padding: 0.5rem 0.75rem;
@@ -212,8 +215,8 @@ a.internal {
 }
 
 .rightheader nav ul li {
-    margin: 0.4rem 0 0.4rem 0;
-    padding: 0.15rem 0;
+    margin: 0.0rem 0 0.2rem 0;
+    padding: 0.3rem 0 0.5rem 0;
 }
 
 .rightheader nav ul li a {

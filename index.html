@@ -28,9 +28,289 @@
 </head>
 
 <body>
-    <div data-include="templates/header"></div>
-    <div class="main-container" id="content"></div>
-    <div data-include="templates/footer"></div>
+    <div class="main-container">
+        <div class="hline" style="height:clamp(1.5px, 0.75vw, 6px)"></div>
+        <div class="header">
+            <div class="leftheader">
+                <h1><a href="#aboutme" class="nav-link" data-page="aboutme">Matthijs Lau</a></h1>
+                <div class="name-subtitle">PhD student in Mathematics at the University of Salerno, Italy.</div>
+            </div>
+            <div class="rightheader">
+                <nav>
+                    <ul>
+                        <li><a href="#aboutme" class="nav-link" data-page="aboutme"
+                                style="margin: 0.0rem 0 0.2rem 0; padding: 0.3rem 0 0.5rem 0">Home / Bio</a></li>
+                        <li><a href="#research" class="nav-link" data-page="research"
+                                style="margin: 0.0rem 0 0.2rem 0; padding: 0.3rem 0 0.5rem 0">Research</a></li>
+                        <li><a href="#teaching" class="nav-link" data-page="teaching"
+                                style="margin: 0.0rem 0 0.2rem 0; padding: 0.3rem 0 0.5rem 0">Teaching</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="hline" style="height:clamp(1.5px, 0.75vw, 6px)"></div>
+    </div>
+
+    <main class="main-container" id="content">
+        <section id="aboutme" class="page">
+            <div class="content-container">
+                <div class="box">
+                    <img src="assets/images/selfie.jpg" alt="A picture of me"
+                        style="width: 200px;float: right; margin: 10px; margin-right:0px; margin-top:12px; border: clamp(2px, 0.5vw, 4px) solid var(--main-color); border-radius: 3px; max-width: 35%; height: auto">
+                </div>
+                <div>
+                    <h2>About me</h2>
+                    <p>Here is a short excerpt from my CV:<br>
+                        <i>My full resume can be found <a href="assets/documents/CV.pdf" target="_blank"
+                                rel="noopener noreferrer" class="internal">here</a>.</i>
+                    </p>
+                    <p>In November 2025, I began my PhD in Mathematics at the <a href="https://www.dipmat.unisa.it/"
+                            target="_blank" rel="noopener noreferrer" class="external">Department of Mathematics at the
+                            University of Salerno</a> under the supervision of <a
+                            href="http://www.dipmat2.unisa.it/people/vitagliano/www/index_EN.html" target="_blank"
+                            rel="noopener noreferrer" class="external">Luca Vitagliano</a>.<br>
+                        My research interests include, but are not limited to, G-structures, Lie groupoids,
+                        differentiable stacks, and relations to Riemannian, symplectic and Poisson geometry.<br>
+                        Additionally, I am interested in applications of differential geometric structures in
+                        mathematical physics.
+                    </p>
+                </div>
+            </div>
+            <div class="hline" style="height:clamp(2px, 0.5vw, 4px)"></div>
+            <div class="content-container">
+                <h2>Education</h2>
+                <ul style="margin-top: 0px">
+                    <li><b>M.Sc. in Mathematics</b> (specialization: Mathematical Physics) <span
+                            style="float: right"><em>Sep. 2023 – Aug. 2025</em></span><br>
+                        at Radboud University Nijmegen (Netherlands).<br>
+                        <em>Thesis</em>: <a href="assets/documents/MT.pdf" target="_blank" rel="noopener noreferrer"
+                            class="internal">Fibred Lie groupoids and multiplicative connections</a>, supervised by <a
+                            href="https://sites.google.com/view/marcut" target="_blank" rel="noopener noreferrer"
+                            class="external">Ioan Mărcuț</a>.
+                    </li>
+                    <li><b>B.Sc. in Mathematics</b> <span style="float: right"><em>Sep. 2019 – Jun. 2023</em></span><br>
+                        at Radboud University Nijmegen (Netherlands).<br>
+                        <em>Thesis</em>: <a href="assets/documents/BT.pdf" target="_blank" rel="noopener noreferrer"
+                            class="internal">Symplectic geometry: Darboux's theorem and Hamiltonian systems</a>,
+                        supervised by <a href="https://sites.google.com/view/marcut" target="_blank"
+                            rel="noopener noreferrer" class="external">Ioan Mărcuț</a>.
+                    </li>
+                    <li><b>B.Sc. in Physics &amp; Astronomy</b><span style="float: right"><em>Sep. 2019 – Jun.
+                                2023</em></span><br>
+                        at Radboud University Nijmegen (Netherlands).<br>
+                        <em>Thesis</em>: <a href="assets/documents/BT.pdf" target="_blank" rel="noopener noreferrer"
+                            class="internal">Symplectic geometry: Darboux's theorem and Hamiltonian systems</a>,
+                        supervised by <a href="https://sites.google.com/view/marcut" target="_blank"
+                            rel="noopener noreferrer" class="external">Ioan Mărcuț</a>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="research" class="page">
+            <div class="content-container">
+                <h2>Research</h2>
+                <details open class="mainDetails">
+                    <summary>Publications</summary>
+                    <ul></ul>
+                    <div class="subtitle">Preprints</div>
+                    <ul>
+                        <li>M. Lau, I. M<span>&#259;</span>rcu<span>&#355;</span>, Multiplicative Ehresmann connections
+                            for Lie groupoid fibrations, <a href="https://arxiv.org/abs/2604.22394" target="_blank"
+                                rel="noopener noreferrer" class="external">arXiv:2604.22394</a>.</li>
+                    </ul>
+                </details>
+                <div class="hlinesecondary" style="height:clamp(.25px, 0.125vw, 1px)"></div>
+                <details open class="mainDetails">
+                    <summary>Talks</summary>
+                    <ul>
+                        <li><em>Multiplicative Ehresmann connections for Lie groupoid fibrations</em>; Methods of
+                            Noncommutative Topology and Geometry Seminar, University of Warsaw (Poland) (Online), Apr.
+                            10, 2026</li>
+                        <li><em>Multiplicative Ehresmann connections</em>; Bari-Salerno Differential Geometry Days,
+                            Univ. degli Studi di Salerno (Italy), Feb. 11, 2026</li>
+                        <li><em>Lie groupoids; Holonomy and Monodromy of foliations</em>; Seminar: Non-commutative
+                            geometry of foliations, RU Nijmegen (Netherlands), Mar. 20, 2025</li>
+                    </ul>
+                </details>
+                <div class="hlinesecondary" style="height:clamp(.25px, 0.125vw, 1px)"></div>
+                <details open class="mainDetails">
+                    <summary>Posters</summary>
+                    <ul>
+                        <li><a href="assets/documents/Poster_Poisson_2026.pdf" target="_blank" rel="noopener noreferrer"
+                                class="internal"><em>Multiplicative Ehresmann connections for Lie groupoid
+                                    fibrations</em></a>; Poisson 2026 Summer School and Conference, Univ. of Antwerpen
+                            and KU Leuven (Belgium), Aug. 3 and 13, 2026.</li>
+                        <li><a href="assets/documents/Poster_Ruifest_2025.pdf" target="_blank" rel="noopener noreferrer"
+                                class="internal"><em>Completeness of multiplicative Ehresmann connections on fibred Lie
+                                    groupoids</em></a>; Interactions of Poisson Geometry, Lie Theory and Symmetry, IST
+                            Lisbon (Portugal), Jul. 2, 2025.</li>
+                    </ul>
+                </details>
+            </div>
+            <div class="hline" style="height:clamp(1px, 0.5vw, 4px)"></div>
+            <div class="content-container">
+                <h2>Conferences, Workshops and Schools</h2>
+                <div id="events-list">
+                    <details open class="mainDetails">
+                        <summary>Upcoming</summary>
+                        <details open class="secondaryDetails">
+                            <summary>2026</summary>
+                            <ul>
+                                <li>No upcoming events planned...</li>
+                            </ul>
+                        </details>
+                    </details>
+                    <div class="hlinesecondary" style="height:clamp(.25px, 0.125vw, 1px)"></div>
+                    <details open class="mainDetails">
+                        <summary>Past</summary>
+                        <details open class="secondaryDetails">
+                            <summary>2026</summary>
+                            <ul>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://wis.kuleuven.be/events/2026_poisson/conference_poisson2026"
+                                                target="_blank" rel="noopener noreferrer" class="external">Poisson
+                                                2026</a>, KU Leuven (Belgium)</span><span class="date">Aug.
+                                            10–14</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://www.uantwerpen.be/nl/personeel/sonja-hohloch/private-webpage/conference-workshop/poissonschool2026/"
+                                                target="_blank" rel="noopener noreferrer" class="external">Poisson
+                                                Geometry Summer School</a>, Univ. of Antwerp (Belgium)</span><span
+                                            class="date">Aug. 3–7</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="http://wpage.unina.it/francesco.dandrea/Pavia2026/"
+                                                target="_blank" rel="noopener noreferrer" class="external">Higher
+                                                Structures in Pavia</a>, Univ. di Pavia (Italy)</span><span
+                                            class="date">Jun. 17–19</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://www.uu.nl/en/research/utrecht-geometry-centre/higher-geometric-structures-along-the-lower-rhine"
+                                                target="_blank" rel="noopener noreferrer" class="external">Higher
+                                                Geometric Structures along the Lower Rhine</a>, UU Utrecht
+                                            (Netherlands)</span><span class="date">Apr. 16–17</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://www.dipmat2.unisa.it/people/vitagliano/www/workshop_BA-SA.html"
+                                                target="_blank" rel="noopener noreferrer" class="external">Bari-Salerno
+                                                Differential Geometry Days</a>, Univ. degli Studi di Salerno
+                                            (Italy)</span><span class="date">Feb. 9–11</span></span></li>
+                            </ul>
+                        </details>
+                        <details open class="secondaryDetails">
+                            <summary>2025</summary>
+                            <ul>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://www.birs.ca/events/2025/5-day-workshops/25w5442"
+                                                target="_blank" rel="noopener noreferrer" class="external">Around
+                                                Singularities in Poisson Geometry</a>, IASM Hangzhou (China) (attended
+                                            online)</span><span class="date">Aug. 3–8</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://sites.google.com/view/ipgls2025/" target="_blank"
+                                                rel="noopener noreferrer" class="external">Interactions of Poisson
+                                                Geometry, Lie Theory and Symmetry</a>, IST Lisbon (Portugal)</span><span
+                                            class="date">Jun. 30 - Jul. 4</span></span></li>
+                                <li><span class="flexspan"><span class="title">Seminar: Non-commutative geometry of
+                                            foliations, RU Nijmegen</span><span class="date">Feb. 1 - Jul.
+                                            31</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://www.math.ru.nl/~sagave/higher-structures-XVIII/index.html"
+                                                target="_blank" rel="noopener noreferrer" class="external">Higher
+                                                Geometric Structures along the Lower Rhine XVIII</a>, RU Nijmegen
+                                            (Netherlands)</span><span class="date">Jan. 23–24</span></span></li>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://cers.univie.ac.at/cers15/index.html" target="_blank"
+                                                rel="noopener noreferrer" class="external">Central Europe Relativity
+                                                Seminar 15</a>, RU Nijmegen (Netherlands)</span><span class="date">Jan.
+                                            22–23</span></span></li>
+                            </ul>
+                        </details>
+                        <details open class="secondaryDetails">
+                            <summary>2024</summary>
+                            <ul>
+                                <li><span class="flexspan"><span class="title"><a
+                                                href="https://sites.google.com/view/poisson-aan-de-waal-4/home"
+                                                target="_blank" rel="noopener noreferrer" class="external">Poisson aan
+                                                de Waal 4</a>, RU Nijmegen and UU Utrecht (Netherlands)</span><span
+                                            class="date">Jun. 27–28</span></span></li>
+                            </ul>
+                        </details>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section id="teaching" class="page">
+            <div class="content-container">
+                <h2>Teaching</h2>
+                <details open class="mainDetails">
+                    <summary>At Radboud University Nijmegen (Netherlands)</summary>
+                    <div class="subtitle">As a bachelor's and master's student, I gave tutorials and problem sessions
+                        for the following courses:</div>
+                    <details open class="secondaryDetails">
+                        <summary>2024/2025</summary>
+                        <ul>
+                            <li>Multivariable analysis, Fall</li>
+                            <li>Group theory, Spring</li>
+                        </ul>
+                    </details>
+                    <details open class="secondaryDetails">
+                        <summary>2023/2024</summary>
+                        <ul>
+                            <li>The theory of special relativity (Dept. of Phys.), Fall</li>
+                            <li>Programming 1, Fall</li>
+                            <li>Complex Functions (Dept. of Phys.), Spring</li>
+                            <li>Probability theory, Spring</li>
+                        </ul>
+                    </details>
+                    <details open class="secondaryDetails">
+                        <summary>2022/2023</summary>
+                        <ul>
+                            <li>Linear Algebra A, Fall</li>
+                            <li>Introduction to Mathematics, Fall</li>
+                            <li>Complex Functions (Dept. of Phys.), Spring</li>
+                            <li>Calculus B, Spring</li>
+                            <li>Group theory, Spring</li>
+                        </ul>
+                    </details>
+                    <details open class="secondaryDetails">
+                        <summary>2021/2022</summary>
+                        <ul>
+                            <li>Programming 2 (Dept. of Phys.), Fall</li>
+                            <li>Linear Algebra A, Fall</li>
+                            <li>Calculus B, Spring</li>
+                        </ul>
+                    </details>
+                    <details open class="secondaryDetails">
+                        <summary>2020/2021</summary>
+                        <ul>
+                            <li>Calculus B, Spring</li>
+                        </ul>
+                    </details>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <div class="main-container">
+        <div class="hline" style="height:clamp(1.5px, 0.75vw, 6px)"></div>
+        <div class="footer">
+            <div class="leftfooter">
+                <h3>Contact:</h3>
+                <div class="footer-p"><em>e-mail</em>: mlau [at] unisa [dot] it</div>
+            </div>
+            <div class="rightfooter">
+                <h3>Links:</h3>
+                <div class="footer-p">
+                    <ul>
+                        <li><a href="https://arxiv.org/search/math?query=Lau%2C+Matthijs&searchtype=author&abstracts=show&order=-announced_date_first"
+                                target="_blank" rel="noopener noreferrer">arXiv</a></li>
+                        <li><a href="https://scholar.google.com/citations?user=DK-SCYsAAAAJ&hl=nl&oi=ao" target="_blank"
+                                rel="noopener noreferrer">Google Scholar</a></li>
+                        <li><a href="https://www.linkedin.com/in/matthijslau" target="_blank" rel="noopener noreferrer"
+                                class="external">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

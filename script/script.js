@@ -37,55 +37,6 @@ function applyBanner() {
 }
 
 // ===============================
-// Page loader
-// ===============================
-function loadPage(page, target = '#content') {
-    const $target = $(target);
-
-    return new Promise((resolve, reject) => {
-        $target.load(page, function (response, status) {
-            if (status === 'error') {
-                console.error(`Failed to load page: ${page}`);
-                reject();
-                return;
-            }
-
-            $target.show();
-
-            // Apply banner AFTER content is loaded
-            applyBanner();
-
-            resolve();
-        });
-    });
-}
-
-// ===============================
-// Include loader
-// ===============================
-function loadIncludes() {
-    const jobs = [];
-
-    $('[data-include]').each(function () {
-        const $el = $(this);
-        const file = $el.data('include') + '.html';
-
-        const job = $.get(file)
-            .then(html => {
-                $el.html(html);
-            })
-            .catch(() => {
-                console.warn(`⚠️ Failed to load include: ${file}`);
-                $el.html('');
-            });
-
-        jobs.push(job);
-    });
-
-    return Promise.all(jobs);
-}
-
-// ===============================
 // Navigation
 // ===============================
 function setupNavigation() {
@@ -95,7 +46,12 @@ function setupNavigation() {
         const page = $(this).data('page');
         if (!page) return;
 
-        loadPage(page + '.html');
+        $('.page').hide();
+        $(`#${page}`).show();
+        history.replaceState(null, '', `#${page}`);
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
     });
 }
 
@@ -103,20 +59,15 @@ function setupNavigation() {
 // Initialization
 // ===============================
 function init() {
-    // Pick ONE random banner per session
+    // Pick one banner for this page load.
     currentBanner = getRandomImage();
     preloadImage(currentBanner);
+    applyBanner();
 
-    // Load layout first, then content
-    loadIncludes()
-        .then(() => loadPage('aboutme.html'))
-        .then(() => {
-            // Safety reapply (in case header is outside loaded content)
-            applyBanner();
-        })
-        .catch(() => {
-            console.error('Initialization failed');
-        });
+    const page = window.location.hash.substring(1);
+    const initialPage = ['aboutme', 'research', 'teaching'].includes(page) ? page : 'aboutme';
+    $('.page').hide();
+    $(`#${initialPage}`).show();
 }
 
 // ===============================
