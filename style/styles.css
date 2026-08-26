@@ -7,12 +7,15 @@
 :root {
     /* Color scheme (light mode default) */
     --main-color: hsl(228, 28%, 37%);
-    --bg-color: hsl(49, 28%, 96%);
+    --secondary-color: hsl(349, 28%, 37%);
+    --bg-color: hsl(50, 30%, 96%);
     --text-color: hsl(228, 28%, 17%);
     --accent-dark-color: hsl(228, 28%, 23%);
     --accent-light-color: hsl(228, 28%, 60%);
-    --internal-link-color: hsl(228, 50%, 42%);
-    --external-link-color: hsl(349, 45%, 42%);
+    --internal-link-color: hsl(228, 28%, 37%);
+    /* hsl(228, 50%, 42%); */
+    --external-link-color: hsl(349, 28%, 37%);
+    /*  hsl(349, 50%, 42%); */
 
     /* Base font scaling - improved for mobile */
     font-size: clamp(14px, 1.2vw + 0.6rem, 18px);
@@ -60,12 +63,12 @@ body {
 /* Links */
 .main-container a {
     color: var(--external-link-color);
-    text-decoration: underline dashed;
+    text-decoration: underline;
     text-decoration-thickness: .75pt;
 }
 
 .main-container a:hover {
-    text-decoration: underline;
+    text-decoration: underline dashed;
     text-decoration-thickness: .75pt;
 }
 
@@ -342,6 +345,11 @@ br {
 .hline {
     width: 100%;
     background-color: var(--main-color);
+}
+
+.hlinesecondary {
+    width: 100%;
+    background-color: var(--secondary-color);
 }
 
 .wline {
