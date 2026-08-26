@@ -2,11 +2,11 @@
 // Banner configuration
 // ===============================
 const images = [
-    '/assets/images/banners/banner-fisciano.png',
-    '/assets/images/banners/banner-siena.png',
-    '/assets/images/banners/banner-skadar.png',
-    '/assets/images/banners/banner-sg.png',
-    '/assets/images/banners/banner-blacklake.png'
+    '../assets/images/banners/banner-fisciano.webp',
+    '../assets/images/banners/banner-siena.webp',
+    '../assets/images/banners/banner-skadar.webp',
+    '../assets/images/banners/banner-sg.webp',
+    '../assets/images/banners/banner-blacklake.webp'
 ];
 
 let currentBanner = null;
@@ -27,31 +27,36 @@ function preloadImage(url) {
 // Banner handler (matches your CSS: .header)
 // ===============================
 function applyBanner() {
-    const $header = $('.header');
+    const header = document.querySelector('.header');
 
-    if (!$header.length) return;
+    if (!header) return;
 
     // We set the CSS Variable on the header element itself.
     // The ::before element in the CSS will then "pick it up".
-    $header.get(0).style.setProperty('--banner-url', `url('${currentBanner}')`);
+    header.style.setProperty('--banner-url', `url('${currentBanner}')`);
 }
 
 // ===============================
 // Navigation
 // ===============================
 function setupNavigation() {
-    $(document).on('click', '.nav-link', function (e) {
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('.nav-link');
+        if (!link) return;
+
         e.preventDefault();
 
-        const page = $(this).data('page');
+        const page = link.dataset.page;
         if (!page) return;
 
-        $('.page').hide();
-        $(`#${page}`).show();
+        document.querySelectorAll('.page').forEach((section) => {
+            section.hidden = true;
+        });
+        const selectedPage = document.getElementById(page);
+        if (!selectedPage) return;
+        selectedPage.hidden = false;
         history.replaceState(null, '', `#${page}`);
         window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
     });
 }
 
@@ -66,14 +71,15 @@ function init() {
 
     const page = window.location.hash.substring(1);
     const initialPage = ['aboutme', 'research', 'teaching'].includes(page) ? page : 'aboutme';
-    $('.page').hide();
-    $(`#${initialPage}`).show();
+    document.querySelectorAll('.page').forEach((section) => {
+        section.hidden = section.id !== initialPage;
+    });
 }
 
 // ===============================
 // Start app
 // ===============================
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     init();
     setupNavigation();
 });

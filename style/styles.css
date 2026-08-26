@@ -41,8 +41,12 @@ body {
     display: none;
 }
 
-#aboutme {
+.page:not([hidden]) {
     display: block;
+}
+
+.page[hidden] {
+    display: none;
 }
 
 /* =========================
