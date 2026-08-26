@@ -1,0 +1,27 @@
+{
+	"name": "Matthijs Lau - PhD student in Mathematics",
+	"short_name": "Matthijs Lau",
+	"description": "The personal website of Matthijs Lau, PhD student in mathematics at the University of Salerno.",
+	"start_url": "/",
+	"scope": "/",
+	"icons": [
+		{
+			"src": "/assets/images/apple-touch-icon.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		},
+		{
+			"src": "/assets/images/favicon-32x32.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "/assets/images/favicon-16x16.png",
+			"sizes": "16x16",
+			"type": "image/png"
+		}
+	],
+	"theme_color": "#3f486a",
+	"background_color": "#f8f7f2",
+	"display": "standalone"
+}
