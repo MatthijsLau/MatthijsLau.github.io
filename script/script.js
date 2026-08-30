@@ -56,7 +56,6 @@ function setupNavigation() {
         if (!selectedPage) return;
         selectedPage.hidden = false;
         history.replaceState(null, '', `#${page}`);
-        window.scrollTo(0, 0);
     });
 }
 
