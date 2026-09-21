@@ -2,11 +2,11 @@
 // Banner configuration
 // ===============================
 const images = [
-    '../assets/images/banners/banner-fisciano.webp',
-    '../assets/images/banners/banner-siena.webp',
-    '../assets/images/banners/banner-skadar.webp',
-    '../assets/images/banners/banner-sg.webp',
-    '../assets/images/banners/banner-blacklake.webp'
+    'assets/images/banners/banner-fisciano.webp',
+    'assets/images/banners/banner-siena.webp',
+    'assets/images/banners/banner-skadar.webp',
+    'assets/images/banners/banner-sg.webp',
+    'assets/images/banners/banner-blacklake.webp'
 ];
 
 let currentBanner = null;
@@ -33,7 +33,8 @@ function applyBanner() {
 
     // We set the CSS Variable on the header element itself.
     // The ::before element in the CSS will then "pick it up".
-    header.style.setProperty('--banner-url', `url('${currentBanner}')`);
+    const bannerUrl = new URL(currentBanner, document.baseURI).href;
+    header.style.setProperty('--banner-url', `url('${bannerUrl}')`);
 }
 
 // ===============================
