@@ -147,27 +147,24 @@ a.internal {
 .header {
     position: relative;
     z-index: 1;
-    background-color: var(--bg-color);
+    background-color: var(--accent-dark-color);
     overflow: hidden;
 
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
     flex-wrap: wrap;
-    padding: 0.5rem 1rem;
-    gap: 0.75rem;
+    padding: 1rem;
+    gap: 1rem;
 }
 
 .leftheader {
     flex: 1 1 0;
     min-width: 0;
-    text-align: left;
-    text-shadow:
-        0.03125rem 0.03125rem 0.125rem var(--bg-color),
-        -0.03125rem 0.03125rem 0.125rem var(--bg-color),
-        0.03125rem -0.03125rem 0.125rem var(--bg-color),
-        -0.03125rem -0.03125rem 0.125rem var(--bg-color);
+    width: 100%;
+    text-align: center;
+    color: hsl(50, 30%, 96%);
 }
 
 .header::before {
@@ -179,7 +176,7 @@ a.internal {
     height: 100%;
 
     background-image:
-        linear-gradient(to right, rgba(248, 247, 242, 0.4), rgba(248, 247, 242, 0.95) 75%, rgba(248, 247, 242, 1) 80%),
+        linear-gradient(105deg, rgba(12, 18, 38, 0.84), rgba(31, 38, 66, 0.7) 52%, rgba(48, 24, 42, 0.64)),
         var(--banner-url);
     background-size: 100% 100%, cover;
     background-position: center;
@@ -190,11 +187,11 @@ a.internal {
 }
 
 .leftheader h1 {
-    font-size: clamp(1.25rem, 3vw, 2.25rem);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .leftheader h1 a {
-    color: inherit;
+    color: hsl(50, 30%, 96%);
     text-decoration: none;
 }
 
@@ -206,42 +203,52 @@ a.internal {
 /* Navigation */
 .rightheader {
     text-align: center;
-    width: auto;
+    width: 100%;
     flex: 0 0 auto;
-    text-decoration-color: var(--internal-link-color);
 }
 
 .rightheader nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.35rem;
     margin: 0;
-    padding: 0.5rem 0.75rem;
+    padding: 0;
     list-style: none;
-    text-align: center;
+    justify-content: center;
 }
 
 .rightheader nav ul li {
-    margin: 0.0rem 0 0.2rem 0;
-    padding: 0.3rem 0 0.5rem 0;
+    margin: 0;
+    padding: 0;
 }
 
 .rightheader nav ul li a {
-    display: inline;
-    padding: 0.2rem 0;
-    min-width: auto;
-    white-space: normal;
-    background-color: transparent;
-    color: var(--main-color);
+    display: block;
+    padding: 0.35rem 0.45rem;
+    white-space: nowrap;
+    background-color: rgba(12, 18, 38, 0.28);
+    color: rgba(250, 249, 243, 0.92);
+    border: 1px solid rgba(250, 249, 243, 0.42);
+    border-radius: 0.25rem;
     text-decoration: none;
-    text-decoration-thickness: .75pt;
     font-size: 0.82em;
-    font-weight: bolder;
+    font-weight: normal;
     line-height: 1.2;
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
 }
 
 .rightheader nav ul li a:hover,
 .rightheader nav ul li a:active {
-    text-decoration: none;
-    text-decoration-thickness: .75pt;
-    background-color: transparent;
+    color: hsl(50, 30%, 96%);
+    background-color: rgba(250, 249, 243, 0.16);
+    border-color: rgba(250, 249, 243, 0.78);
+}
+
+.rightheader nav ul li a:focus-visible {
+    outline: 2px solid hsl(50, 30%, 96%);
+    outline-offset: 2px;
 }
 
 /* =========================
@@ -292,9 +299,10 @@ h3 {
 }
 
 .name-subtitle {
-    color: var(--main-color);
+    color: rgba(250, 249, 243, 0.88);
     margin: 0.3125rem auto;
-    font-weight: bold;
+    font-size: 0.82em;
+    font-weight: normal;
 }
 
 .subtitle {
@@ -394,6 +402,8 @@ br {
     .leftheader {
         flex: 1 1 0;
         min-width: 0;
+        width: auto;
+        text-align: left;
     }
 
     .footer {
@@ -407,8 +417,7 @@ br {
     }
 
     .rightheader nav ul li a {
-        padding: 0.875rem 0.875rem;
-        min-width: 5rem;
+        padding: 0.4rem 0.6rem;
         font-size: 1em;
     }
 
@@ -443,5 +452,9 @@ br {
 
     .rightheader {
         text-align: left;
+    }
+
+    .rightheader nav ul {
+        justify-content: flex-start;
     }
 }
