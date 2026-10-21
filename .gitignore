@@ -1,5 +1,4 @@
 ## Core latex/pdflatex auxiliary files:
-*.tex
 *.aux
 *.lof
 *.log
@@ -16,7 +15,9 @@
 *.json
 
 ## Specific folders and files
-assets/documents/CV/
+assets/documents/CV
+assets/documents/BT
+assets/documents/MT
 todo.txt
 
 ## Intermediate documents:
