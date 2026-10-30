@@ -63,119 +63,52 @@ function setupNavigation() {
 // ===============================
 async function loadSiteData() {
     try {
-        // Load Events from JSON
-        if (document.getElementById('events-list')) {
-            const jsonResponse = await fetch('https://matthijslau.github.io/assets/data.json');
-            const data = await jsonResponse.json();
-            renderEvents(data.events);
+        const [jsonResponse, bibResponse] = await Promise.all([
+            fetch('https://matthijslau.github.io/assets/data.json'),
+            fetch('https://matthijslau.github.io/assets/data.bib')
+        ]);
+
+        if (!jsonResponse.ok) {
+            console.error('Failed to load data.json');
+        }
+        if (!bibResponse.ok) {
+            console.error('Failed to load data.bib');
         }
 
-        // Load Publications, Talks, and Posters from .bib
-        if (document.getElementById('research-list')) {
-            await loadBibData();
+        const data = jsonResponse.ok ? await jsonResponse.json() : {};
+        const bibText = bibResponse.ok ? await bibResponse.text() : '';
+
+        // Render events, talks, and posters
+        renderEvents(data.events || []);
+        renderTalks(data.talks || []);
+        renderPosters(data.posters || []);
+
+        // Parse BibTeX robustly supporting toJSON, parse, or toTree
+        let bibEntries = [];
+        try {
+            const parsed = bibtexParser.toJSON ? bibtexParser.toJSON(bibText) 
+                         : (bibtexParser.parse ? bibtexParser.parse(bibText) 
+                         : bibtexParser.toTree(bibText));
+
+            if (Array.isArray(parsed)) {
+                bibEntries = parsed;
+            } else if (parsed && Array.isArray(parsed.entries)) {
+                bibEntries = parsed.entries;
+            } else if (parsed && typeof parsed === 'object') {
+                bibEntries = Object.values(parsed);
+            }
+        } catch (err) {
+            console.error('Error parsing BibTeX data:', err);
         }
+
+        renderBibPublications(bibEntries);
+
     } catch (error) {
         console.error('Error loading site data:', error);
     }
 }
 
-// Lightweight BibTeX Parser
-function parseBibTeX(bibText) {
-    const entries = [];
-    const entryRegex = /@(\w+)\s*\{\s*([^,]+),([\s\S]*?)\n\}/g;
-    let match;
-
-    while ((match = entryRegex.exec(bibText)) !== null) {
-        const type = match[1].toLowerCase();
-        const citationKey = match[2].trim();
-        const body = match[3];
-
-        const fields = { entryType: type, citationKey };
-        const fieldRegex = /(\w+)\s*=\s*(?:\{([\s\S]*?)\}|"([^"]*)"|(\S+))/g;
-        let fieldMatch;
-
-        while ((fieldMatch = fieldRegex.exec(body)) !== null) {
-            const key = fieldMatch[1].toLowerCase();
-            const value = (fieldMatch[2] || fieldMatch[3] || fieldMatch[4] || '').trim();
-            fields[key] = value;
-        }
-
-        entries.push(fields);
-    }
-
-    return entries;
-}
-
-// Fetch and structure BibTeX data
-async function loadBibData() {
-    try {
-        const response = await fetch('https://matthijslau.github.io/assets/data.bib');
-        if (!response.ok) return;
-        
-        const bibText = await response.text();
-        const entries = parseBibTeX(bibText);
-
-        const structuredData = {
-            publications: {
-                articles: [],
-                preprints: []
-            },
-            talks: [],
-            posters: []
-        };
-
-        entries.forEach(entry => {
-            const type = entry.entryType;
-            const category = (entry.category || entry.howpublished || '').toLowerCase();
-
-            // 1. Posters
-            if (type === 'poster' || category.includes('poster')) {
-                structuredData.posters.push({
-                    title: entry.title,
-                    event: entry.booktitle || entry.event || entry.organization || '',
-                    location: entry.location || entry.address || '',
-                    date: entry.date || entry.year || '',
-                    url: entry.url || ''
-                });
-            } 
-            // 2. Talks
-            else if (type === 'talk' || category.includes('talk')) {
-                structuredData.talks.push({
-                    title: entry.title,
-                    event: entry.booktitle || entry.event || entry.organization || '',
-                    location: entry.location || entry.address || '',
-                    date: entry.date || entry.year || ''
-                });
-            } 
-            // 3. Preprints
-            else if (type === 'unpublished' || (entry.note && entry.note.toLowerCase().includes('preprint'))) {
-                structuredData.publications.preprints.push({
-                    authors: entry.author,
-                    title: entry.title,
-                    venue: entry.note || '',
-                    url: entry.url || entry.eprint || '',
-                    urlText: entry.urltext || entry.eprint
-                });
-            } 
-            // 4. Peer-reviewed Publications
-            else if (type === 'article' || type === 'inproceedings' || type === 'book') {
-                structuredData.publications.articles.push({
-                    authors: entry.author,
-                    title: entry.title,
-                    venue: entry.journal || entry.booktitle || '',
-                    url: entry.url || entry.doi || '',
-                    urlText: entry.urltext || entry.doi
-                });
-            }
-        });
-
-        renderPublications(structuredData);
-    } catch (error) {
-        console.error('Error processing .bib file:', error);
-    }
-}
-
-// Robust local date parser
+// Date formatters
 function parseLocalDate(dateStr) {
     if (!dateStr || typeof dateStr !== 'string') return null;
     const cleanStr = dateStr.trim();
@@ -194,7 +127,6 @@ function parseLocalDate(dateStr) {
     return null;
 }
 
-// Helper to format a single date string (e.g. "2026-10-30" -> "Oct. 30")
 function formatDate(DateStr) {
     if (!DateStr || String(DateStr).toUpperCase() === 'TBA') return 'TBA';
 
@@ -210,12 +142,39 @@ function formatDate(DateStr) {
     return `${Month} ${Day}`;
 }
 
-// Helper to handle singular (string) or multiple (array) dates seamlessly
-function formatMultipleDates(dateInput) {
+function formatDateWithYear(DateStr) {
+    if (!DateStr || String(DateStr).toUpperCase() === 'TBA') return 'TBA';
+
+    const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+    const date = parseLocalDate(String(DateStr));
+
+    if (!date || isNaN(date.getTime())) {
+        return DateStr;
+    }
+
+    const Month = months[date.getMonth()];
+    const Day = date.getDate();
+    const Year = date.getFullYear();
+    return `${Month} ${Day}, ${Year}`;
+}
+
+function formatMultipleDatesWithYear(dateInput) {
     if (!dateInput) return 'TBA';
 
+    // Parse stringified JSON arrays (e.g., "[2026-08-03, 2026-08-13]")
     if (typeof dateInput === 'string') {
-        return formatDate(dateInput);
+        const trimmed = dateInput.trim();
+        if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            try {
+                dateInput = JSON.parse(trimmed);
+            } catch (e) {
+                // Keep as string if parsing fails
+            }
+        }
+    }
+
+    if (typeof dateInput === 'string') {
+        return formatDateWithYear(dateInput);
     }
 
     if (Array.isArray(dateInput)) {
@@ -227,7 +186,7 @@ function formatMultipleDates(dateInput) {
         if (parsedDates.length === 0) return dateInput.join(', ');
 
         const first = parsedDates[0];
-        const sameMonthYear = parsedDates.every(d => 
+        const sameMonthYear = parsedDates.every(d =>
             d.getMonth() === first.getMonth() && d.getFullYear() === first.getFullYear()
         );
 
@@ -242,10 +201,10 @@ function formatMultipleDates(dateInput) {
             } else {
                 daysStr = days.slice(0, -1).join(', ') + ' and ' + days[days.length - 1];
             }
-            return `${monthName} ${daysStr} ${year}`;
+            return `${monthName} ${daysStr}, ${year}`;
         }
 
-        const formattedDates = dateInput.map(d => formatDate(d));
+        const formattedDates = dateInput.map(d => formatDateWithYear(d));
         if (formattedDates.length === 1) {
             return formattedDates[0];
         } else if (formattedDates.length === 2) {
@@ -260,9 +219,9 @@ function formatMultipleDates(dateInput) {
 
 function formatDateRange(startDateStr, endDateStr) {
     if (!startDateStr || startDateStr.toUpperCase() === 'TBA') return 'TBA';
-    
+
     const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
-    
+
     const start = parseLocalDate(startDateStr);
     const end = endDateStr ? parseLocalDate(endDateStr) : start;
 
@@ -274,7 +233,7 @@ function formatDateRange(startDateStr, endDateStr) {
     if (!end || isNaN(end.getTime()) || startDateStr === endDateStr || !endDateStr) {
         return `${startMonth} ${startDay}`;
     }
-    
+
     const endMonth = months[end.getMonth()];
     const endDay = end.getDate();
 
@@ -285,10 +244,141 @@ function formatDateRange(startDateStr, endDateStr) {
     }
 }
 
-// Render Events with TBA support and right-aligned dates
-function renderEvents(eventsArray) {
-    const container = document.getElementById('events-list');
+function createSeparator() {
+    const separator = document.createElement('div');
+    separator.className = 'hlinesecondary';
+    separator.style.height = 'clamp(.25px, 0.125vw, 1px)';
+    return separator;
+}
+
+// Render publications from bib (robust version)
+function renderBibPublications(entries) {
+    const container = document.getElementById('publications-list');
     if (!container) return;
+
+    container.innerHTML = '';
+
+    const articles = [];
+    const preprints = [];
+
+    entries.forEach(entry => {
+        const entryType = (entry.type || entry.entryType || '').toLowerCase();
+        const content = entry.content || entry.entryTags || entry.fields || entry;
+
+        const getField = (name) => {
+            if (!content) return '';
+            const lowerName = name.toLowerCase();
+
+            if (typeof content[name] === 'string') return content[name].trim();
+            if (typeof content[lowerName] === 'string') return content[lowerName].trim();
+
+            const foundKey = Object.keys(content).find(k => k.toLowerCase() === lowerName);
+            if (foundKey) {
+                const val = content[foundKey];
+                if (typeof val === 'string') return val.trim();
+                if (val && typeof val === 'object' && 'value' in val) return String(val.value).trim();
+            }
+
+            if (Array.isArray(content)) {
+                const fieldObj = content.find(f => f.name && f.name.toLowerCase() === lowerName);
+                return fieldObj ? (fieldObj.value || '').trim() : '';
+            }
+            return '';
+        };
+
+        const title = getField('title') || 'Untitled';
+        if (!title && !entryType) return;
+
+        const keywords = getField('keywords').toLowerCase();
+        const note = getField('note').toLowerCase();
+
+        const isPreprint =
+            entryType === 'unpublished' ||
+            (entryType === 'misc' && keywords.includes('preprint')) ||
+            note.includes('preprint');
+
+        const isPublication = [
+            'article',
+            'inproceedings',
+            'book',
+            'mastersthesis',
+            'bachelorthesis'
+        ].includes(entryType);
+
+        let venueValue = getField('journal') || getField('booktitle') || getField('school') || getField('note');
+        let pubUrl = getField('url') || '';
+        let urlText = '';
+
+        const eprint = getField('eprint');
+        if (isPreprint && eprint) {
+            venueValue = `arXiv:${eprint}`;
+            if (!pubUrl) {
+                pubUrl = `https://arxiv.org/abs/${eprint}`;
+            }
+            urlText = `arXiv:${eprint}`;
+        } else if (pubUrl) {
+            urlText = venueValue || pubUrl;
+        }
+
+        const pub = {
+            authors: getField('author'),
+            title: title,
+            venue: venueValue,
+            url: pubUrl,
+            urlText: urlText
+        };
+
+        if (isPreprint) {
+            preprints.push(pub);
+        } else if (isPublication) {
+            articles.push(pub);
+        }
+    });
+
+    if (articles.length === 0 && preprints.length === 0) return;
+
+    const detailsMain = document.createElement('details');
+    detailsMain.open = true;
+    detailsMain.className = 'mainDetails';
+
+    const summaryMain = document.createElement('summary');
+    summaryMain.textContent = 'Publications';
+    detailsMain.appendChild(summaryMain);
+
+    function buildSubSectionFlat(subTitle, pubsArray) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'sub-section-wrapper';
+
+        const h4 = document.createElement('div');
+        h4.className = 'subHeading';
+        const em = document.createElement('em');
+        em.textContent = subTitle;
+        h4.appendChild(em);
+        wrapper.appendChild(h4);
+
+        const ul = document.createElement('ul');
+        pubsArray.forEach(pub => ul.appendChild(createPubLi(pub)));
+        wrapper.appendChild(ul);
+
+        return wrapper;
+    }
+
+    if (articles.length > 0) {
+        detailsMain.appendChild(buildSubSectionFlat('Publications', articles));
+    }
+
+    if (preprints.length > 0) {
+        detailsMain.appendChild(buildSubSectionFlat('Preprints', preprints));
+    }
+
+    container.appendChild(detailsMain);
+}
+
+// Render Events
+function renderEvents(eventsArray) {
+    const container = document.getElementById("events-list");
+    if (!container) return;
+
     container.innerHTML = '';
 
     const today = new Date();
@@ -299,16 +389,16 @@ function renderEvents(eventsArray) {
 
     eventsArray.forEach(event => {
         const dateObj = event.end ? parseLocalDate(event.end) : parseLocalDate(event.start);
-        
+
         const isTba = !dateObj || isNaN(dateObj.getTime()) || (event.start && event.start.toUpperCase() === 'TBA');
         const year = isTba ? new Date().getFullYear() : dateObj.getFullYear();
-        
+
         const targetObj = (isTba || dateObj >= today) ? upcomingObj : pastObj;
 
         if (!targetObj[year]) {
             targetObj[year] = [];
         }
-        
+
         event.formattedDate = isTba ? 'TBA' : formatDateRange(event.start, event.end);
         targetObj[year].push(event);
     });
@@ -327,7 +417,7 @@ function renderEvents(eventsArray) {
         const detailsMain = document.createElement('details');
         detailsMain.open = true;
         detailsMain.className = 'mainDetails';
-        
+
         const summaryMain = document.createElement('summary');
         summaryMain.textContent = mainTitle;
         detailsMain.appendChild(summaryMain);
@@ -405,48 +495,12 @@ function renderEvents(eventsArray) {
     container.appendChild(buildSection('Past', pastObj));
 }
 
-// ===============================
-// Publications, Talks, and Posters Renderers
-// ===============================
+function renderTalks(talksData) {
+    const container = document.getElementById("talks-list");
+    if (!container) return;
 
-function renderPublicationsSection(publicationsData) {
-    if (!publicationsData) return null;
+    container.innerHTML = '';
 
-    const details = document.createElement('details');
-    details.open = true;
-    details.className = 'mainDetails';
-
-    const summary = document.createElement('summary');
-    summary.textContent = 'Publications';
-    details.appendChild(summary);
-
-    // Articles list
-    if (publicationsData.articles && publicationsData.articles.length > 0) {
-        const articlesUl = document.createElement('ul');
-        publicationsData.articles.forEach(pub => {
-            articlesUl.appendChild(createPubLi(pub));
-        });
-        details.appendChild(articlesUl);
-    }
-
-    // Preprints list
-    if (publicationsData.preprints && publicationsData.preprints.length > 0) {
-        const subtitle = document.createElement('div');
-        subtitle.className = 'subtitle';
-        subtitle.textContent = 'Preprints';
-        details.appendChild(subtitle);
-
-        const preprintsUl = document.createElement('ul');
-        publicationsData.preprints.forEach(pub => {
-            preprintsUl.appendChild(createPubLi(pub));
-        });
-        details.appendChild(preprintsUl);
-    }
-
-    return details;
-}
-
-function renderTalksSection(talksData) {
     if (!talksData || talksData.length === 0) return null;
 
     const details = document.createElement('details');
@@ -460,22 +514,27 @@ function renderTalksSection(talksData) {
     const ul = document.createElement('ul');
     talksData.forEach(talk => {
         const li = document.createElement('li');
-        
+
         const em = document.createElement('em');
         em.textContent = talk.title;
         li.appendChild(em);
 
-        const dateText = formatMultipleDates(talk.date);
+        const dateText = formatMultipleDatesWithYear(talk.date);
         li.append(document.createTextNode(`; ${talk.event}, ${talk.location}, ${dateText}`));
-        
+
         ul.appendChild(li);
     });
 
     details.appendChild(ul);
-    return details;
+    container.appendChild(details);
 }
 
-function renderPostersSection(postersData) {
+function renderPosters(postersData) {
+    const container = document.getElementById("posters-list");
+    if (!container) return;
+
+    container.innerHTML = '';
+
     if (!postersData || postersData.length === 0) return null;
 
     const details = document.createElement('details');
@@ -501,64 +560,49 @@ function renderPostersSection(postersData) {
         a.appendChild(em);
         li.appendChild(a);
 
-        const dateText = formatMultipleDates(poster.date);
+        const dateText = formatMultipleDatesWithYear(poster.date);
         li.append(document.createTextNode(`; ${poster.event}, ${poster.location}, ${dateText}.`));
         ul.appendChild(li);
     });
 
     details.appendChild(ul);
-    return details;
+    container.appendChild(details);
 }
 
 // --- Helper Functions ---
 
 function createPubLi(pub) {
     const li = document.createElement('li');
-    let textNode = `${pub.authors}, ${pub.title}`;
-    if (pub.venue) textNode += `, *${pub.venue}*`;
     
-    li.append(document.createTextNode(textNode + ', '));
+    let textNode = `${pub.authors}, ${pub.title}`;
+    li.append(document.createTextNode(textNode));
 
-    if (pub.url) {
+    if (pub.venue) {
+        li.append(document.createTextNode(', '));
+        if (pub.url) {
+            const a = document.createElement('a');
+            a.href = pub.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'external';
+            a.textContent = pub.venue;
+            li.appendChild(a);
+        } else {
+            li.append(document.createTextNode(pub.venue));
+        }
+    } else if (pub.url) {
+        li.append(document.createTextNode(', '));
         const a = document.createElement('a');
         a.href = pub.url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         a.className = 'external';
-        a.textContent = pub.urlText || pub.url;
+        a.textContent = pub.urlText;
         li.appendChild(a);
     }
+
     li.append(document.createTextNode('.'));
     return li;
-}
-
-// Utility to create horizontal divider line
-function createSeparator() {
-    const separator = document.createElement('div');
-    separator.className = 'hlinesecondary';
-    separator.style.height = 'clamp(.25px, 0.125vw, 1px)';
-    return separator;
-}
-
-// --- Main Orchestrator for Research ---
-
-function renderPublications(data) {
-    const container = document.getElementById('research-list');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const sections = [
-        renderPublicationsSection(data.publications),
-        renderTalksSection(data.talks),
-        renderPostersSection(data.posters)
-    ].filter(Boolean);
-
-    sections.forEach((section, index) => {
-        container.appendChild(section);
-        if (index < sections.length - 1) {
-            container.appendChild(createSeparator());
-        }
-    });
 }
 
 // ===============================
