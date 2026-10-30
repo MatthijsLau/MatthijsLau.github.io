@@ -59,49 +59,23 @@ function setupNavigation() {
 }
 
 // ===============================
-// Data parsing & Loading (.bib & JSON)
+// Data parsing & Loading (JSON only)
 // ===============================
 async function loadSiteData() {
     try {
-        const [jsonResponse, bibResponse] = await Promise.all([
-            fetch('https://matthijslau.github.io/assets/data.json'),
-            fetch('https://matthijslau.github.io/assets/data.bib')
-        ]);
+        const jsonResponse = await fetch('assets/data.json');
 
         if (!jsonResponse.ok) {
             console.error('Failed to load data.json');
         }
-        if (!bibResponse.ok) {
-            console.error('Failed to load data.bib');
-        }
 
         const data = jsonResponse.ok ? await jsonResponse.json() : {};
-        const bibText = bibResponse.ok ? await bibResponse.text() : '';
 
-        // Render events, talks, and posters
+        // Render events, talks, posters, and publications from JSON
         renderEvents(data.events || []);
         renderTalks(data.talks || []);
         renderPosters(data.posters || []);
-
-        // Parse BibTeX robustly supporting toJSON, parse, or toTree
-        let bibEntries = [];
-        try {
-            const parsed = bibtexParser.toJSON ? bibtexParser.toJSON(bibText) 
-                         : (bibtexParser.parse ? bibtexParser.parse(bibText) 
-                         : bibtexParser.toTree(bibText));
-
-            if (Array.isArray(parsed)) {
-                bibEntries = parsed;
-            } else if (parsed && Array.isArray(parsed.entries)) {
-                bibEntries = parsed.entries;
-            } else if (parsed && typeof parsed === 'object') {
-                bibEntries = Object.values(parsed);
-            }
-        } catch (err) {
-            console.error('Error parsing BibTeX data:', err);
-        }
-
-        renderBibPublications(bibEntries);
+        renderJsonPublications(data.publications || {});
 
     } catch (error) {
         console.error('Error loading site data:', error);
@@ -251,89 +225,15 @@ function createSeparator() {
     return separator;
 }
 
-// Render publications from bib (robust version)
-function renderBibPublications(entries) {
+// Render publications directly from JSON data
+function renderJsonPublications(pubData) {
     const container = document.getElementById('publications-list');
     if (!container) return;
 
     container.innerHTML = '';
 
-    const articles = [];
-    const preprints = [];
-
-    entries.forEach(entry => {
-        const entryType = (entry.type || entry.entryType || '').toLowerCase();
-        const content = entry.content || entry.entryTags || entry.fields || entry;
-
-        const getField = (name) => {
-            if (!content) return '';
-            const lowerName = name.toLowerCase();
-
-            if (typeof content[name] === 'string') return content[name].trim();
-            if (typeof content[lowerName] === 'string') return content[lowerName].trim();
-
-            const foundKey = Object.keys(content).find(k => k.toLowerCase() === lowerName);
-            if (foundKey) {
-                const val = content[foundKey];
-                if (typeof val === 'string') return val.trim();
-                if (val && typeof val === 'object' && 'value' in val) return String(val.value).trim();
-            }
-
-            if (Array.isArray(content)) {
-                const fieldObj = content.find(f => f.name && f.name.toLowerCase() === lowerName);
-                return fieldObj ? (fieldObj.value || '').trim() : '';
-            }
-            return '';
-        };
-
-        const title = getField('title') || 'Untitled';
-        if (!title && !entryType) return;
-
-        const keywords = getField('keywords').toLowerCase();
-        const note = getField('note').toLowerCase();
-
-        const isPreprint =
-            entryType === 'unpublished' ||
-            (entryType === 'misc' && keywords.includes('preprint')) ||
-            note.includes('preprint');
-
-        const isPublication = [
-            'article',
-            'inproceedings',
-            'book',
-            'mastersthesis',
-            'bachelorthesis'
-        ].includes(entryType);
-
-        let venueValue = getField('journal') || getField('booktitle') || getField('school') || getField('note');
-        let pubUrl = getField('url') || '';
-        let urlText = '';
-
-        const eprint = getField('eprint');
-        if (isPreprint && eprint) {
-            venueValue = `arXiv:${eprint}`;
-            if (!pubUrl) {
-                pubUrl = `https://arxiv.org/abs/${eprint}`;
-            }
-            urlText = `arXiv:${eprint}`;
-        } else if (pubUrl) {
-            urlText = venueValue || pubUrl;
-        }
-
-        const pub = {
-            authors: getField('author'),
-            title: title,
-            venue: venueValue,
-            url: pubUrl,
-            urlText: urlText
-        };
-
-        if (isPreprint) {
-            preprints.push(pub);
-        } else if (isPublication) {
-            articles.push(pub);
-        }
-    });
+    const articles = pubData.articles || [];
+    const preprints = pubData.preprints || [];
 
     if (articles.length === 0 && preprints.length === 0) return;
 
