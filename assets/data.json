@@ -130,7 +130,7 @@
       "url": "https://wis.kuleuven.be/events/2026_poisson/files/posters/lau-matthijs.pdf",
       "event": "Poisson 2026 Summer School and Conference",
       "location": "Univ. of Antwerpen and KU Leuven (Belgium)",
-      "date": "[2026-08-03, 2026-08-13]"
+      "date": ["2026-08-03","2026-08-13"]
     },
     {
       "title": "Completeness of multiplicative Ehresmann connections on fibred Lie groupoids",
