@@ -1,0 +1,143 @@
+{
+  "events": [
+    {
+      "title": "Higher Structures in Geometry and Physics",
+      "url": "https://msxiang-math.github.io/HigherStructures2027/",
+      "location": "Univ. degli Studi di Firenze (Italy)",
+      "start": "2027-01-18",
+      "end": "2027-01-22"
+    },
+    {
+      "title": "Bari-Salerno Differential Geometry Days",
+      "url": null,
+      "location": "Univ. degli Studi di Bari (Italy)",
+      "start": "2027-02-03",
+      "end": "2027-02-07"
+    },
+    {
+      "title": "Poisson 2026 conference",
+      "url": "https://wis.kuleuven.be/events/2026_poisson/conference_poisson2026",
+      "location": "KU Leuven (Belgium)",
+      "start": "2026-08-10",
+      "end": "2026-08-14"
+    },
+    {
+      "title": "Summer School Poisson 2026",
+      "url": "https://www.uantwerpen.be/nl/personeel/sonja-hohloch/private-webpage/conference-workshop/poissonschool2026/",
+      "location": "Univ. of Antwerp (Belgium)",
+      "start": "2026-08-03",
+      "end": "2026-08-07"
+    },
+    {
+      "title": "Higher Structures in Pavia",
+      "url": "http://wpage.unina.it/francesco.dandrea/Pavia2026/",
+      "location": "Univ. di Pavia (Italy)",
+      "start": "2026-06-17",
+      "end": "2026-06-19"
+    },
+    {
+      "title": "Higher Geometric Structures along the Lower Rhine",
+      "url": "https://www.uu.nl/en/research/utrecht-geometry-centre/higher-geometric-structures-along-the-lower-rhine",
+      "location": "Univ. Utrecht (Netherlands)",
+      "start": "2026-04-16",
+      "end": "2026-04-17"
+    },
+    {
+      "title": "Bari-Salerno Differential Geometry Days",
+      "url": "http://www.dipmat2.unisa.it/people/vitagliano/www/workshop_BA-SA.html",
+      "location": "Univ. degli Studi di Salerno (Italy)",
+      "start": "2026-02-09",
+      "end": "2026-02-11"
+    },
+    {
+      "title": "Around Singularities in Poisson Geometry",
+      "url": "https://www.birs.ca/events/2025/5-day-workshops/25w5442",
+      "location": "IASM Hangzhou (China) (attended online)",
+      "start": "2025-08-03",
+      "end": "2025-08-08"
+    },
+    {
+      "title": "Interactions of Poisson Geometry, Lie Theory and Symmetry",
+      "url": "https://sites.google.com/view/ipgls2025/",
+      "location": "IST Lisbon (Portugal)",
+      "start": "2025-06-30",
+      "end": "2025-07-04"
+    },
+    {
+      "title": "Seminar: Non-commutative geometry of foliations",
+      "url": null,
+      "location": "RU Nijmegen",
+      "start": "2025-02-01",
+      "end": "2025-07-31"
+    },
+    {
+      "title": "Higher Geometric Structures along the Lower Rhine XVIII",
+      "url": "https://www.math.ru.nl/~sagave/higher-structures-XVIII/index.html",
+      "location": "RU Nijmegen (Netherlands)",
+      "start": "2025-01-23",
+      "end": "2025-01-24"
+    },
+    {
+      "title": "Central Europe Relativity Seminar 15",
+      "url": "https://cers.univie.ac.at/cers15/index.html",
+      "location": "RU Nijmegen (Netherlands)",
+      "start": "2025-01-22",
+      "end": "2025-01-23"
+    },
+    {
+      "title": "Poisson aan de Waal 4",
+      "url": "https://sites.google.com/view/poisson-aan-de-waal-4/home",
+      "location": "RU Nijmegen and Univ. Utrecht (Netherlands)",
+      "start": "2024-06-27",
+      "end": "2024-06-28"
+    }
+  ],
+  "publications": {
+    "articles": [],
+    "preprints": [
+      {
+        "authors": "M. Lau, I. Mărcuț",
+        "title": "Multiplicative Ehresmann connections for Lie groupoid fibrations",
+        "venue": null,
+        "url": "https://arxiv.org/abs/2604.22394",
+        "urlText": "arXiv:2604.22394"
+      }
+    ]
+  },
+  "talks": [
+    {
+      "title": "Multiplicative Ehresmann connections for Lie groupoid fibrations",
+      "event": "Methods of Noncommutative Topology and Geometry Seminar",
+      "location": "University of Warsaw (Poland) (Online)",
+      "date": "Apr. 10, 2026"
+    },
+    {
+      "title": "Multiplicative Ehresmann connections",
+      "event": "Bari-Salerno Differential Geometry Days",
+      "location": "Univ. degli Studi di Salerno (Italy)",
+      "date": "Feb. 11, 2026"
+    },
+    {
+      "title": "Lie groupoids; Holonomy and Monodromy of foliations",
+      "event": "Seminar: Non-commutative geometry of foliations",
+      "location": "RU Nijmegen (Netherlands)",
+      "date": "Mar. 20, 2025"
+    }
+  ],
+  "posters": [
+    {
+      "title": "Multiplicative Ehresmann connections for Lie groupoid fibrations",
+      "url": "https://wis.kuleuven.be/events/2026_poisson/files/posters/lau-matthijs.pdf",
+      "event": "Poisson 2026 Summer School and Conference",
+      "location": "Univ. of Antwerpen and KU Leuven (Belgium)",
+      "date": "Aug. 3 and 13, 2026"
+    },
+    {
+      "title": "Completeness of multiplicative Ehresmann connections on fibred Lie groupoids",
+      "url": "https://drive.google.com/file/d/1ZwYj6T85aOcLNhYI9ckrHFH6b8O733Ik/view",
+      "event": "Interactions of Poisson Geometry, Lie Theory and Symmetry",
+      "location": "IST Lisbon (Portugal)",
+      "date": "Jul. 2, 2025"
+    }
+  ]
+}
