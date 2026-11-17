@@ -218,13 +218,6 @@ function formatDateRange(startDateStr, endDateStr) {
     }
 }
 
-function createSeparator() {
-    const separator = document.createElement('div');
-    separator.className = 'hlinesecondary';
-    separator.style.height = 'clamp(.25px, 0.125vw, 1px)';
-    return separator;
-}
-
 // Render publications directly from JSON data
 function renderJsonPublications(pubData) {
     const container = document.getElementById('publications-list');
@@ -391,7 +384,6 @@ function renderEvents(eventsArray) {
     }
 
     container.appendChild(buildSection('Upcoming', upcomingObj));
-    container.appendChild(createSeparator());
     container.appendChild(buildSection('Past', pastObj));
 }
 
